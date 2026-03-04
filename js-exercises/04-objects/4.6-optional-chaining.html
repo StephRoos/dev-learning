@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.6 Chaînage optionnel ?. - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.6 — Chaînage optionnel <code>?.</code></h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Syntaxes</strong> :
+            <ul>
+                <li><code>obj?.prop</code> — accès à une propriété</li>
+                <li><code>obj?.[key]</code> — accès dynamique</li>
+                <li><code>obj.method?.()</code> — appel de méthode optionnel</li>
+            </ul>
+        </li>
+        <li><strong>Court-circuit</strong> : si la valeur avant <code>?.</code> est <code>null</code> ou <code>undefined</code>, l'expression s'arrête immédiatement et retourne <code>undefined</code> (sans erreur)</li>
+        <li><strong>Quand l'utiliser</strong> : pour les propriétés optionnelles (données d'API, configuration partielle)</li>
+        <li><strong>Ne pas abuser</strong> : n'utilise pas <code>?.</code> sur des choses qui doivent toujours exister — tu masquerais des bugs</li>
+        <li><strong>Nullish coalescing <code>??</code></strong> : se combine souvent avec <code>?.</code> pour fournir une valeur par défaut</li>
+    </ul>
+</div>
+
+<pre><code>// Sans ?. — plantage si intermédiaire est null
+let city = user.address.city; // TypeError si address est undefined
+
+// Avec ?. — retourne undefined silencieusement
+let city = user?.address?.city;
+
+// Les trois formes
+let name = user?.name;                    // propriété
+let key = "name";
+let name2 = user?.[key];                  // bracket notation
+let result = user?.greet?.();             // méthode optionnelle
+let first = arr?.[0];                     // tableau optionnel
+
+// Combiné avec ?? pour valeur par défaut
+let city = user?.address?.city ?? "Ville inconnue";
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Accéder à des propriétés profondes</h3>
+    <p>
+        Tu as un objet <code>user</code> qui peut avoir ou non une adresse, et une adresse qui peut avoir ou non une ville. Accède en toute sécurité à <code>user.address.city</code> pour chaque cas.
+    </p>
+    <pre><code>// Différents profils utilisateur
+let user1 = {
+    name: "Alice",
+    address: {
+        city: "Paris",
+        zip: "75001"
+    }
+};
+
+let user2 = {
+    name: "Bob"
+    // pas d'adresse
+};
+
+let user3 = null; // utilisateur non connecté
+
+// Ta réponse : accède à city pour chaque user sans planter
+// Utilise ?. et ?? pour fournir "Ville inconnue" si absent
+
+let city1 = /* ??? */;
+let city2 = /* ??? */;
+let city3 = /* ??? */;
+
+console.log(city1); // "Paris"
+console.log(city2); // "Ville inconnue"
+console.log(city3); // "Ville inconnue"
+</code></pre>
+    <p class="hint">
+        <code>user?.address?.city ?? "Ville inconnue"</code> — le <code>??</code> s'active quand le résultat est null ou undefined.
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Appeler des méthodes optionnelles</h3>
+    <p>
+        Certains objets ont une méthode <code>serialize()</code>, d'autres non. Appelle-la si elle existe, sans planter sinon.
+    </p>
+    <pre><code>// Objets avec méthodes variées
+let jsonUser = {
+    name: "Alice",
+    serialize() {
+        return JSON.stringify({ name: this.name });
+    }
+};
+
+let simpleUser = {
+    name: "Bob"
+    // pas de méthode serialize
+};
+
+// Ta réponse : appelle serialize() si elle existe
+// Sinon retourne "Pas de sérialisation disponible"
+
+function safeSave(obj) {
+    // Utilise ?.() pour appeler la méthode si elle existe
+
+}
+
+console.log(safeSave(jsonUser));   // '{"name":"Alice"}'
+console.log(safeSave(simpleUser)); // "Pas de sérialisation disponible"
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Tableaux optionnels</h3>
+    <p>
+        Un objet <code>config</code> peut avoir ou non un tableau <code>plugins</code>. Accède au premier plugin (<code>plugins[0]</code>) et à sa propriété <code>name</code> en toute sécurité.
+    </p>
+    <pre><code>// Différentes configurations
+let config1 = {
+    theme: "dark",
+    plugins: [
+        { name: "analytics", version: "2.0" },
+        { name: "seo", version: "1.5" }
+    ]
+};
+
+let config2 = {
+    theme: "light"
+    // pas de plugins
+};
+
+let config3 = {
+    theme: "dark",
+    plugins: [] // tableau vide
+};
+
+// Ta réponse : accède au nom du premier plugin sans planter
+function getFirstPlugin(config) {
+    // Utilise ?.[0]?.name
+
+}
+
+console.log(getFirstPlugin(config1)); // "analytics"
+console.log(getFirstPlugin(config2)); // undefined ou "Aucun plugin"
+console.log(getFirstPlugin(config3)); // undefined ou "Aucun plugin"
+</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Réécrire avec ?.</h3>
+    <p>
+        Réécris chaque bloc de code en utilisant <code>?.</code> pour le rendre plus concis. Le comportement doit être identique.
+    </p>
+    <pre><code>// VERSION LONGUE — à réécrire
+
+// 1.
+let admin = null;
+let adminName;
+if (admin && admin.profile && admin.profile.name) {
+    adminName = admin.profile.name;
+} else {
+    adminName = "Anonyme";
+}
+// VERSION COURTE :
+// let adminName = ???
+
+// 2.
+function getUserCity(user) {
+    if (user !== null && user !== undefined) {
+        if (user.address !== null && user.address !== undefined) {
+            return user.address.city;
+        }
+    }
+    return undefined;
+}
+// VERSION COURTE :
+// function getUserCity(user) { return ??? }
+
+// 3.
+let data = { items: null };
+let firstItemName;
+if (data.items && data.items[0] && data.items[0].name) {
+    firstItemName = data.items[0].name;
+}
+// VERSION COURTE :
+// let firstItemName = ???
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Données d'API simulées</h3>
+    <p>
+        Simule une réponse d'API imparfaite où certains champs peuvent être absents. Affiche les informations disponibles de manière robuste.
+    </p>
+    <pre><code>// Réponses d'API simulées (certains champs manquants)
+let apiResponses = [
+    {
+        id: 1,
+        user: { name: "Alice", email: "alice@test.com" },
+        payment: { method: "card", last4: "1234" },
+        shipping: { address: { city: "Paris" }, tracking: "FR123456" }
+    },
+    {
+        id: 2,
+        user: { name: "Bob" }, // pas d'email
+        payment: null,         // pas de paiement
+        shipping: { address: { city: "Lyon" } } // pas de tracking
+    },
+    {
+        id: 3,
+        user: null,            // utilisateur supprimé
+        payment: { method: "paypal" }
+        // pas de shipping
+    }
+];
+
+// Fonction qui extrait les infos sans jamais planter
+function formatOrder(order) {
+    return {
+        id: order.id,
+        customerName: order?.user?.name ?? "Compte supprimé",
+        email: order?.user?.email ?? "Email non renseigné",
+        paymentMethod: order?.payment?.method ?? "Paiement non effectué",
+        city: order?.shipping?.address?.city ?? "Pas d'adresse",
+        tracking: order?.shipping?.tracking ?? "Pas de suivi"
+    };
+}
+
+apiResponses.forEach(order => {
+    console.log(formatOrder(order));
+});
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B3 — Combiner ?? et ?.</h3>
+    <p>
+        Crée une fonction <code>getConfig(config, path, defaultValue)</code> qui accède à une propriété imbriquée décrite par un chemin en string (type "server.host.port") et retourne la valeur ou <code>defaultValue</code> si absente.
+    </p>
+    <pre><code>// Ta réponse ici
+
+// Accès à une propriété par chemin string (sans ?. natif — exercice de logique)
+function getConfig(config, path, defaultValue) {
+    // path est une string comme "server.host.port"
+    // Divise par "." et parcours l'objet niveau par niveau
+    // Retourne defaultValue si on rencontre null/undefined à un moment
+
+    let keys = path.split(".");
+    let current = config;
+
+    for (let key of keys) {
+        // Si current est null ou undefined, retourner defaultValue
+
+        current = current[key];
+    }
+
+    return current ?? defaultValue;
+}
+
+let config = {
+    server: {
+        host: "localhost",
+        port: 3000
+    },
+    database: {
+        name: "mydb"
+        // pas de password défini
+    }
+};
+
+console.log(getConfig(config, "server.port", 8080));      // 3000
+console.log(getConfig(config, "server.host", "unknown")); // "localhost"
+console.log(getConfig(config, "database.password", "secret")); // "secret" (défaut)
+console.log(getConfig(config, "cache.ttl", 3600));         // 3600 (défaut)
+</code></pre>
+    <p class="hint">
+        Ce pattern "getConfig avec chemin" est très courant dans les frameworks (Lodash _.get, Vue, etc.). C'est l'équivalent programmatique de <code>?.</code>.
+    </p>
+</div>
+
+</body>
+</html>

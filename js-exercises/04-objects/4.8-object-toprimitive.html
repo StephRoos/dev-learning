@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.8 Conversion objet en primitif - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.8 — Conversion d'objet en primitif</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Hints</strong> : quand JS a besoin de convertir un objet en primitif, il choisit un "hint" :
+            <ul>
+                <li><code>"string"</code> : contexte string (template literal, alert, concaténation explicite)</li>
+                <li><code>"number"</code> : contexte numérique (<code>+obj</code> unaire, comparaisons, opérations math)</li>
+                <li><code>"default"</code> : contexte ambigu (<code>obj + something</code>, <code>==</code>)</li>
+            </ul>
+        </li>
+        <li><strong>Symbol.toPrimitive(hint)</strong> : méthode prioritaire pour contrôler toutes les conversions</li>
+        <li><strong>toString()</strong> : appelé pour hint "string" (ou en fallback)</li>
+        <li><strong>valueOf()</strong> : appelé pour hint "number" et "default" (ou en fallback)</li>
+        <li><strong>Ordre de priorité</strong> : Symbol.toPrimitive → valueOf/toString selon le hint → erreur</li>
+    </ul>
+</div>
+
+<pre><code>// Sans Symbol.toPrimitive — utilise toString/valueOf
+let obj = {
+    value: 42,
+    toString() { return "objet(42)"; },
+    valueOf() { return 42; }
+};
+
+alert(obj);      // "objet(42)" — hint string → toString()
+console.log(+obj);    // 42 — hint number → valueOf()
+console.log(obj + 1); // 43 — hint default → valueOf()
+
+// Avec Symbol.toPrimitive — contrôle total
+let obj2 = {
+    [Symbol.toPrimitive](hint) {
+        if (hint === "string") return "je suis un objet";
+        return 100; // number et default
+    }
+};
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Implémenter toString() et valueOf() pour Money</h3>
+    <p>
+        Crée un objet <code>money</code> qui représente une somme d'argent. Implémente <code>toString()</code> pour retourner une représentation lisible et <code>valueOf()</code> pour retourner la valeur numérique.
+    </p>
+    <pre><code>// Ta réponse ici
+function createMoney(amount, currency) {
+    return {
+        amount,
+        currency,
+
+        toString() {
+            // Retourner quelque chose comme "42.50 EUR"
+
+        },
+
+        valueOf() {
+            // Retourner le montant numérique
+
+        }
+    };
+}
+
+let price = createMoney(42.5, "EUR");
+let tax = createMoney(8.5, "EUR");
+
+// Tests
+console.log(`Prix : ${price}`);   // "Prix : 42.5 EUR" — hint string → toString()
+console.log(price + tax);          // 51 — hint default → valueOf() + valueOf()
+console.log(price > 40);           // true — hint number → valueOf()
+console.log(price + " TTC");       // "42.5 EUR TTC" — concaténation → toString()
+</code></pre>
+    <p class="hint">
+        <code>toString()</code> est appelé quand JS a besoin d'une string. <code>valueOf()</code> est appelé quand JS a besoin d'un nombre. En cas d'ambiguïté (+), valueOf() prime.
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Prédire les conversions</h3>
+    <p>
+        Lis ce code. <strong>Avant d'exécuter</strong>, prédit ce que chaque expression va produire. Indique aussi quel hint est utilisé et quelle méthode est appelée.
+    </p>
+    <pre><code>let obj = {
+    num: 10,
+    str: "dix",
+    toString() { return this.str; },
+    valueOf() { return this.num; }
+};
+
+// Pour chaque ligne, note : résultat, hint utilisé, méthode appelée
+console.log(String(obj));    // résultat: ___ | hint: ___ | méthode: ___
+console.log(+obj);           // résultat: ___ | hint: ___ | méthode: ___
+console.log(obj + 5);        // résultat: ___ | hint: ___ | méthode: ___
+console.log(obj + "!");      // résultat: ___ | hint: ___ | méthode: ___
+console.log(`${obj}`);       // résultat: ___ | hint: ___ | méthode: ___
+console.log(obj * 2);        // résultat: ___ | hint: ___ | méthode: ___
+console.log(obj == 10);      // résultat: ___ | hint: ___ | méthode: ___
+</code></pre>
+    <p class="hint">
+        <code>String(obj)</code> et template literals → hint "string". Opérateurs math (<code>*</code>, <code>-</code>, <code>unaire +</code>) → hint "number". Opérateur <code>+</code> binaire et <code>==</code> → hint "default".
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Symbol.toPrimitive pour Temperature</h3>
+    <p>
+        Crée un objet <code>Temperature</code> avec <code>Symbol.toPrimitive</code>. En mode "string" retourne "20°C", en mode "number" retourne la valeur en Kelvin (°C + 273.15).
+    </p>
+    <pre><code>// Ta réponse ici
+function createTemperature(celsius) {
+    return {
+        celsius,
+
+        [Symbol.toPrimitive](hint) {
+            if (hint === "string") {
+                // Retourner "20°C"
+
+            } else {
+                // Retourner la valeur en Kelvin
+
+            }
+        }
+    };
+}
+
+let temp = createTemperature(20);
+
+console.log(`Température : ${temp}`); // "Température : 20°C"
+console.log(+temp);                   // 293.15 (Kelvin)
+console.log(temp > 300);              // false (293.15 > 300)
+console.log(temp + 0);                // 293.15
+
+// Convertir en Fahrenheit
+let fahrenheit = temp * 9/5 - 459.67; // via Kelvin
+console.log(fahrenheit.toFixed(2));    // "68.00" °F
+</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Objet Vector avec addition et conversion</h3>
+    <p>
+        Crée un objet <code>Vector</code> représentant un vecteur 2D. Implémente <code>toString()</code> pour retourner "(x, y)", <code>valueOf()</code> pour retourner la magnitude (norme), et une méthode <code>add(other)</code>.
+    </p>
+    <pre><code>// Ta réponse ici
+function createVector(x, y) {
+    return {
+        x,
+        y,
+
+        add(other) {
+            // Retourner un nouveau Vector avec les coordonnées additionnées
+
+        },
+
+        toString() {
+            // "(x, y)"
+
+        },
+
+        valueOf() {
+            // Magnitude : Math.sqrt(x*x + y*y)
+
+        }
+    };
+}
+
+let v1 = createVector(3, 4);
+let v2 = createVector(1, 2);
+
+console.log(`v1 = ${v1}`);          // "v1 = (3, 4)"
+console.log(+v1);                    // 5 (magnitude : √(9+16))
+console.log(v1 > v2);                // true (5 > √5 ≈ 2.24)
+
+let v3 = v1.add(v2);
+console.log(`v1 + v2 = ${v3}`);     // "v1 + v2 = (4, 6)"
+console.log(+v3);                    // √(16+36) = √52 ≈ 7.21
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Objet Fraction avec arithmétique</h3>
+    <p>
+        Crée un objet <code>Fraction</code> avec des méthodes <code>add(other)</code>, <code>multiply(other)</code>, et les conversions : <code>toString()</code> retourne "a/b" et <code>valueOf()</code> retourne la valeur décimale. Simplifie automatiquement avec le PGCD.
+    </p>
+    <pre><code>// Ta réponse ici
+
+// Calcul du PGCD (Plus Grand Commun Diviseur)
+function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+}
+
+function createFraction(numerator, denominator) {
+    if (denominator === 0) throw new Error("Dénominateur ne peut pas être 0");
+
+    // Simplification automatique
+    let divisor = gcd(Math.abs(numerator), Math.abs(denominator));
+    let n = numerator / divisor;
+    let d = denominator / divisor;
+
+    return {
+        n,
+        d,
+
+        add(other) {
+            // a/b + c/d = (a*d + c*b) / (b*d)
+
+        },
+
+        multiply(other) {
+            // a/b * c/d = (a*c) / (b*d)
+
+        },
+
+        toString() {
+            return `${this.n}/${this.d}`;
+        },
+
+        valueOf() {
+            return this.n / this.d;
+        }
+    };
+}
+
+let half = createFraction(1, 2);
+let third = createFraction(1, 3);
+
+console.log(`${half}`);                        // "1/2"
+console.log(+half);                             // 0.5
+console.log(`${half.add(third)}`);             // "5/6"
+console.log(`${half.multiply(third)}`);        // "1/6"
+console.log(createFraction(6, 4).toString());  // "3/2" (simplifié)
+console.log(half > third);                      // true (0.5 > 0.333...)
+</code></pre>
+    <p class="hint">
+        Le PGCD (algorithme d'Euclide) est un fondamental en algorithmique. Mérite une note Obsidian !
+    </p>
+</div>
+
+<div class="bonus">
+    <h3>B3 — Objet Duration avec double conversion</h3>
+    <p>
+        Crée un objet <code>Duration</code> qui représente une durée en secondes. En mode "number" retourne les secondes totales, en mode "string" retourne "Xh Ym Zs" en omettant les zéros (ex: "1h 30m", "45s", "2h 5s").
+    </p>
+    <pre><code>// Ta réponse ici
+function createDuration(totalSeconds) {
+    return {
+        totalSeconds,
+
+        [Symbol.toPrimitive](hint) {
+            if (hint === "string") {
+                let h = Math.floor(this.totalSeconds / 3600);
+                let m = Math.floor((this.totalSeconds % 3600) / 60);
+                let s = this.totalSeconds % 60;
+
+                // Construire la string en omettant les parties à 0
+                let parts = [];
+                // if (h > 0) parts.push(...)
+                // if (m > 0) parts.push(...)
+                // if (s > 0) parts.push(...)
+
+                return parts.join(" ") || "0s";
+
+            } else {
+                return this.totalSeconds;
+            }
+        },
+
+        add(other) {
+            return createDuration(this.totalSeconds + +other);
+        }
+    };
+}
+
+let d1 = createDuration(3600 + 1800);    // 1h 30m
+let d2 = createDuration(45);              // 45s
+let d3 = createDuration(7200 + 5);        // 2h 5s
+let d4 = createDuration(0);               // 0s
+
+console.log(`${d1}`);    // "1h 30m"
+console.log(`${d2}`);    // "45s"
+console.log(`${d3}`);    // "2h 5s"
+console.log(`${d4}`);    // "0s"
+
+console.log(+d1);         // 5400
+console.log(d1 > d2);     // true
+
+let total = d1.add(d2);
+console.log(`${total}`);  // "1h 30m 45s"
+console.log(+total);      // 5445
+</code></pre>
+</div>
+
+</body>
+</html>

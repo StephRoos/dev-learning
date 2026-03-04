@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.3 Garbage Collection - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.3 — Ramasse-miettes (Garbage Collection)</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Accessibilité</strong> : un objet est conservé en mémoire s'il est accessible depuis une racine</li>
+        <li><strong>Racines</strong> : variables globales, pile d'appel courante, registres CPU</li>
+        <li><strong>Mark-and-sweep</strong> : le GC marque toutes les racines, puis tout ce qui est accessible depuis elles. Tout ce qui reste non-marqué est supprimé.</li>
+        <li><strong>Îlots inaccessibles</strong> : des objets qui se référencent mutuellement mais ne sont plus accessibles depuis les racines → collectés</li>
+        <li><strong>Tu ne contrôles pas le GC</strong> : il tourne automatiquement, pas de <code>free()</code> en JS</li>
+    </ul>
+</div>
+
+<pre><code>// L'objet est accessible → conservé en mémoire
+let user = { name: "Alice" };
+
+// La référence est supprimée → l'objet peut être collecté
+user = null;
+
+// Exemple d'îlot inaccessible
+function createIsland() {
+    let a = { name: "a" };
+    let b = { name: "b" };
+    a.partner = b;  // a référence b
+    b.partner = a;  // b référence a
+    // a et b se référencent mutuellement
+    // mais personne d'externe ne les référence
+    // → les deux seront collectés à la sortie de la fonction
+}
+createIsland();
+</code></pre>
+
+<h2>Exercices conceptuels</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Quel objet sera collecté ?</h3>
+    <p>
+        Pour chaque extrait de code, prédit si l'objet sera collecté par le GC ou non. Explique pourquoi en commentaire.
+    </p>
+    <pre><code>// CAS 1
+let user = { name: "Alice" };
+user = null;
+// L'objet { name: "Alice" } sera-t-il collecté ? Pourquoi ?
+// Réponse :
+
+// CAS 2
+let user2 = { name: "Bob" };
+let admin = user2;
+user2 = null;
+// L'objet { name: "Bob" } sera-t-il collecté ? Pourquoi ?
+// Réponse :
+
+// CAS 3
+function getUser() {
+    let temp = { name: "Charlie" };
+    return temp;
+}
+let result = getUser();
+// L'objet { name: "Charlie" } sera-t-il collecté ? Pourquoi ?
+// Réponse :
+
+// CAS 4
+function process() {
+    let temp = { name: "Dave" };
+    // temp n'est pas retourné
+}
+process();
+// L'objet { name: "Dave" } sera-t-il collecté ? Pourquoi ?
+// Réponse :
+</code></pre>
+    <p class="hint">
+        La règle d'or : un objet est collecté uniquement s'il est inaccessible depuis toutes les racines (variables globales, scope courant).
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Identifier les fuites mémoire potentielles</h3>
+    <p>
+        Ce code contient des problèmes qui empêchent le GC de libérer la mémoire. Identifie-les et propose une correction pour chaque cas.
+    </p>
+    <pre><code>// PROBLÈME 1 — Accumulateur global infini
+let log = [];
+function trackUser(userId) {
+    log.push({ id: userId, time: Date.now() }); // log grandit indéfiniment
+}
+// Problème :
+// Solution :
+
+// PROBLÈME 2 — Référence dans un objet global
+let cache = {};
+function loadData(key, data) {
+    cache[key] = data; // les données ne sont jamais supprimées
+}
+loadData("user_1", { name: "Alice", bigData: new Array(10000).fill("x") });
+// Problème :
+// Solution :
+
+// PROBLÈME 3 — Timer non nettoyé
+function startPolling(callback) {
+    let obj = { data: new Array(10000).fill("x") };
+    setInterval(() => {
+        callback(obj); // obj reste en mémoire tant que le timer tourne
+    }, 1000);
+    // Le timer n'est jamais annulé !
+}
+// Problème :
+// Solution :
+</code></pre>
+    <p class="hint">
+        Les fuites mémoire en JS surviennent surtout avec : références globales non nettoyées, event listeners non retirés, timers non annulés.
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Comprendre les îlots inaccessibles</h3>
+    <p>
+        Analyse ce code et réponds aux questions en commentaires. Dessine mentalement (ou sur papier) les flèches de références.
+    </p>
+    <pre><code>// Famille d'objets interconnectés
+let family = {
+    father: {
+        name: "Jean",
+        wife: null,   // sera défini ensuite
+        child: null
+    },
+    mother: {
+        name: "Marie",
+        husband: null,
+        child: null
+    },
+    child: {
+        name: "Pierre",
+        father: null,
+        mother: null
+    }
+};
+
+// Établir les références croisées
+family.father.wife = family.mother;
+family.father.child = family.child;
+family.mother.husband = family.father;
+family.mother.child = family.child;
+family.child.father = family.father;
+family.child.mother = family.mother;
+
+// QUESTION 1 : combien de références vers family.father.child existent ?
+// Réponse :
+
+// QUESTION 2 : si on fait family = null, les objets sont-ils collectés ?
+family = null;
+// Réponse (sont-ils accessibles depuis une racine ?) :
+
+// QUESTION 3 : si on avait gardé let pierre = family.child avant de nullifier,
+// lesquels des objets seraient conservés ?
+// Réponse :
+</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Simuler la création et suppression de références</h3>
+    <p>
+        Crée une fonction qui simule un système de "sessions utilisateur". Chaque session crée un objet. Assure-toi que les sessions terminées deviennent éligibles au GC en ne gardant aucune référence externe.
+    </p>
+    <pre><code>// Ta réponse ici
+
+// Un registre de sessions actives
+let activeSessions = new Map(); // Map est mieux qu'un objet pour ce cas
+
+function openSession(userId) {
+    // Créer un objet session avec des données
+    // L'ajouter à activeSessions
+
+}
+
+function closeSession(userId) {
+    // Supprimer la session de activeSessions
+    // Après ça, si personne d'autre ne référence la session, elle sera collectée
+
+}
+
+// Test
+openSession("user_1");
+openSession("user_2");
+console.log(activeSessions.size); // 2
+
+closeSession("user_1");
+console.log(activeSessions.size); // 1
+// user_1 session est maintenant eligible au GC
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Les fuites mémoire courantes et leurs corrections</h3>
+    <p>
+        Implémente une version correcte de chaque pattern sujet aux fuites, en nettoyant proprement les références.
+    </p>
+    <pre><code>// PATTERN 1 — Event listener proprement géré
+function setupButton() {
+    let button = document.createElement('button');
+    button.textContent = "Click me";
+    document.body.appendChild(button);
+
+    let bigData = new Array(1000).fill("data");
+
+    // MAUVAIS : pas de nettoyage possible
+    // button.addEventListener('click', () => console.log(bigData));
+
+    // BON : on garde une référence au handler pour pouvoir le retirer
+    function handler() {
+        console.log(bigData.length, "éléments");
+    }
+    button.addEventListener('click', handler);
+
+    // Retourne une fonction de nettoyage (pattern "cleanup")
+    return function cleanup() {
+        button.removeEventListener('click', handler);
+        document.body.removeChild(button);
+        // bigData et handler peuvent maintenant être collectés
+    };
+}
+
+let cleanup = setupButton();
+// Plus tard...
+// cleanup(); // libère toutes les ressources
+
+// PATTERN 2 — Timer proprement annulé
+function startAutoSave(data) {
+    let timerId = setInterval(() => {
+        console.log("Sauvegarde de", data);
+    }, 5000);
+
+    // Retourne une fonction d'arrêt
+    return function stop() {
+        clearInterval(timerId);
+    };
+}
+
+let stopAutoSave = startAutoSave("mes données");
+// Plus tard...
+// stopAutoSave(); // annule le timer, data peut être collectée
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B3 — WeakMap pour éviter les fuites</h3>
+    <p>
+        <code>WeakMap</code> est une Map spéciale où les clés sont des objets et les références sont "faibles" : si l'objet clé est collecté, l'entrée WeakMap disparaît automatiquement. Très utile pour les caches !
+    </p>
+    <pre><code>// WeakMap : les références vers les clés n'empêchent pas le GC
+let cache = new WeakMap();
+
+function processUser(user) {
+    // Si on a déjà traité cet utilisateur, retourner le résultat en cache
+    if (cache.has(user)) {
+        console.log("Cache hit !");
+        return cache.get(user);
+    }
+
+    // Sinon, calculer et mettre en cache
+    let result = {
+        displayName: user.firstName + " " + user.lastName,
+        initials: user.firstName[0] + user.lastName[0]
+    };
+
+    cache.set(user, result);
+    return result;
+}
+
+let user = { firstName: "Jean", lastName: "Dupont" };
+console.log(processUser(user)); // calcule et cache
+console.log(processUser(user)); // retourne depuis le cache
+
+// Quand user est mis à null, l'entrée WeakMap est automatiquement supprimée
+user = null;
+// Pas de fuite : le GC peut collecter l'objet user et l'entrée WeakMap
+console.log("WeakMap ne retient pas les objets orphelins !");
+
+// Contrairement à Map normale :
+let normalCache = new Map();
+let user2 = { name: "Alice" };
+normalCache.set(user2, "données");
+user2 = null; // FUITE : normalCache garde encore la référence !
+console.log(normalCache.size); // 1 — toujours en mémoire
+</code></pre>
+</div>
+
+</body>
+</html>

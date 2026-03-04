@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.10 - if/else et opérateur ternaire - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1>2.10 - Opérateurs conditionnels : if, '?'</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><code>if (condition)</code> — exécute un bloc si la condition est vraie</li>
+        <li><code>else</code> — exécute un bloc si la condition est fausse</li>
+        <li><code>else if</code> — teste une nouvelle condition si la précédente est fausse</li>
+        <li><strong>Conversion en booléen</strong> : valeurs "falsy" → <code>0, "", null, undefined, NaN, false</code></li>
+        <li><strong>Opérateur ternaire</strong> : <code>condition ? valeurSiVrai : valeurSiFaux</code></li>
+        <li>Le ternaire est une <em>expression</em> (retourne une valeur), pas une instruction</li>
+    </ul>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — if ("0") : vrai ou faux ?</h3>
+    <p>Ce code va-t-il afficher "Hello" ou rien du tout ?</p>
+    <pre><code>if ("0") {
+    alert("Hello");
+}</code></pre>
+    <p class="hint">Rappel : seules les valeurs "falsy" sont fausses. La chaîne "0" est-elle falsy ?</p>
+    <p>Ta réponse (prédiction) : <strong>????</strong></p>
+    <p>Vérifie dans la console ci-dessous.</p>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — Le nom de JavaScript</h3>
+    <p>Demander à l'utilisateur le nom officiel de JavaScript. S'il répond "ECMAScript", afficher "Right!". Sinon, afficher "You don't know? It's ECMAScript!"</p>
+    <p class="hint">Utilise <code>prompt()</code> pour demander la valeur, puis <code>if/else</code>.</p>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — Afficher le signe d'un nombre</h3>
+    <p>À partir d'une variable <code>number</code>, afficher :</p>
+    <ul>
+        <li><code>1</code> si le nombre est positif</li>
+        <li><code>-1</code> si le nombre est négatif</li>
+        <li><code>0</code> si le nombre est zéro</li>
+    </ul>
+    <p class="hint">Tu auras besoin de <code>if / else if / else</code>.</p>
+</div>
+
+<!-- EXERCICE 4 -->
+<div class="exercise">
+    <h3>Ex4 — Réécrire if..else avec l'opérateur ternaire</h3>
+    <p>Réécrire ce code en utilisant l'opérateur <code>?</code> :</p>
+    <pre><code>let result;
+if (a + b < 4) {
+    result = "Below";
+} else {
+    result = "Over";
+}</code></pre>
+    <p class="hint">Le ternaire s'écrit sur une seule ligne : <code>let result = condition ? "A" : "B";</code></p>
+</div>
+
+<!-- EXERCICE 5 -->
+<div class="exercise">
+    <h3>Ex5 — Réécrire if..else imbriqué avec ternaire</h3>
+    <p>Réécrire ce code avec des opérateurs ternaires :</p>
+    <pre><code>let message;
+if (login == "Employee") {
+    message = "Hello, Employee";
+} else if (login == "Director") {
+    message = "Hello, Director";
+} else if (login == "") {
+    message = "No login";
+} else {
+    message = "Unknown user";
+}</code></pre>
+    <p class="hint">On peut chaîner les ternaires : <code>cond1 ? val1 : cond2 ? val2 : val3</code>. Reste lisible !</p>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — FizzBuzz simplifié (1 à 20)</h3>
+    <p>Afficher les nombres de 1 à 20. Mais :</p>
+    <ul>
+        <li>Multiples de 3 → afficher <code>"Fizz"</code></li>
+        <li>Multiples de 5 → afficher <code>"Buzz"</code></li>
+        <li>Multiples de 3 ET 5 → afficher <code>"FizzBuzz"</code></li>
+    </ul>
+    <p class="hint">Essaie de le faire avec des ternaires imbriqués pour l'exercice.</p>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Calculer une note lettre</h3>
+    <p>À partir d'un score de 0 à 100, retourner la note :</p>
+    <ul>
+        <li>90-100 → "A"</li>
+        <li>80-89 → "B"</li>
+        <li>70-79 → "C"</li>
+        <li>60-69 → "D"</li>
+        <li>Moins de 60 → "F"</li>
+    </ul>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Année bissextile</h3>
+    <p>Une année est bissextile si :</p>
+    <ul>
+        <li>Elle est divisible par 4</li>
+        <li><strong>Sauf</strong> si elle est divisible par 100</li>
+        <li><strong>Sauf si</strong> elle est divisible par 400 (dans ce cas elle EST bissextile)</li>
+    </ul>
+    <p>Exemple : 2000 → bissextile, 1900 → non, 2024 → bissextile</p>
+    <p class="hint">L'opérateur modulo <code>%</code> donne le reste de la division.</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — if ("0")
+// ============================================================
+// Ta réponse ici : "0" est-elle falsy ?
+// Rappel : "" (chaîne vide) est falsy, mais "0" (chaîne avec un caractère) est TRUTHY
+// Décommente la ligne suivante pour vérifier :
+// if ("0") { console.log("Ex1 : 'Hello' est affiché — '0' est TRUTHY"); }
+
+
+// ============================================================
+// EX2 — Le nom de JavaScript
+// ============================================================
+// Décommente pour tester (prompt bloque l'exécution de la page)
+/*
+let langName = prompt("Quel est le nom officiel de JavaScript ?");
+if (langName === "ECMAScript") {
+    // Ta réponse ici
+} else {
+    // Ta réponse ici
+}
+*/
+
+
+// ============================================================
+// EX3 — Afficher le signe
+// ============================================================
+let number = -5; // Teste avec -5, 0, et 42
+
+// Ta réponse ici :
+// if (...) {
+//
+// } else if (...) {
+//
+// } else {
+//
+// }
+
+
+// ============================================================
+// EX4 — Réécrire avec le ternaire
+// ============================================================
+let a = 2, b = 1;
+
+// Version if/else originale :
+let result;
+if (a + b < 4) {
+    result = "Below";
+} else {
+    result = "Over";
+}
+console.log("Ex4 (if/else):", result);
+
+// Ta version avec ternaire :
+// let result2 = ...
+// console.log("Ex4 (ternaire):", result2);
+
+
+// ============================================================
+// EX5 — Ternaire imbriqué
+// ============================================================
+let login = "Director"; // Teste avec "Employee", "Director", "", "Hacker"
+
+// Version if/else originale :
+let message;
+if (login == "Employee") {
+    message = "Hello, Employee";
+} else if (login == "Director") {
+    message = "Hello, Director";
+} else if (login == "") {
+    message = "No login";
+} else {
+    message = "Unknown user";
+}
+console.log("Ex5 (if/else):", message);
+
+// Ta version avec ternaire :
+// let message2 = login == "Employee" ? "Hello, Employee" :
+//                ...
+// console.log("Ex5 (ternaire):", message2);
+
+
+// ============================================================
+// BONUS 1 — FizzBuzz 1 à 20
+// ============================================================
+// Ta réponse ici :
+// for (let i = 1; i <= 20; i++) {
+//     let output = ...ternaires imbriqués...
+//     console.log(output);
+// }
+
+
+// ============================================================
+// BONUS 2 — Note lettre
+// ============================================================
+let score = 85; // Teste avec différentes valeurs
+
+// Ta réponse ici :
+// let grade;
+// if (...) { ... }
+// console.log("B2 - Grade:", grade);
+
+
+// ============================================================
+// BONUS 3 — Année bissextile
+// ============================================================
+let year = 2024; // Teste avec 2024, 1900, 2000
+
+// Ta réponse ici :
+// let isLeapYear = ...
+// console.log(`B3 - ${year} est bissextile :`, isLeapYear);
+</script>
+
+</body>
+</html>

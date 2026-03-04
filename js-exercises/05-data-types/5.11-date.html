@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.11 Date et heure - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.11 — Date et heure</h1>
+
+<div class="concept">
+    <h2>Créer des dates</h2>
+    <pre><code>new Date()                          // maintenant
+new Date(timestamp)                 // depuis millisecondes epoch
+new Date("2025-01-15")             // depuis string ISO 8601
+new Date(year, month, day, h, m, s) // ATTENTION : month commence à 0 !</code></pre>
+    <h2>Getters principaux</h2>
+    <pre><code>let d = new Date();
+d.getFullYear()  // 2025 (pas getYear !)
+d.getMonth()     // 0-11 (0 = janvier)
+d.getDate()      // 1-31 (jour du mois)
+d.getDay()       // 0-6 (0 = dimanche)
+d.getHours()     // 0-23
+d.getMinutes()   // 0-59
+d.getSeconds()   // 0-59
+d.getTime()      // timestamp en millisecondes (depuis 1er janv 1970)</code></pre>
+    <h2>Autocorrection</h2>
+    <pre><code>// Les dates invalides sont autocorrigées !
+let d = new Date(2024, 1, 32); // 32 février ?
+// → autocorrigé en 3 mars 2024
+
+// Très utile pour les calculs :
+let nextMonth = new Date(2024, 0 + 1, 1); // 1er février</code></pre>
+    <h2>Performance</h2>
+    <pre><code>Date.now()         // timestamp actuel (plus rapide que new Date().getTime())
+let start = Date.now();
+// ... code à mesurer ...
+let duration = Date.now() - start; // millisecondes écoulées</code></pre>
+    <p class="hint">Fondamental : les mois commencent à 0 en JavaScript. C'est une source fréquente de bugs — toujours y penser.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Créer une date</h3>
+    <p>Crée la date du 20 février 2012 à 3h12. Que donne <code>new Date(2013, 0, 32)</code> ?</p>
+    <script>
+    // Exercice 1 — Create a date
+    // Ta réponse ici
+
+    // Créer le 20 février 2012 à 3h12
+    // ATTENTION : mois commence à 0, donc février = 1
+    // let d = new Date(2012, 1, 20, 3, 12);
+    // console.log(d);
+
+    // Autocorrection : que donne new Date(2013, 0, 32) ?
+    // Janvier (0) n'a que 31 jours, donc le 32ème jour → 1er février
+    // let auto = new Date(2013, 0, 32);
+    // console.log(auto); // 1er février 2013
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Afficher le jour de la semaine</h3>
+    <p>Écris une fonction qui retourne le nom du jour (en français) pour une date donnée.</p>
+    <script>
+    // Exercice 2 — Show a weekday
+    // Ta réponse ici
+
+    function getWeekday(date) {
+        // getDay() retourne 0 (dimanche) à 6 (samedi)
+        let jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+        // return jours[date.getDay()];
+    }
+
+    // Tests
+    // let date = new Date(2012, 0, 3); // 3 janvier 2012
+    // console.log(getWeekday(date));   // "Mardi"
+    // console.log(getWeekday(new Date())); // Jour actuel
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Jour européen (lundi = 1)</h3>
+    <p>En Europe, la semaine commence le lundi (1). Dimanche = 7. Adapte la fonction.</p>
+    <script>
+    // Exercice 3 — European weekday
+    // Ta réponse ici
+
+    function getLocalDay(date) {
+        // JavaScript: 0=dim, 1=lun, ..., 6=sam
+        // Standard européen : 1=lun, 2=mar, ..., 6=sam, 7=dim
+        let day = date.getDay();
+        // Si day = 0 (dimanche), retourner 7
+        // Sinon retourner day tel quel
+        // return day === 0 ? 7 : day;
+    }
+
+    // Tests
+    // console.log(getLocalDay(new Date(2012, 0, 3))); // Mardi → 2
+    // console.log(getLocalDay(new Date(2024, 3, 7))); // Dimanche → 7
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 4 — Quel jour était-il il y a N jours ?</h3>
+    <p>Écris <code>getDateAgo(date, days)</code> qui retourne le jour du mois d'il y a <code>days</code> jours.</p>
+    <script>
+    // Exercice 4 — Which day of month was many days ago?
+    // Ta réponse ici
+
+    function getDateAgo(date, days) {
+        // Créer une copie de la date pour ne pas modifier l'original
+        let copy = new Date(date);
+        // Soustraire les jours (l'autocorrection gère les passages de mois)
+        copy.setDate(copy.getDate() - days);
+        return copy.getDate(); // retourner le jour du mois
+    }
+
+    // Tests
+    // let date = new Date(2015, 1, 2); // 2 février 2015
+    // console.log(getDateAgo(date, 1));  // 1  (1er février)
+    // console.log(getDateAgo(date, 2));  // 31 (31 janvier — autocorrection !)
+    // console.log(getDateAgo(date, 365)); // quel jour il y a un an ?
+    </script>
+    <p class="hint">L'autocorrection des dates est très pratique ici — soustraire plus que le nombre de jours dans le mois passe automatiquement au mois précédent.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 5 — Dernier jour du mois</h3>
+    <p>Écris <code>getLastDayOfMonth(year, month)</code> — combien de jours a ce mois ?</p>
+    <script>
+    // Exercice 5 — Last day of month
+    // Ta réponse ici
+
+    function getLastDayOfMonth(year, month) {
+        // Astuce : le 0ème jour du mois suivant = dernier jour de ce mois !
+        // new Date(year, month + 1, 0).getDate()
+    }
+
+    // Tests
+    // console.log(getLastDayOfMonth(2012, 1));  // 29 (2012 est bissextile)
+    // console.log(getLastDayOfMonth(2013, 1));  // 28
+    // console.log(getLastDayOfMonth(2013, 0));  // 31 (janvier)
+    // console.log(getLastDayOfMonth(2013, 11)); // 31 (décembre)
+    </script>
+    <p class="hint">L'astuce du "jour 0" est un pattern classique : <code>new Date(year, month, 0)</code> retourne le dernier jour du mois précédent.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 6 — Combien de secondes depuis le début de la journée ?</h3>
+    <script>
+    // Exercice 6 — How many seconds have passed today?
+    // Ta réponse ici
+
+    function getSecondsToday() {
+        let now = new Date();
+        // Créer un Date qui représente minuit aujourd'hui
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        // La différence en millisecondes, convertie en secondes
+        return Math.round((now - today) / 1000);
+    }
+
+    // console.log(getSecondsToday()); // ex: 3600 si 1h du matin
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 7 — Combien de secondes jusqu'à demain ?</h3>
+    <script>
+    // Exercice 7 — How many seconds till tomorrow?
+    // Ta réponse ici
+
+    function getSecondsTomorrow() {
+        let now = new Date();
+        // Créer une date pour le début de demain (minuit)
+        // let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        // La différence en secondes
+        // return Math.round((tomorrow - now) / 1000);
+    }
+
+    // console.log(getSecondsTomorrow()); // ex: 82800 si 1h du matin
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 8 — Affichage relatif</h3>
+    <p>Formate une date en temps relatif : "il y a 30 secondes", "il y a 5 minutes", "il y a 2 heures", ou la date si plus d'un jour.</p>
+    <script>
+    // Exercice 8 — Format the relative date
+    // Ta réponse ici
+
+    function formatDate(date) {
+        let diff = (Date.now() - date.getTime()) / 1000; // différence en secondes
+
+        if (diff < 1) return "tout à l'heure";
+        if (diff < 60) return `il y a ${Math.floor(diff)} secondes`;
+        if (diff < 3600) return `il y a ${Math.floor(diff / 60)} minutes`;
+        if (diff < 86400) return `il y a ${Math.floor(diff / 3600)} heures`;
+
+        // Plus d'un jour : afficher la date complète
+        let d = date;
+        let dateStr = [
+            String(d.getDate()).padStart(2, "0"),
+            String(d.getMonth() + 1).padStart(2, "0"),
+            d.getFullYear()
+        ].join(".");
+
+        return dateStr;
+    }
+
+    // Tests
+    // console.log(formatDate(new Date(Date.now() - 1000)));    // "il y a 1 secondes"
+    // console.log(formatDate(new Date(Date.now() - 30000)));   // "il y a 30 secondes"
+    // console.log(formatDate(new Date(Date.now() - 300000)));  // "il y a 5 minutes"
+    // console.log(formatDate(new Date(Date.now() - 7200000))); // "il y a 2 heures"
+    // console.log(formatDate(new Date("2020-01-15")));         // "15.01.2020"
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Calculer un âge exact</h3>
+    <p>Calcule l'âge exact en années à partir d'une date de naissance.</p>
+    <script>
+    // Bonus 1 — Âge exact
+    // Ta réponse ici
+
+    function calculateAge(birthDate) {
+        let today = new Date();
+        let birth = new Date(birthDate);
+
+        let age = today.getFullYear() - birth.getFullYear();
+
+        // Ajustement : l'anniversaire n'est pas encore passé cette année ?
+        // let monthDiff = today.getMonth() - birth.getMonth();
+        // if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        //     age--;
+        // }
+        // return age;
+    }
+
+    // console.log(calculateAge("1990-06-15")); // âge en 2026
+    // console.log(calculateAge("2000-12-25")); // age exact
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Prochain vendredi 13</h3>
+    <p>Trouve la prochaine date où le 13 du mois tombe un vendredi.</p>
+    <script>
+    // Bonus 2 — Prochain vendredi 13
+    // Ta réponse ici
+
+    function nextFriday13() {
+        let date = new Date();
+        date.setDate(date.getDate() + 1); // commencer à demain
+
+        while (true) {
+            // Vérifier si c'est le 13 (getDate() === 13)
+            // et si c'est un vendredi (getDay() === 5)
+            // if (date.getDate() === 13 && date.getDay() === 5) {
+            //     return new Date(date); // retourner une copie
+            // }
+            // date.setDate(date.getDate() + 1); // avancer d'un jour
+        }
+    }
+
+    // console.log(nextFriday13().toLocaleDateString("fr-FR"));
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Calendrier mensuel en texte</h3>
+    <p>Génère un calendrier texte pour un mois donné.</p>
+    <script>
+    // Bonus 3 — Calendrier mensuel
+    // Ta réponse ici
+
+    function generateCalendar(year, month) {
+        // month est 0-indexé (0 = janvier)
+        let firstDay = new Date(year, month, 1);
+        let lastDay = getLastDayOfMonth(year, month);
+
+        // Jours de la semaine (lundi en premier)
+        let header = "Lun Mar Mer Jeu Ven Sam Dim";
+        let calendar = header + "\n";
+
+        // Calculer l'indentation pour le premier jour
+        // (getLocalDay(firstDay) - 1) * 4 espaces
+        // ...
+
+        // Remplir les jours 1 à lastDay
+        // ...
+
+        return calendar;
+    }
+
+    function getLastDayOfMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    function getLocalDay(date) {
+        let day = date.getDay();
+        return day === 0 ? 7 : day;
+    }
+
+    // console.log(generateCalendar(2026, 2)); // Mars 2026
+    </script>
+</div>
+
+</body>
+</html>

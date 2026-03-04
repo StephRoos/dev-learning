@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.17 - Fonctions fléchées - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+        .fundamental { background: #0a2e0a; border-left: 4px solid #00ff88; padding: 10px 15px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+        .syntax-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+        @media (max-width: 600px) { .syntax-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<h1>2.17 - Fonctions fléchées (arrow functions)</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <div class="syntax-grid">
+        <div>
+            <strong style="color:#00d4ff">Syntaxe complète</strong>
+            <pre><code>let sum = (a, b) => {
+    return a + b;
+};</code></pre>
+        </div>
+        <div>
+            <strong style="color:#00ff88">Raccourci (corps = expression)</strong>
+            <pre><code>let sum = (a, b) => a + b;</code></pre>
+        </div>
+        <div>
+            <strong style="color:#7b68ee">Un seul paramètre</strong>
+            <pre><code>let double = n => n * 2;</code></pre>
+        </div>
+        <div>
+            <strong style="color:#ffa500">Sans paramètre</strong>
+            <pre><code>let greet = () => "Bonjour";</code></pre>
+        </div>
+    </div>
+    <ul>
+        <li><strong>Raccourci sans accolades</strong> : <code>x => expression</code> retourne l'expression automatiquement</li>
+        <li><strong>Accolades obligatoires</strong> si le corps contient plusieurs instructions (et alors <code>return</code> est nécessaire)</li>
+        <li><strong>Pas de <code>this</code> propre</strong> : une arrow function utilise le <code>this</code> du contexte englobant (important pour les objets et classes — vu plus tard)</li>
+        <li>Idéales pour les callbacks courts et les méthodes de tableau (<code>.map</code>, <code>.filter</code>, <code>.reduce</code>)</li>
+    </ul>
+    <div class="fundamental">
+        FONDAMENTAL : les arrow functions sont omniprésentes en JavaScript moderne. La différence sur <code>this</code> est cruciale — tu la ressentiras fortement quand tu travailleras avec des objets et des classes.
+    </div>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Réécrire en fonctions fléchées</h3>
+    <p>Convertir ces function expressions en arrow functions, en utilisant la syntaxe la plus courte possible :</p>
+    <pre><code>// A. Expression simple
+let double = function(n) {
+    return n * 2;
+};
+
+// B. Plusieurs paramètres
+let sum = function(a, b) {
+    return a + b;
+};
+
+// C. Sans paramètre
+let sayHi = function() {
+    return "Bonjour !";
+};
+
+// D. Corps multi-lignes (ne peut pas être raccourci sans accolades)
+let gradeStudent = function(score) {
+    if (score >= 90) return "A";
+    if (score >= 80) return "B";
+    if (score >= 70) return "C";
+    return "F";
+};
+
+// E. Callback dans un appel de fonction
+let numbers = [3, 1, 4, 1, 5, 9];
+numbers.sort(function(a, b) {
+    return a - b;
+});</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — .map(), .filter(), .reduce() avec arrow functions</h3>
+    <p>Utiliser les méthodes de tableau avec des arrow functions :</p>
+    <pre><code>let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// 1. Doubler chaque nombre (.map)
+// 2. Garder uniquement les pairs (.filter)
+// 3. Calculer la somme totale (.reduce)
+// 4. Chaîner : doubler → filtrer les > 10 → sommer</code></pre>
+    <p class="hint">Chaque méthode accepte une fonction comme argument. La forme <code>x => expression</code> est parfaite ici.</p>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Pipeline de transformations</h3>
+    <p>Créer un tableau de fonctions de transformation et les appliquer en séquence à une valeur de départ :</p>
+    <pre><code>let pipeline = [
+    x => x * 2,       // doubler
+    x => x + 10,      // ajouter 10
+    x => x ** 2,      // mettre au carré
+    x => `Résultat: ${x}`, // formater
+];
+
+// Appliquer le pipeline à la valeur 3 :
+// 3 → 6 → 16 → 256 → "Résultat: 256"</code></pre>
+    <p class="hint">Utilise <code>.reduce()</code> : la valeur "accumulée" est le résultat intermédiaire, et chaque fonction est appliquée dessus.</p>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Comparaison : function, expression, arrow</h3>
+    <p>Observer le comportement de <code>this</code> dans trois contextes différents :</p>
+    <pre><code>let timer = {
+    name: "Mon timer",
+    start() {
+        // Cas 1 : function classique dans setTimeout
+        setTimeout(function() {
+            console.log("Function classique - this.name :", this?.name);
+            // this est undefined (strict) ou window/global
+        }, 100);
+
+        // Cas 2 : arrow function dans setTimeout
+        setTimeout(() => {
+            console.log("Arrow function - this.name :", this.name);
+            // this est bien l'objet timer (hérité du contexte)
+        }, 100);
+    }
+};
+
+timer.start();</code></pre>
+    <p>Explique pourquoi les deux <code>console.log</code> produisent des résultats différents.</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Réécrire en arrow functions
+// ============================================================
+console.log("EX1 — Arrow functions :");
+
+// A. double
+// Avant :
+// let double = function(n) { return n * 2; };
+// Après (raccourci sans accolades) :
+let double = n => n * 2;
+console.log("A - double(5) :", double(5)); // 10
+
+// B. sum
+// Avant :
+// let sum = function(a, b) { return a + b; };
+// Après :
+// Ta réponse ici :
+// let sum = (a, b) => a + b;
+// console.log("B - sum(3, 4) :", sum(3, 4)); // 7
+
+// C. sayHi
+// Avant :
+// let sayHi = function() { return "Bonjour !"; };
+// Après (pas de paramètre → () obligatoire) :
+// Ta réponse ici :
+// let sayHi = () => "Bonjour !";
+// console.log("C - sayHi() :", sayHi()); // "Bonjour !"
+
+// D. gradeStudent (corps multi-lignes → accolades + return obligatoires)
+// Ta réponse ici :
+// let gradeStudent = score => {
+//     if (score >= 90) return "A";
+//     if (score >= 80) return "B";
+//     if (score >= 70) return "C";
+//     return "F";
+// };
+// console.log("D - gradeStudent(85) :", gradeStudent(85)); // "B"
+
+// E. sort callback
+let numbers = [3, 1, 4, 1, 5, 9];
+// Avant :
+// numbers.sort(function(a, b) { return a - b; });
+// Après :
+// Ta réponse ici :
+// numbers.sort((a, b) => a - b);
+// console.log("E - sorted :", numbers); // [1, 1, 3, 4, 5, 9]
+
+
+// ============================================================
+// BONUS 1 — map, filter, reduce
+// ============================================================
+console.log("\nBONUS 1 :");
+
+let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// 1. Doubler chaque nombre :
+// Ta réponse ici :
+// let doubled = nums.map(n => n * 2);
+// console.log("B1 - doubled :", doubled);
+
+// 2. Garder les pairs :
+// Ta réponse ici :
+// let evens = nums.filter(n => n % 2 === 0);
+// console.log("B1 - evens :", evens);
+
+// 3. Somme totale :
+// Ta réponse ici :
+// let total = nums.reduce((sum, n) => sum + n, 0);
+// console.log("B1 - total :", total); // 55
+
+// 4. Chaîner : doubler → filtrer > 10 → sommer :
+// Ta réponse ici :
+// let result = nums
+//     .map(n => n * 2)
+//     .filter(n => n > 10)
+//     .reduce((sum, n) => sum + n, 0);
+// console.log("B1 - chained :", result);
+
+
+// ============================================================
+// BONUS 2 — Pipeline
+// ============================================================
+console.log("\nBONUS 2 :");
+
+let pipeline = [
+    x => x * 2,
+    x => x + 10,
+    x => x ** 2,
+    x => `Résultat: ${x}`,
+];
+
+// Ta réponse ici :
+// let output = pipeline.reduce((value, fn) => fn(value), 3);
+// console.log("B2 :", output); // "Résultat: 256"
+// Trace : 3 → 6 → 16 → 256 → "Résultat: 256"
+
+
+// ============================================================
+// BONUS 3 — Comportement de this
+// ============================================================
+console.log("\nBONUS 3 :");
+
+let timerObj = {
+    name: "Mon timer",
+    start() {
+        // Cas 1 : function classique — this n'est PAS timerObj dans le callback
+        setTimeout(function() {
+            // En mode non-strict : this est window/global
+            // En mode strict : this est undefined
+            console.log("B3 - function classique - this.name :", this?.name ?? "undefined (pas lié à timerObj)");
+        }, 50);
+
+        // Cas 2 : arrow function — this EST timerObj (hérité du contexte d'appel start())
+        setTimeout(() => {
+            console.log("B3 - arrow function - this.name :", this.name); // "Mon timer"
+        }, 100);
+    }
+};
+
+timerObj.start();
+// Explication :
+// La function classique crée son propre contexte this (window ou undefined).
+// L'arrow function n'a pas de this propre — elle utilise le this de start(),
+// qui est bien timerObj. C'est l'avantage majeur des arrow functions pour les callbacks.
+</script>
+
+</body>
+</html>

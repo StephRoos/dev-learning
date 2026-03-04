@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.9 Object.keys, values, entries - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.9 — Object.keys, values, entries</h1>
+
+<div class="concept">
+    <h2>Itérer sur les propriétés d'un objet</h2>
+    <pre><code>let user = { name: "Jean", age: 30, ville: "Paris" };
+
+Object.keys(user)    // ["name", "age", "ville"]  — tableau des clés
+Object.values(user)  // ["Jean", 30, "Paris"]      — tableau des valeurs
+Object.entries(user) // [["name","Jean"], ["age",30], ["ville","Paris"]] — paires
+
+// Itérer avec for..of
+for (let key of Object.keys(user)) { }
+for (let value of Object.values(user)) { }
+for (let [key, value] of Object.entries(user)) { }</code></pre>
+    <h2>Transformations d'objets</h2>
+    <p>Les objets n'ont pas de méthodes comme <code>map</code> ou <code>filter</code>. Pour les utiliser :</p>
+    <pre><code>// Schéma : Objet → entries → transformation → objet
+let salaries = { Jean: 100, Marie: 200, Pierre: 150 };
+
+// Doubler tous les salaires
+let doubled = Object.fromEntries(
+    Object.entries(salaries).map(([name, salary]) => [name, salary * 2])
+);
+// { Jean: 200, Marie: 400, Pierre: 300 }</code></pre>
+    <p class="hint">Fondamental : le pattern <code>Object.fromEntries(Object.entries(obj).map(...))</code> est la façon standard de transformer un objet.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Sommer les salaires</h3>
+    <p>Calcule la somme de tous les salaires dans un objet, quelle que soit sa taille.</p>
+    <script>
+    // Exercice 1 — Sum the properties
+    // Ta réponse ici
+
+    let salaries = {
+        Jean: 100,
+        Marie: 200,
+        Pierre: 150,
+        Sophie: 300
+    };
+
+    function sumSalaries(salaries) {
+        // Utilise Object.values() pour obtenir toutes les valeurs
+        // puis réduis avec reduce ou une boucle
+    }
+
+    // console.log(sumSalaries(salaries)); // 750
+    // console.log(sumSalaries({}));       // 0 (objet vide)
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Compter les propriétés</h3>
+    <p>Retourne le nombre de propriétés d'un objet.</p>
+    <script>
+    // Exercice 2 — Count properties
+    // Ta réponse ici
+
+    function count(obj) {
+        // Une seule ligne suffit
+        // return Object.keys(obj).length;
+    }
+
+    // let user = { name: "Jean", age: 30, ville: "Paris" };
+    // console.log(count(user)); // 3
+    // console.log(count({}));   // 0
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Inverser les clés et valeurs</h3>
+    <p>Écris <code>invertObject(obj)</code> qui retourne un nouvel objet avec clés et valeurs échangées.</p>
+    <script>
+    // Bonus 1 — Inverser clés et valeurs
+    // Ta réponse ici
+
+    function invertObject(obj) {
+        // Utilise Object.entries() + map + Object.fromEntries()
+        // return Object.fromEntries(
+        //     Object.entries(obj).map(([key, value]) => [value, key])
+        // );
+    }
+
+    // Tests
+    // console.log(invertObject({ a: 1, b: 2, c: 3 })); // { 1: "a", 2: "b", 3: "c" }
+    // console.log(invertObject({ JS: "JavaScript", CSS: "Cascading Style Sheets" }));
+    // { JavaScript: "JS", "Cascading Style Sheets": "CSS" }
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Filtrer un objet par ses valeurs</h3>
+    <p>Écris <code>filterObject(obj, predicate)</code> qui retourne un nouvel objet avec seulement les entrées où <code>predicate(value)</code> est vrai.</p>
+    <script>
+    // Bonus 2 — filterObject
+    // Ta réponse ici
+
+    function filterObject(obj, predicate) {
+        // Object.entries → filter → Object.fromEntries
+        // return Object.fromEntries(
+        //     Object.entries(obj).filter(([key, value]) => predicate(value))
+        // );
+    }
+
+    // Exemples
+    // let salaries = { Jean: 100, Marie: 200, Pierre: 50, Sophie: 300 };
+    // console.log(filterObject(salaries, s => s > 100)); // { Marie: 200, Sophie: 300 }
+
+    // let users = { user1: { active: true }, user2: { active: false }, user3: { active: true } };
+    // console.log(filterObject(users, u => u.active)); // { user1: {...}, user3: {...} }
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Grouper un tableau par propriété</h3>
+    <p>Écris <code>groupBy(arr, key)</code> qui groupe les objets d'un tableau par la valeur d'une propriété.</p>
+    <script>
+    // Bonus 3 — groupBy
+    // Ta réponse ici
+
+    function groupBy(arr, key) {
+        // Utilise reduce pour construire un objet
+        // { valeurDeLaCle: [objets avec cette valeur] }
+        return arr.reduce((groups, item) => {
+            // let groupKey = item[key];
+            // if (!groups[groupKey]) groups[groupKey] = [];
+            // groups[groupKey].push(item);
+            // return groups;
+        }, {});
+    }
+
+    // let users = [
+    //     { name: "Alice", dept: "dev" },
+    //     { name: "Bob", dept: "design" },
+    //     { name: "Charlie", dept: "dev" },
+    //     { name: "Diana", dept: "design" }
+    // ];
+    // console.log(groupBy(users, "dept"));
+    // {
+    //   dev: [{ name: "Alice", ...}, { name: "Charlie", ...}],
+    //   design: [{ name: "Bob", ...}, { name: "Diana", ...}]
+    // }
+    </script>
+    <p class="hint">Note : <code>Object.groupBy()</code> existe nativement en JavaScript moderne (ES2024), mais l'implémenter à la main est un excellent exercice de reduce.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.7 Type Symbol - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.7 — Type Symbol</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Symbol()</strong> : crée un identifiant unique et immuable. Deux symboles avec la même description ne sont jamais égaux.</li>
+        <li><strong>Description</strong> : <code>Symbol("id")</code> — la description est juste un label pour le debug, pas l'identifiant</li>
+        <li><strong>Clés d'objet</strong> : les symboles peuvent être des clés, accessibles avec bracket notation : <code>obj[sym]</code></li>
+        <li><strong>Invisibles aux itérations</strong> : <code>for..in</code>, <code>Object.keys()</code> et <code>JSON.stringify()</code> ignorent les propriétés symboliques</li>
+        <li><strong>Symbol.for(key)</strong> : registre global — retourne toujours le même symbole pour la même clé</li>
+        <li><strong>Symboles système</strong> : <code>Symbol.iterator</code>, <code>Symbol.toPrimitive</code>, etc. — permettent de customiser le comportement des objets</li>
+    </ul>
+</div>
+
+<pre><code>// Chaque Symbol() est unique
+let id1 = Symbol("id");
+let id2 = Symbol("id");
+console.log(id1 === id2); // false — même description, mais symboles différents
+
+// Utilisation comme clé cachée
+let user = { name: "Alice" };
+let id = Symbol("id");
+user[id] = 123;           // clé symbolique invisible aux itérations
+
+console.log(user[id]);    // 123
+for (let key in user) {
+    console.log(key);     // affiche seulement "name", jamais le Symbol
+}
+
+// Symbol.for() — registre global partagé
+let s1 = Symbol.for("shared");
+let s2 = Symbol.for("shared");
+console.log(s1 === s2); // true — même symbole global
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Créer et utiliser des symboles comme clés</h3>
+    <p>
+        Crée deux symboles <code>id</code> et <code>secret</code>. Ajoute-les comme propriétés d'un objet <code>user</code>. Vérifie que tu peux y accéder mais qu'ils sont invisibles via dot notation standard.
+    </p>
+    <pre><code>// Ta réponse ici
+
+// 1. Créer les symboles
+let id = Symbol("id");
+let secret = Symbol("secret");
+
+// 2. Créer l'objet et ajouter les propriétés symboliques
+let user = {
+    name: "Alice",
+    age: 30,
+    // Ajouter id et secret avec bracket notation
+    // [id]: ???,
+    // [secret]: ???
+};
+
+// 3. Vérifier l'accès
+console.log(user.name);    // "Alice" — accès normal
+console.log(user[id]);     // la valeur de id
+console.log(user[secret]); // la valeur de secret
+
+// 4. Vérifier l'invisibilité
+console.log("--- for..in ---");
+for (let key in user) {
+    console.log(key); // doit afficher seulement "name" et "age"
+}
+
+console.log("--- Object.keys ---");
+console.log(Object.keys(user)); // ["name", "age"] — sans les symboles
+
+console.log("--- JSON.stringify ---");
+console.log(JSON.stringify(user)); // pas de symboles dans le JSON
+</code></pre>
+    <p class="hint">
+        Pour voir les propriétés symboliques, utilise <code>Object.getOwnPropertySymbols(user)</code>.
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Symboles ignorés par les itérations</h3>
+    <p>
+        Tu reçois un objet "tiers" sur lequel tu veux ajouter des métadonnées sans risquer de polluer ses propriétés normales. Utilise un symbole pour ça.
+    </p>
+    <pre><code>// Simule un objet qu'on ne possède pas (comme un objet d'une librairie)
+let thirdPartyUser = {
+    name: "Bob",
+    email: "bob@example.com",
+    role: "editor"
+};
+
+// Ta mission : ajouter un timestamp "lastSeen" et un score "trustScore"
+// SANS modifier les propriétés normales
+// SANS risquer de collision avec une future propriété "lastSeen" de la librairie
+
+let lastSeen = Symbol("lastSeen");
+let trustScore = Symbol("trustScore");
+
+// Ajouter les métadonnées
+// ???
+
+// Vérifications
+console.log(thirdPartyUser[lastSeen]);   // le timestamp
+console.log(thirdPartyUser[trustScore]); // le score
+
+// Simulation : la librairie itère sur l'objet — elle ne voit pas nos métadonnées
+console.log("Propriétés vues par la librairie :");
+for (let key in thirdPartyUser) {
+    console.log(key); // name, email, role — pas lastSeen ni trustScore
+}
+
+// Mais nous, on peut y accéder
+console.log("Nos métadonnées :", thirdPartyUser[lastSeen], thirdPartyUser[trustScore]);
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Symbol.for() pour les symboles partagés</h3>
+    <p>
+        Crée deux "modules" simulés qui doivent partager le même symbole pour communiquer sans collision de noms. Utilise <code>Symbol.for()</code>.
+    </p>
+    <pre><code>// Module A — crée ou accède au symbole global
+const moduleA = (function() {
+    const STATUS = Symbol.for("app.status"); // registre global
+
+    return {
+        setStatus(obj, status) {
+            obj[STATUS] = status;
+        }
+    };
+})();
+
+// Module B — accède au MÊME symbole global sans importer depuis A
+const moduleB = (function() {
+    const STATUS = Symbol.for("app.status"); // même clé → même symbole
+
+    return {
+        getStatus(obj) {
+            return obj[STATUS];
+        }
+    };
+})();
+
+// Test : les deux modules partagent le même symbole
+let app = {};
+moduleA.setStatus(app, "running");
+console.log(moduleB.getStatus(app)); // "running"
+
+// Vérification : c'est bien le même symbole
+let symA = Symbol.for("app.status");
+let symB = Symbol.for("app.status");
+console.log(symA === symB); // true
+
+// Symbol.keyFor() pour retrouver la clé d'un symbole global
+console.log(Symbol.keyFor(symA)); // "app.status"
+
+// Contrairement aux symboles locaux :
+let localSym = Symbol("local");
+console.log(Symbol.keyFor(localSym)); // undefined — pas dans le registre global
+</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — ID unique caché avec Symbol</h3>
+    <p>
+        Crée une fonction <code>addHiddenId(obj)</code> qui ajoute un ID unique à chaque objet passé en paramètre, sans que cet ID soit visible lors des itérations normales. Utilise un seul symbole partagé entre tous les appels.
+    </p>
+    <pre><code>// Ta réponse ici
+
+// Le symbole est défini une seule fois, hors de la fonction
+const ID_SYMBOL = Symbol("__id");
+let nextId = 1;
+
+function addHiddenId(obj) {
+    // Si l'objet n'a pas encore d'ID, en assigner un
+
+
+}
+
+function getId(obj) {
+    return obj[ID_SYMBOL];
+}
+
+// Tests
+let user1 = { name: "Alice" };
+let user2 = { name: "Bob" };
+let user3 = { name: "Charlie" };
+
+addHiddenId(user1);
+addHiddenId(user2);
+addHiddenId(user3);
+addHiddenId(user1); // deuxième appel — ne doit pas changer l'ID
+
+console.log(getId(user1)); // 1
+console.log(getId(user2)); // 2
+console.log(getId(user3)); // 3
+console.log(getId(user1)); // 1 — inchangé
+
+// L'ID est invisible dans les itérations normales
+console.log(Object.keys(user1)); // ["name"] — pas de __id
+console.log(JSON.stringify(user1)); // {"name":"Alice"} — propre
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Symbol.toPrimitive</h3>
+    <p>
+        Implémente <code>Symbol.toPrimitive</code> sur un objet <code>money</code> pour qu'il se comporte correctement lors des conversions. Le hint peut être "string", "number" ou "default".
+    </p>
+    <pre><code>// Ta réponse ici
+let money = {
+    amount: 42,
+    currency: "EUR",
+
+    [Symbol.toPrimitive](hint) {
+        // hint est "string", "number", ou "default"
+        if (hint === "string") {
+            // Retourner une représentation lisible
+
+        } else if (hint === "number") {
+            // Retourner la valeur numérique
+
+        } else {
+            // "default" : même comportement que number
+
+        }
+    }
+};
+
+// Tests des différentes conversions
+console.log(`${money}`);      // hint: "string"  → "42 EUR"
+console.log(+money);          // hint: "number"  → 42
+console.log(money + 10);      // hint: "default" → 52
+console.log(money > 40);      // hint: "number"  → true
+alert(money);                 // hint: "string"  → "42 EUR" (si navigateur)
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B3 — Propriétés "privées" avec symboles</h3>
+    <p>
+        Crée un module <code>UserManager</code> qui stocke des données sensibles (mot de passe hashé, token) dans des propriétés symboliques, invisibles pour le code externe.
+    </p>
+    <pre><code>// Ta réponse ici
+
+const UserManager = (function() {
+    // Ces symboles ne sont accessibles que dans ce module
+    const PASSWORD_HASH = Symbol("passwordHash");
+    const TOKEN = Symbol("token");
+
+    function hashPassword(password) {
+        // Simulation d'un hash (en vrai, utiliser bcrypt)
+        return btoa(password + "_hashed"); // btoa = base64 encode
+    }
+
+    return {
+        createUser(name, password) {
+            let user = {
+                name,
+                createdAt: new Date().toISOString()
+            };
+            // Stocker le hash dans une propriété symbolique
+            user[PASSWORD_HASH] = hashPassword(password);
+            return user;
+        },
+
+        authenticate(user, password) {
+            // Vérifier le mot de passe
+            return user[PASSWORD_HASH] === hashPassword(password);
+        },
+
+        setToken(user, token) {
+            user[TOKEN] = token;
+        },
+
+        getToken(user) {
+            return user[TOKEN];
+        }
+    };
+})();
+
+// Tests
+let user = UserManager.createUser("Alice", "motdepasse123");
+
+console.log(user.name);       // "Alice" — visible
+console.log(JSON.stringify(user)); // pas de passwordHash ni token — sécurisé !
+
+console.log(UserManager.authenticate(user, "motdepasse123")); // true
+console.log(UserManager.authenticate(user, "mauvais"));        // false
+
+UserManager.setToken(user, "jwt_token_xyz");
+console.log(UserManager.getToken(user)); // "jwt_token_xyz"
+
+// Code externe ne peut pas accéder aux propriétés symboliques
+// (sans avoir la référence au Symbol)
+console.log(Object.keys(user)); // ["name", "createdAt"] — sécurisé
+</code></pre>
+    <p class="hint">
+        Ce pattern est utile pour séparer les données publiques des données internes. En JavaScript moderne, les vraies propriétés privées s'écrivent avec <code>#</code> dans les classes (ES2022).
+    </p>
+</div>
+
+</body>
+</html>

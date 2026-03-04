@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.1 Objets - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.1 — Les Objets</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Création</strong> : <code>let obj = {}</code> (littéral) ou <code>new Object()</code></li>
+        <li><strong>Propriétés</strong> : paires clé/valeur, la clé est toujours une string (ou Symbol)</li>
+        <li><strong>Dot notation</strong> : <code>obj.name</code> — pour les clés simples connues à l'avance</li>
+        <li><strong>Bracket notation</strong> : <code>obj["name"]</code> — pour les clés dynamiques ou avec des espaces</li>
+        <li><strong>Supprimer</strong> : <code>delete obj.name</code></li>
+        <li><strong>Tester l'existence</strong> : <code>"name" in obj</code> — retourne true/false</li>
+        <li><strong>Boucle</strong> : <code>for (let key in obj)</code> — itère sur toutes les clés</li>
+        <li><strong>Référence</strong> : les objets sont copiés par référence, pas par valeur</li>
+    </ul>
+</div>
+
+<pre><code>// Exemple complet
+let user = {
+    name: "Alice",
+    age: 30,
+    "is admin": true   // clé avec espace → bracket notation obligatoire
+};
+
+console.log(user.name);          // "Alice" — dot notation
+console.log(user["is admin"]);   // true — bracket notation
+
+let key = "age";
+console.log(user[key]);          // 30 — clé dynamique via variable
+
+delete user.age;
+console.log("age" in user);      // false
+
+for (let prop in user) {
+    console.log(prop, ":", user[prop]);
+}
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Hello, object</h3>
+    <p>
+        1. Crée un objet <code>user</code> vide.<br>
+        2. Ajoute la propriété <code>name</code> avec la valeur <code>"John"</code>.<br>
+        3. Ajoute la propriété <code>surname</code> avec la valeur <code>"Smith"</code>.<br>
+        4. Change <code>name</code> en <code>"Pete"</code>.<br>
+        5. Supprime la propriété <code>name</code>.
+    </p>
+    <p class="hint">Utilise dot notation pour ajouter et modifier, delete pour supprimer.</p>
+    <pre><code>// Ta réponse ici
+
+// 1. Créer user vide
+
+// 2. Ajouter name
+
+// 3. Ajouter surname
+
+// 4. Changer name en "Pete"
+
+// 5. Supprimer name
+
+// Vérification
+console.log(user); // doit afficher { surname: "Smith" }
+</code></pre>
+    <script>
+        // Exercice 1 — Joue dans la console du navigateur (F12)
+        // let user = {};
+        // user.name = "John";
+        // user.surname = "Smith";
+        // user.name = "Pete";
+        // delete user.name;
+        // console.log(user); // { surname: "Smith" }
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Check for emptiness</h3>
+    <p>
+        Écris une fonction <code>isEmpty(obj)</code> qui retourne <code>true</code> si l'objet n'a aucune propriété, <code>false</code> sinon.
+    </p>
+    <p class="hint">
+        for..in s'arrête dès qu'on trouve une propriété. Si on n'en trouve aucune, l'objet est vide.
+    </p>
+    <pre><code>// Ta réponse ici
+function isEmpty(obj) {
+
+}
+
+// Tests
+let schedule = {};
+console.log(isEmpty(schedule)); // true
+
+schedule["8:30"] = "Lever";
+console.log(isEmpty(schedule)); // false
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Sum object properties</h3>
+    <p>
+        On a un objet <code>salaries</code> avec des noms et des salaires. Calcule la somme de tous les salaires.
+    </p>
+    <p class="hint">
+        Utilise <code>for..in</code> pour parcourir les valeurs et un accumulateur.
+    </p>
+    <pre><code>// Ta réponse ici
+let salaries = {
+    John: 100,
+    Ann: 160,
+    Pete: 130
+};
+
+function sumSalaries(salaries) {
+
+}
+
+console.log(sumSalaries(salaries)); // 390
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 4 — Multiply numeric properties by 2</h3>
+    <p>
+        Crée une fonction <code>multiplyNumeric(obj)</code> qui multiplie par 2 toutes les propriétés numériques de l'objet. Les propriétés non-numériques ne doivent pas changer.
+    </p>
+    <p class="hint">
+        Utilise <code>typeof</code> pour vérifier si une valeur est un nombre.
+    </p>
+    <pre><code>// Ta réponse ici
+function multiplyNumeric(obj) {
+
+}
+
+let menu = {
+    width: 200,
+    height: 300,
+    title: "Mon menu"
+};
+
+multiplyNumeric(menu);
+console.log(menu); // { width: 400, height: 600, title: "Mon menu" }
+</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Carnet d'adresses avec CRUD</h3>
+    <p>
+        Crée un objet <code>addressBook</code> et des fonctions pour :
+        <code>addContact(name, phone)</code>, <code>getContact(name)</code>,
+        <code>updateContact(name, phone)</code>, <code>deleteContact(name)</code>,
+        <code>listContacts()</code>.
+    </p>
+    <pre><code>// Ta réponse ici
+let addressBook = {};
+
+function addContact(name, phone) { }
+function getContact(name) { }
+function updateContact(name, phone) { }
+function deleteContact(name) { }
+function listContacts() { }
+
+// Tests
+addContact("Alice", "06-11-22-33-44");
+addContact("Bob", "07-55-66-77-88");
+console.log(getContact("Alice")); // "06-11-22-33-44"
+updateContact("Alice", "06-99-88-77-66");
+deleteContact("Bob");
+listContacts(); // affiche tous les contacts
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Comparer deux objets (deepEqual simplifié)</h3>
+    <p>
+        Écris une fonction <code>deepEqual(obj1, obj2)</code> qui retourne <code>true</code> si les deux objets ont les mêmes propriétés avec les mêmes valeurs (un seul niveau de profondeur).
+    </p>
+    <p class="hint">
+        Compare d'abord le nombre de clés, puis les valeurs une à une.
+    </p>
+    <pre><code>// Ta réponse ici
+function deepEqual(obj1, obj2) {
+
+}
+
+console.log(deepEqual({a: 1, b: 2}, {a: 1, b: 2})); // true
+console.log(deepEqual({a: 1}, {a: 2}));               // false
+console.log(deepEqual({a: 1}, {a: 1, b: 2}));         // false
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B3 — Merger deux objets sans écraser</h3>
+    <p>
+        Écris une fonction <code>mergeWithoutOverwrite(target, source)</code> qui copie les propriétés de <code>source</code> dans <code>target</code>, mais seulement si la propriété n'existe pas déjà dans <code>target</code>.
+    </p>
+    <pre><code>// Ta réponse ici
+function mergeWithoutOverwrite(target, source) {
+
+}
+
+let defaults = { color: "rouge", size: "medium", visible: true };
+let userPrefs = { color: "bleu", font: "Arial" };
+
+mergeWithoutOverwrite(userPrefs, defaults);
+console.log(userPrefs);
+// { color: "bleu", font: "Arial", size: "medium", visible: true }
+// color n'est PAS écrasé
+</code></pre>
+</div>
+
+</body>
+</html>

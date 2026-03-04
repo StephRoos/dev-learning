@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>3.5 - Tests automatisés avec Mocha - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        #mocha { margin-top: 20px; }
+        /* Ajustements visuels pour les résultats Mocha sur fond sombre */
+        #mocha .suite .suite h2 { color: #7b68ee; }
+        #mocha h2 { color: #00d4ff; }
+    </style>
+
+    <!-- Mocha CSS pour l'affichage des résultats -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.3.0/mocha.min.css">
+</head>
+<body>
+
+<h1>3.5 — Tests automatisés avec Mocha</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>describe(nom, fn)</strong> : groupe des tests liés (une suite)</li>
+        <li><strong>it(description, fn)</strong> : un test individuel (un cas)</li>
+        <li><strong>assert.equal(actuel, attendu)</strong> : vérifie l'égalité stricte</li>
+        <li><strong>assert.throws(fn)</strong> : vérifie qu'une fonction lève une erreur</li>
+        <li><strong>before / after</strong> : exécutés une fois avant/après la suite</li>
+        <li><strong>beforeEach / afterEach</strong> : exécutés avant/après chaque test</li>
+        <li><strong>TDD</strong> : Test-Driven Development — écrire les tests AVANT le code</li>
+    </ul>
+</div>
+
+<div class="concept">
+    <h2>Structure d'un test Mocha</h2>
+    <pre><code>describe('maFonction', function() {
+
+    it('retourne X pour l\'entrée Y', function() {
+        assert.equal(maFonction(Y), X);
+    });
+
+    it('lève une erreur si paramètre invalide', function() {
+        assert.throws(() => maFonction(invalide), Error);
+    });
+
+});</code></pre>
+    <p class="hint">Règle des 3A : <strong>Arrange</strong> (préparer), <strong>Act</strong> (agir), <strong>Assert</strong> (vérifier).</p>
+</div>
+
+<!-- Zone d'affichage des résultats Mocha -->
+<div id="mocha"></div>
+
+<h2>Exercice 1 — Tester la fonction pow(x, n)</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>La fonction <code>pow(x, n)</code> calcule x à la puissance n. Des tests de base sont écrits — lis-les, puis <strong>ajoute 3 tests supplémentaires</strong> dans le bloc <code>describe</code> ci-dessous.</p>
+    <p>Tests à ajouter :</p>
+    <ul>
+        <li><code>pow(2, 0)</code> doit retourner 1 (tout nombre à la puissance 0 = 1)</li>
+        <li><code>pow(1, 100)</code> doit retourner 1 (1 à n'importe quelle puissance = 1)</li>
+        <li><code>pow(2, -1)</code> doit retourner 0.5 (puissance négative)</li>
+    </ul>
+    <p class="hint">Modifie la section "Exercice 1" dans le script ci-dessous. Les résultats apparaissent automatiquement dans la zone Mocha au-dessus.</p>
+</div>
+
+<h2>Exercice 2 — Que ne va pas dans ce test ?</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Voici un test qui a un problème de conception. Lis-le et réponds aux questions :</p>
+    <pre><code>// Test problématique :
+it('pow fonctionne pour plusieurs valeurs', function() {
+    assert.equal(pow(2, 1), 2);
+    assert.equal(pow(2, 2), 4);
+    assert.equal(pow(2, 3), 8);
+    assert.equal(pow(2, 4), 16);
+    assert.equal(pow(2, 5), 32);
+});</code></pre>
+    <pre><code>
+// Ta réponse ici (dans les commentaires) :
+
+// Problème principal : si pow(2, 3) échoue, que se passe-t-il pour pow(2, 4) et pow(2, 5) ?
+// ...
+
+// Comment corriger ce test (quelle structure utiliser à la place) ?
+// ...
+
+// Réécriture correcte :
+describe('pow - exercice 2 corrigé', function() {
+    // Ta réponse ici
+});
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Tester isEven(n)</h3>
+    <p>Écris une suite de tests complète pour la fonction <code>isEven(n)</code> qui retourne <code>true</code> si n est pair, <code>false</code> sinon.</p>
+    <p>Pense à tester : nombres pairs, impairs, zéro, nombres négatifs.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — TDD : tester avant de coder capitalize(str)</h3>
+    <p>Méthode TDD :</p>
+    <ol>
+        <li>Les tests sont déjà écrits (regarde dans le script)</li>
+        <li>Lance la page → les tests échouent (normal)</li>
+        <li>Implémente <code>capitalize(str)</code> pour que les tests passent</li>
+        <li>Relance → les tests doivent être verts</li>
+    </ol>
+    <p><code>capitalize('hello')</code> → <code>'Hello'</code> (première lettre en majuscule, reste inchangé)</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Cas limites : 0, négatifs, NaN, undefined</h3>
+    <p>Les cas limites font souvent planter le code. Écris des tests pour vérifier que <code>pow</code> gère correctement :</p>
+    <ul>
+        <li><code>pow(0, 5)</code> → 0</li>
+        <li><code>pow(5, 0)</code> → 1</li>
+        <li><code>pow(0, 0)</code> → 1 (convention mathématique)</li>
+        <li><code>pow(-2, 3)</code> → -8</li>
+        <li><code>pow(2, NaN)</code> → NaN (ou une erreur)</li>
+        <li><code>pow(undefined, 2)</code> → NaN (ou une erreur)</li>
+    </ul>
+</div>
+
+<!-- Mocha + Chai (assert) depuis CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.3.0/mocha.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.4.1/chai.min.js"></script>
+
+<script>
+    // Initialisation de Mocha
+    mocha.setup('bdd');
+    const assert = chai.assert;
+
+    // =========================================================
+    // FONCTIONS À TESTER
+    // =========================================================
+
+    // pow(x, n) : calcule x^n (utilise Math.pow pour la référence)
+    function pow(x, n) {
+        return Math.pow(x, n);
+    }
+
+    // isEven(n) : retourne true si n est pair
+    function isEven(n) {
+        return n % 2 === 0;
+    }
+
+    // capitalize(str) : met la première lettre en majuscule
+    // BONUS 2 : implémente cette fonction pour faire passer les tests !
+    function capitalize(str) {
+        // Ta réponse ici — pour l'instant ça va faire échouer les tests
+        // return str[0].toUpperCase() + str.slice(1);
+    }
+
+    // =========================================================
+    // EXERCICE 1 : Tests de base pour pow
+    // =========================================================
+    describe('pow — Exercice 1', function() {
+
+        it('2 puissance 3 = 8', function() {
+            assert.equal(pow(2, 3), 8);
+        });
+
+        it('3 puissance 2 = 9', function() {
+            assert.equal(pow(3, 2), 9);
+        });
+
+        it('5 puissance 1 = 5', function() {
+            assert.equal(pow(5, 1), 5);
+        });
+
+        // Ta réponse ici : ajoute 3 tests supplémentaires
+        // it('...', function() { assert.equal(pow(...), ...); });
+        // it('...', function() { assert.equal(pow(...), ...); });
+        // it('...', function() { assert.equal(pow(...), ...); });
+
+    });
+
+    // =========================================================
+    // EXERCICE 2 : Chaque assertion dans son propre it()
+    // =========================================================
+    describe('pow — Exercice 2 (structure correcte)', function() {
+
+        // Exemple de la bonne structure :
+        // chaque cas dans son propre it() pour un diagnostic précis
+        [1, 2, 3, 4, 5].forEach(function(n) {
+            it(`2 puissance ${n} = ${Math.pow(2, n)}`, function() {
+                assert.equal(pow(2, n), Math.pow(2, n));
+            });
+        });
+
+    });
+
+    // =========================================================
+    // BONUS 1 : Tests pour isEven
+    // =========================================================
+    describe('isEven — Bonus 1', function() {
+
+        it('2 est pair', function() {
+            assert.equal(isEven(2), true);
+        });
+
+        it('3 n\'est pas pair', function() {
+            assert.equal(isEven(3), false);
+        });
+
+        // Ta réponse ici : ajoute des tests pour 0, négatifs, grands nombres
+        // it('0 est pair', function() { ... });
+        // it('-4 est pair', function() { ... });
+        // it('-3 n\'est pas pair', function() { ... });
+
+    });
+
+    // =========================================================
+    // BONUS 2 : TDD pour capitalize
+    // Tests écrits en premier — implémente capitalize() ci-dessus
+    // =========================================================
+    describe('capitalize — Bonus 2 (TDD)', function() {
+
+        it('met la première lettre en majuscule', function() {
+            assert.equal(capitalize('hello'), 'Hello');
+        });
+
+        it('ne change pas le reste de la chaîne', function() {
+            assert.equal(capitalize('hELLO'), 'HELLO');
+        });
+
+        it('fonctionne avec une seule lettre', function() {
+            assert.equal(capitalize('a'), 'A');
+        });
+
+        it('retourne une chaîne vide si chaîne vide', function() {
+            assert.equal(capitalize(''), '');
+        });
+
+        it('ne touche pas aux chiffres en premier', function() {
+            assert.equal(capitalize('123abc'), '123abc');
+        });
+
+    });
+
+    // =========================================================
+    // BONUS 3 : Cas limites pour pow
+    // =========================================================
+    describe('pow — Bonus 3 (cas limites)', function() {
+
+        it('0 puissance 5 = 0', function() {
+            assert.equal(pow(0, 5), 0);
+        });
+
+        it('5 puissance 0 = 1', function() {
+            assert.equal(pow(5, 0), 1);
+        });
+
+        it('0 puissance 0 = 1 (convention)', function() {
+            assert.equal(pow(0, 0), 1);
+        });
+
+        it('-2 puissance 3 = -8', function() {
+            assert.equal(pow(-2, 3), -8);
+        });
+
+        // Ta réponse ici : ajoute des tests pour NaN et undefined
+        // it('2 puissance NaN retourne NaN', function() { ... });
+        // it('undefined puissance 2 retourne NaN', function() { ... });
+
+    });
+
+    // Lance tous les tests
+    mocha.run();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.6 Iterables - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.6 — Iterables</h1>
+
+<div class="concept">
+    <h2>Concepts clés : Symbol.iterator</h2>
+    <p>Un objet est <strong>itérable</strong> s'il implémente la méthode <code>Symbol.iterator</code>. Cette méthode doit retourner un <strong>itérateur</strong> — un objet avec une méthode <code>next()</code>.</p>
+    <pre><code>// Protocole d'itération :
+// Symbol.iterator → retourne un itérateur
+// next() → retourne { value: ..., done: false } ou { value: undefined, done: true }
+
+let range = {
+    from: 1,
+    to: 5,
+    [Symbol.iterator]() {       // méthode avec clé symbolique
+        let current = this.from;
+        let last = this.to;
+        return {
+            next() {
+                if (current &lt;= last) {
+                    return { value: current++, done: false };
+                } else {
+                    return { value: undefined, done: true };
+                }
+            }
+        };
+    }
+};
+
+for (let n of range) {
+    console.log(n); // 1, 2, 3, 4, 5
+}</code></pre>
+    <p><strong>Iterable vs Array-like</strong> :</p>
+    <ul>
+        <li><strong>Iterable</strong> : a <code>Symbol.iterator</code> → utilisable avec <code>for..of</code></li>
+        <li><strong>Array-like</strong> : a des indices numériques et <code>length</code> → ressemble à un tableau mais n'en est pas un</li>
+        <li>Les vrais tableaux sont les deux à la fois</li>
+    </ul>
+    <p><code>Array.from(iterable)</code> convertit n'importe quel itérable ou array-like en vrai tableau.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Créer un itérable range</h3>
+    <p>Crée un objet <code>range</code> itérable de <code>from</code> à <code>to</code>, utilisable avec <code>for..of</code>.</p>
+    <script>
+    // Exercice 1 — Créer un objet itérable range
+    // Ta réponse ici
+
+    let range = {
+        from: 1,
+        to: 5
+
+        // Ajouter Symbol.iterator ici
+        // [Symbol.iterator]() {
+        //     ...
+        // }
+    };
+
+    // Test : doit afficher 1 2 3 4 5
+    // for (let num of range) {
+    //     console.log(num);
+    // }
+
+    // Bonus : convertir en tableau
+    // console.log(Array.from(range)); // [1, 2, 3, 4, 5]
+    </script>
+    <p class="hint"><code>[Symbol.iterator]</code> est une clé calculée — les crochets permettent d'utiliser une expression (ici un Symbol) comme nom de propriété.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Iterable vs Array-like</h3>
+    <p>Identifie si chaque objet est itérable, array-like, les deux, ou aucun.</p>
+    <script>
+    // Exercice 2 — Iterable vs Array-like
+    // Ta réponse ici
+
+    // Objet 1 : a length et des index numériques, mais pas Symbol.iterator
+    let arrayLike = {
+        0: "a",
+        1: "b",
+        2: "c",
+        length: 3
+    };
+    // Est-ce itérable ? → try { for (let x of arrayLike) {} } catch(e) { console.log("pas itérable") }
+    // Est-ce array-like ? → arrayLike.length !== undefined → oui
+
+    // Objet 2 : une string est-elle itérable ? array-like ? les deux ?
+    let str = "hello";
+    // console.log(typeof str[Symbol.iterator]); // function → itérable
+    // console.log(str.length);                  // 5 → array-like
+
+    // Objet 3 : un vrai tableau
+    let arr = [1, 2, 3];
+    // itérable ET array-like
+
+    // Pour utiliser arrayLike comme un tableau :
+    // let realArr = Array.from(arrayLike);
+    // console.log(realArr); // ["a", "b", "c"]
+    </script>
+    <p class="hint">Fondamental : <code>Array.from()</code> accepte les deux — iterables ET array-likes. C'est son super-pouvoir.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Array.from avec transformation</h3>
+    <p>Utilise <code>Array.from</code> pour créer un tableau de carrés à partir de la string "12345".</p>
+    <script>
+    // Exercice 3 — Array.from avec mapFn
+    // Ta réponse ici
+
+    // Array.from accepte un deuxième argument : une fonction de transformation (comme map)
+    // Array.from(iterable, mapFn)
+
+    // Créer [1, 4, 9, 16, 25] à partir de "12345"
+    // let squares = Array.from("12345", char => Number(char) ** 2);
+    // console.log(squares); // [1, 4, 9, 16, 25]
+
+    // Autre exemple : créer un tableau de 5 zéros
+    // let zeros = Array.from({ length: 5 }, () => 0);
+    // console.log(zeros); // [0, 0, 0, 0, 0]
+
+    // Créer un tableau [0, 1, 2, 3, 4] avec Array.from
+    // let indices = Array.from({ length: 5 }, (_, i) => i);
+    // console.log(indices); // [0, 1, 2, 3, 4]
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Itérable infini : suite de Fibonacci</h3>
+    <p>Crée un objet <code>fibonacci</code> itérable qui génère les nombres de Fibonacci à l'infini.</p>
+    <script>
+    // Bonus 1 — Itérable Fibonacci infini
+    // Ta réponse ici
+
+    let fibonacci = {
+        [Symbol.iterator]() {
+            let prev = 0;
+            let curr = 1;
+            return {
+                next() {
+                    // Retourner la valeur courante, puis avancer
+                    // [prev, curr] = [curr, prev + curr];
+                    // return { value: prev, done: false }; // done est toujours false = infini
+                }
+            };
+        }
+    };
+
+    // Pour éviter une boucle infinie, on prend seulement les 10 premiers :
+    // let first10 = [];
+    // for (let n of fibonacci) {
+    //     first10.push(n);
+    //     if (first10.length === 10) break; // le break arrête l'itération
+    // }
+    // console.log(first10); // [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+    </script>
+    <p class="hint">Un itérable infini n'a jamais <code>done: true</code>. Le <code>break</code> dans <code>for..of</code> appelle automatiquement la méthode <code>return()</code> de l'itérateur si elle existe (nettoyage des ressources).</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Itérer sur les caractères Unicode</h3>
+    <p>Comprends pourquoi <code>for..of</code> gère mieux Unicode que l'accès par index.</p>
+    <script>
+    // Bonus 2 — Unicode et for..of
+    // Ta réponse ici
+
+    let emoji = "Hello 🌍";
+
+    // Avec l'accès par index : problème avec les caractères sur 2 unités de code
+    // console.log(emoji.length);   // 8 (pas 7 !) — emoji compte pour 2 unités
+    // console.log(emoji[6]);       // premier demi du caractère emoji (illisible)
+
+    // Avec for..of : gère correctement les caractères Unicode
+    // let chars = [];
+    // for (let char of emoji) {
+    //     chars.push(char);
+    // }
+    // console.log(chars); // ["H", "e", "l", "l", "o", " ", "🌍"] — 7 éléments
+
+    // Array.from fait pareil
+    // console.log(Array.from(emoji).length); // 7
+    </script>
+    <p class="hint"><code>for..of</code> sur une string itère sur les <strong>points de code Unicode</strong>, pas sur les unités de code UTF-16. Crucial pour les emojis et les caractères de langues asiatiques.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Itérable par paires [clé, valeur]</h3>
+    <p>Crée un objet <code>entries(obj)</code> qui retourne un itérable de paires <code>[key, value]</code>.</p>
+    <script>
+    // Bonus 3 — Itérable custom par paires
+    // Ta réponse ici
+
+    function makeEntriesIterable(obj) {
+        // Retourner un objet avec Symbol.iterator
+        // qui produit des paires [key, value]
+        return {
+            [Symbol.iterator]() {
+                let keys = Object.keys(obj);
+                let index = 0;
+                return {
+                    next() {
+                        // if (index < keys.length) {
+                        //     let key = keys[index++];
+                        //     return { value: [key, obj[key]], done: false };
+                        // }
+                        // return { value: undefined, done: true };
+                    }
+                };
+            }
+        };
+    }
+
+    // let user = { name: "Jean", age: 30, ville: "Paris" };
+    // for (let [key, value] of makeEntriesIterable(user)) {
+    //     console.log(`${key}: ${value}`);
+    // }
+    // Affiche :
+    // name: Jean
+    // age: 30
+    // ville: Paris
+
+    // Note : Object.entries(obj) fait exactement ça nativement !
+    </script>
+</div>
+
+</body>
+</html>

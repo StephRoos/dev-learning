@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.10 Affectation par décomposition - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.10 — Affectation par décomposition</h1>
+
+<div class="concept">
+    <h2>Décomposition de tableaux</h2>
+    <pre><code>let [a, b, c] = [1, 2, 3]; // a=1, b=2, c=3
+
+// Ignorer des éléments avec des virgules
+let [first, , third] = [1, 2, 3]; // first=1, third=3
+
+// Valeurs par défaut
+let [x = 10, y = 20] = [5]; // x=5, y=20
+
+// Rest operator
+let [head, ...tail] = [1, 2, 3, 4]; // head=1, tail=[2,3,4]
+
+// Échange de variables (élégant !)
+let m = 1, n = 2;
+[m, n] = [n, m]; // m=2, n=1</code></pre>
+    <h2>Décomposition d'objets</h2>
+    <pre><code>let { name, age } = { name: "Jean", age: 30, ville: "Paris" };
+// name="Jean", age=30 — ville est ignorée
+
+// Renommage
+let { name: userName, age: userAge } = user;
+// userName="Jean", userAge=30
+
+// Valeurs par défaut
+let { name = "Anonyme", role = "user" } = { name: "Jean" };
+// name="Jean", role="user" (valeur par défaut)
+
+// Rest
+let { name, ...rest } = { name: "Jean", age: 30, ville: "Paris" };
+// name="Jean", rest={ age:30, ville:"Paris" }</code></pre>
+    <h2>Dans les paramètres de fonctions</h2>
+    <pre><code>// Décomposer directement dans la signature de la fonction
+function greet({ name, age = 0 }) {
+    console.log(`${name} a ${age} ans`);
+}
+greet({ name: "Jean", age: 30 });</code></pre>
+    <p class="hint">Fondamental : la décomposition est syntaxique — elle ne modifie pas l'objet original, elle crée juste des variables locales.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Décomposer un objet</h3>
+    <p>Extrais <code>name</code> et <code>surname</code> d'un objet utilisateur avec la décomposition.</p>
+    <script>
+    // Exercice 1 — Destructuring assignment
+    // Ta réponse ici
+
+    let user = {
+        name: "Jean",
+        surname: "Dupont",
+        age: 30
+    };
+
+    // Extraire name et surname avec décomposition
+    // let { name, surname } = user;
+    // console.log(name);    // "Jean"
+    // console.log(surname); // "Dupont"
+
+    // Renommer au passage
+    // let { name: firstName, surname: lastName } = user;
+    // console.log(firstName); // "Jean"
+    // console.log(lastName);  // "Dupont"
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Le salaire le plus élevé</h3>
+    <p>Utilise <code>Object.entries</code> et la décomposition pour trouver qui a le salaire le plus élevé.</p>
+    <script>
+    // Exercice 2 — The maximal salary
+    // Ta réponse ici
+
+    let salaries = {
+        Jean: 100,
+        Marie: 300,
+        Pierre: 200
+    };
+
+    function topSalary(salaries) {
+        // Utilise Object.entries() pour avoir des paires [name, salary]
+        // Puis trouve la paire avec le salaire maximum
+        // Décompose la paire gagnante pour retourner le nom
+
+        // let topPerson = null;
+        // let maxSalary = 0;
+
+        // for (let [name, salary] of Object.entries(salaries)) {
+        //     if (salary > maxSalary) {
+        //         maxSalary = salary;
+        //         topPerson = name;
+        //     }
+        // }
+        // return topPerson;
+    }
+
+    // console.log(topSalary(salaries)); // "Marie"
+    // console.log(topSalary({}));       // null
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Swap de variables</h3>
+    <p>Échange les valeurs de deux variables sans variable temporaire.</p>
+    <script>
+    // Bonus 1 — Swap avec décomposition
+    // Ta réponse ici
+
+    let a = "Apple";
+    let b = "Banana";
+
+    // Avant la décomposition, il fallait une variable temporaire :
+    // let temp = a; a = b; b = temp;
+
+    // Avec la décomposition, une seule ligne :
+    // [a, b] = [b, a];
+
+    // console.log(a); // "Banana"
+    // console.log(b); // "Apple"
+
+    // Application pratique : tri à bulles avec swap élégant
+    function bubbleSort(arr) {
+        // for (let i = 0; i < arr.length; i++) {
+        //     for (let j = 0; j < arr.length - 1 - i; j++) {
+        //         if (arr[j] > arr[j + 1]) {
+        //             [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // swap !
+        //         }
+        //     }
+        // }
+        // return arr;
+    }
+
+    // console.log(bubbleSort([3, 1, 4, 1, 5, 9, 2, 6])); // [1, 1, 2, 3, 4, 5, 6, 9]
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Paramètres avec décomposition et valeurs par défaut</h3>
+    <p>Écris une fonction qui accepte un objet de configuration avec des valeurs par défaut robustes.</p>
+    <script>
+    // Bonus 2 — Paramètres de fonction avec décomposition
+    // Ta réponse ici
+
+    // Fonction qui crée un utilisateur avec des valeurs par défaut
+    function createUser({ name, age = 0, role = "user", active = true } = {}) {
+        // Le = {} à la fin permet d'appeler createUser() sans argument
+        // sans obtenir une erreur (décomposer undefined lèverait une erreur)
+
+        // return { name, age, role, active }; // shorthand property — équivalent à { name: name, age: age, ... }
+    }
+
+    // Tests
+    // console.log(createUser({ name: "Jean", age: 30 }));
+    // → { name: "Jean", age: 30, role: "user", active: true }
+
+    // console.log(createUser({ name: "Admin", role: "admin" }));
+    // → { name: "Admin", age: 0, role: "admin", active: true }
+
+    // console.log(createUser()); // Sans argument !
+    // → { name: undefined, age: 0, role: "user", active: true }
+    </script>
+    <p class="hint">Le pattern <code>{ param = défaut } = {}</code> est très utilisé pour des fonctions avec de nombreuses options. C'est l'équivalent JS des "keyword arguments" de Python.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Décomposition imbriquée</h3>
+    <p>Décompose un objet complexe avec des propriétés imbriquées contenant des tableaux.</p>
+    <script>
+    // Bonus 3 — Décomposition imbriquée
+    // Ta réponse ici
+
+    let company = {
+        name: "TechCorp",
+        address: {
+            city: "Paris",
+            country: "France"
+        },
+        employees: [
+            { name: "Jean", role: "dev" },
+            { name: "Marie", role: "design" }
+        ]
+    };
+
+    // Décomposer plusieurs niveaux en une seule opération
+    // let {
+    //     name: companyName,
+    //     address: { city, country },
+    //     employees: [firstEmployee, secondEmployee]
+    // } = company;
+
+    // console.log(companyName);           // "TechCorp"
+    // console.log(city);                  // "Paris"
+    // console.log(firstEmployee.name);    // "Jean"
+
+    // Aller encore plus loin : décomposer dans les paramètres
+    function describeEmployee({ name, role }) {
+        // return `${name} est ${role}`;
+    }
+
+    // console.log(describeEmployee(company.employees[0])); // "Jean est dev"
+    </script>
+</div>
+
+</body>
+</html>

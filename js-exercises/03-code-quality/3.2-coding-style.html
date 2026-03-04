@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>3.2 - Style de codage - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .bad { color: #ff6b6b; }
+        .good { color: #51cf66; }
+    </style>
+</head>
+<body>
+
+<h1>3.2 — Style de codage</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Indentation</strong> : 2 ou 4 espaces (jamais de mélange tabs/espaces)</li>
+        <li><strong>Accolades</strong> : style égyptien — accolade ouvrante sur la même ligne</li>
+        <li><strong>Longueur de ligne</strong> : maximum 80-120 caractères par ligne</li>
+        <li><strong>Nommage camelCase</strong> : <code>calculerTotal</code>, pas <code>calculer_total</code> ni <code>CalculerTotal</code></li>
+        <li><strong>Noms explicites</strong> : <code>nombreDUtilisateurs</code> plutôt que <code>n</code> ou <code>num</code></li>
+        <li><strong>Point-virgules</strong> : toujours en fin d'instruction (style courant)</li>
+        <li><strong>Espaces autour des opérateurs</strong> : <code>a + b</code>, pas <code>a+b</code></li>
+        <li><strong>Une responsabilité par fonction</strong> : une fonction = une chose</li>
+    </ul>
+</div>
+
+<div class="concept">
+    <h2>Règles de style — mémo visuel</h2>
+    <pre><code>// MAUVAIS style
+if(x){
+let y=x*2
+if(y>10){return y}else{return 0}}
+
+// BON style
+if (x) {
+  let y = x * 2;
+  if (y > 10) {
+    return y;
+  } else {
+    return 0;
+  }
+}</code></pre>
+    <p class="hint">Note : l'accolade ouvrante est sur la même ligne que le <code>if</code> — c'est le style JavaScript standard.</p>
+</div>
+
+<h2>Exercice 1 — Reformater un code mal écrit</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Réécris le code ci-dessous en appliquant les règles de style :</p>
+    <ul>
+        <li>Indentation correcte (2 espaces)</li>
+        <li>Espaces autour des opérateurs et après les virgules</li>
+        <li>Accolades sur la bonne ligne</li>
+        <li>Point-virgules en fin d'instruction</li>
+    </ul>
+    <pre><code class="bad">// Code à reformater :
+function calculer(x,y,operation){
+if(operation=='addition'){return x+y}
+else if(operation=='soustraction'){return x-y}
+else if(operation=='multiplication'){return x*y}
+else{
+if(y==0){return 'Division par zéro impossible'}
+return x/y
+}
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : version reformatée
+function calculer(x, y, operation) {
+    // Ta réponse ici
+}
+    </code></pre>
+    <p class="hint">Piste : commence par l'indentation, puis les espaces, puis les points-virgules.</p>
+</div>
+
+<h2>Exercice 2 — Corriger les noms de variables et fonctions</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Chaque variable ou fonction a un mauvais nom. Propose un meilleur nom en camelCase, explicite et précis.</p>
+    <pre><code class="bad">let d = new Date();               // ?
+let arr = [1, 2, 3, 4, 5];       // ?
+let x = 0.2;                      // ?
+let fn = (a, b) => a + b;         // ?
+let temp = utilisateur.prenom;    // ?
+let flag = false;                  // ?
+let data2 = fetch('/api/users');   // ?
+
+function calc(n) {                 // ?
+    return n * n;
+}
+
+function doStuff(u) {              // ?
+    u.actif = true;
+    u.derniereConnexion = new Date();
+}
+
+function chk(mdp) {                // ?
+    return mdp.length >= 8;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : liste tes noms améliorés
+// let d           → let ...
+// let arr         → let ...
+// let x           → let ...
+// let fn          → const ...  (ou function ...)
+// let temp        → let ...
+// let flag        → let ...
+// let data2       → let ...
+// function calc   → function ...
+// function doStuff → function ...
+// function chk    → function ...
+    </code></pre>
+    <p class="hint">Piste : un bon nom répond à la question "qu'est-ce que cette chose représente ?" sans qu'on ait à lire le reste du code.</p>
+</div>
+
+<h2>Exercice 3 — Ajouter des commentaires appropriés</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Ce code est correct mais difficile à comprendre. Ajoute des commentaires <strong>uniquement là où c'est utile</strong> : explique le POURQUOI, pas le QUOI.</p>
+    <p class="hint">Règle d'or : ne commente pas ce qui est évident (<code>i++; // incrémente i</code> est inutile).</p>
+    <pre><code>function slugify(texte) {
+    return texte
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-');
+}
+
+function paginer(items, page, parPage) {
+    let debut = (page - 1) * parPage;
+    let fin = debut + parPage;
+    return items.slice(debut, fin);
+}
+
+function estAdulte(dateNaissance) {
+    let maintenant = new Date();
+    let age = maintenant.getFullYear() - dateNaissance.getFullYear();
+    let moisDiff = maintenant.getMonth() - dateNaissance.getMonth();
+    if (moisDiff < 0 || (moisDiff === 0 && maintenant.getDate() < dateNaissance.getDate())) {
+        age--;
+    }
+    return age >= 18;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : colle le code avec tes commentaires ajoutés
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Reformater une fonction longue</h3>
+    <p>Cette fonction fait trop de choses et est difficile à lire. Reformate-la ET découpe-la en sous-fonctions si nécessaire.</p>
+    <pre><code class="bad">function traiterCommande(c,u,promo){let total=0;for(let i=0;i<c.produits.length;i++){total+=c.produits[i].prix*c.produits[i].qte}let remise=0;if(promo=='ETE10'){remise=total*0.1}else if(promo=='HIVER20'){remise=total*0.2}else if(promo=='VIP50'){remise=total*0.5}total=total-remise;let tva=total*0.2;total=total+tva;if(u.solde>=total){u.solde=u.solde-total;c.statut='payee';c.datePaiement=new Date();return{succes:true,montant:total}}else{return{succes:false,raison:'solde insuffisant'}}}</code></pre>
+    <pre><code>
+// Ta réponse ici : version reformatée et découpée
+function calculerSousTotal(produits) {
+    // Ta réponse ici
+}
+
+function appliquerPromo(sousTotal, codePromo) {
+    // Ta réponse ici
+}
+
+function traiterCommande(commande, utilisateur, codePromo) {
+    // Ta réponse ici
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Conventions de nommage</h3>
+    <p>Applique les conventions JavaScript à ces noms selon leur type :</p>
+    <ul>
+        <li><strong>Variable / fonction</strong> → camelCase : <code>monNom</code></li>
+        <li><strong>Constante globale</strong> → SCREAMING_SNAKE_CASE : <code>MA_CONSTANTE</code></li>
+        <li><strong>Classe</strong> → PascalCase : <code>MaClasse</code></li>
+        <li><strong>Booléen</strong> → préfixe <code>is</code>, <code>has</code>, <code>can</code> : <code>isActif</code></li>
+    </ul>
+    <pre><code>// Quel style appliquer à chaque cas ?
+const max_tentatives_connexion = 3;    // constante globale → ?
+class gestionnaire_utilisateurs {}     // classe → ?
+let utilisateur_est_connecte = false;  // booléen → ?
+function obtenir_liste_produits() {}   // fonction → ?
+const taux_tva = 0.20;                 // constante globale → ?
+let nombre_articles_panier = 0;        // variable → ?
+class service_authentification {}      // classe → ?
+let a_deja_vote = false;               // booléen → ?</code></pre>
+    <pre><code>
+// Ta réponse ici
+const MAX_TENTATIVES_CONNEXION = 3;
+// ...
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Chasse aux violations de style</h3>
+    <p>Identifie et liste TOUTES les violations de style dans ce code (il y en a au moins 10).</p>
+    <pre><code>const UserAge=25
+let userName = 'alice'
+var x=true
+
+function CheckIfAdult(UserAge){
+if(UserAge>=18)
+{
+return true
+}
+else
+{return false}
+}
+
+function   sendEmail( address,subject ,body )
+{
+    let email_content = subject+': '+body
+    console.log('Sending to: '+address+' content: '+email_content)
+    return True
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : liste les violations
+// 1. ...
+// 2. ...
+// 3. ...
+// (continue jusqu'à trouver toutes les violations)
+    </code></pre>
+</div>
+
+</body>
+</html>

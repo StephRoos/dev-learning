@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>3.1 - Débogage dans le navigateur - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>3.1 — Débogage dans le navigateur</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>DevTools</strong> : ouvre avec F12 ou Cmd+Option+I (Mac)</li>
+        <li><strong>Panel Sources</strong> : voir et naviguer dans les fichiers JS chargés</li>
+        <li><strong>Breakpoints</strong> : points d'arrêt cliquables dans la marge du code</li>
+        <li><strong>debugger;</strong> : instruction qui déclenche un breakpoint depuis le code</li>
+        <li><strong>console</strong> : console.log, console.table, console.group, console.error...</li>
+        <li><strong>Watch</strong> : surveiller la valeur d'une expression en temps réel</li>
+        <li><strong>Call Stack</strong> : liste des fonctions appelées pour arriver là où on est</li>
+        <li><strong>Step over / into / out</strong> : avancer pas à pas dans le code</li>
+    </ul>
+</div>
+
+<h2>Exercice 1 — Utiliser debugger;</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>La fonction <code>calculerTotal</code> contient un <code>debugger;</code>. Ouvre DevTools (F12), puis clique sur le bouton pour déclencher l'arrêt.</p>
+    <p>Dans DevTools → panel Sources, observe :</p>
+    <ul>
+        <li>Les valeurs des variables dans le panneau <strong>Scope</strong></li>
+        <li>Le <strong>Call Stack</strong> à droite</li>
+        <li>Utilise <strong>Step Over (F10)</strong> pour avancer ligne par ligne</li>
+    </ul>
+    <p class="hint">Piste : ajoute des variables dans le panneau "Watch" pour les surveiller.</p>
+    <pre><code id="ex1-code"></code></pre>
+    <button onclick="lancerEx1()">Lancer l'exercice 1</button>
+    <p id="ex1-result"></p>
+</div>
+
+<h2>Exercice 2 — Trouver un bug avec un breakpoint</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>La fonction <code>calculerMoyenne</code> retourne un mauvais résultat. Place un breakpoint dans DevTools sur la ligne de calcul pour observer les valeurs intermédiaires et trouver le bug.</p>
+    <p><strong>Résultat attendu pour [10, 20, 30] :</strong> 20</p>
+    <p class="hint">Piste : ouvre DevTools → Sources → trouve ce fichier → clique sur le numéro de ligne pour poser un breakpoint.</p>
+    <pre><code id="ex2-code"></code></pre>
+    <button onclick="lancerEx2()">Lancer l'exercice 2</button>
+    <p id="ex2-result"></p>
+    <p><strong>Ta correction :</strong></p>
+    <pre><code>
+// Ta réponse ici : réécris calculerMoyenne correctement
+function calculerMoyenneCorrigee(nombres) {
+    // Ta réponse ici
+}
+    </code></pre>
+</div>
+
+<h2>Exercice 3 — Maîtriser la console</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Utilise les différentes méthodes de console pour déboguer le tableau de produits :</p>
+    <ul>
+        <li><code>console.log</code> pour afficher une valeur simple</li>
+        <li><code>console.table</code> pour afficher un tableau de façon lisible</li>
+        <li><code>console.group</code> / <code>console.groupEnd</code> pour regrouper des logs</li>
+        <li><code>console.error</code> pour signaler une erreur</li>
+        <li><code>console.warn</code> pour un avertissement</li>
+    </ul>
+    <p class="hint">Ouvre la console (F12 → Console) pour voir les résultats.</p>
+    <pre><code id="ex3-code"></code></pre>
+    <button onclick="lancerEx3()">Lancer l'exercice 3</button>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Débogage step-by-step d'un bug logique subtil</h3>
+    <p>La fonction <code>trouverMax</code> a un bug subtil. Sans regarder le code attentivement, utilise le débogueur step-by-step pour découvrir ce qui ne va pas.</p>
+    <pre><code id="bonus1-code"></code></pre>
+    <button onclick="lancerBonus1()">Lancer Bonus 1</button>
+    <p id="bonus1-result"></p>
+    <pre><code>
+// Ta réponse ici : décris le bug trouvé et corrige la fonction
+function trouverMaxCorrigee(tableau) {
+    // Ta réponse ici
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Mesurer la performance avec console.time</h3>
+    <p>Deux fonctions trient un tableau. Utilise <code>console.time</code> / <code>console.timeEnd</code> pour mesurer laquelle est la plus rapide.</p>
+    <p class="hint">Format : console.time('label') ... console.timeEnd('label')</p>
+    <pre><code id="bonus2-code"></code></pre>
+    <button onclick="lancerBonus2()">Lancer Bonus 2</button>
+    <pre><code>
+// Ta réponse ici : ajoute console.time/timeEnd autour de chaque appel
+// et compare les résultats dans la console
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Breakpoints conditionnels</h3>
+    <p>La fonction ci-dessous boucle sur 1000 éléments. Pose un breakpoint <strong>conditionnel</strong> qui s'active seulement quand <code>i === 500</code>.</p>
+    <p><strong>Comment poser un breakpoint conditionnel :</strong> clic droit sur le numéro de ligne → "Add conditional breakpoint" → entre la condition <code>i === 500</code>.</p>
+    <pre><code id="bonus3-code"></code></pre>
+    <button onclick="lancerBonus3()">Lancer Bonus 3</button>
+</div>
+
+<script>
+// Affiche le code source dans les balises <code>
+// (technique pédagogique : lire le code avant de l'exécuter)
+
+// --- EXERCICE 1 ---
+function calculerTotal(prix, quantite) {
+    debugger; // DevTools s'arrête ici si la console est ouverte
+    let sousTotal = prix * quantite;
+    let tva = sousTotal * 0.2;
+    let total = sousTotal + tva;
+    return total;
+}
+
+function lancerEx1() {
+    let resultat = calculerTotal(25, 4);
+    document.getElementById('ex1-result').textContent = 'Total TTC : ' + resultat + ' €';
+}
+
+document.getElementById('ex1-code').textContent = `function calculerTotal(prix, quantite) {
+    debugger; // DevTools s'arrête ici si la console est ouverte
+    let sousTotal = prix * quantite;
+    let tva = sousTotal * 0.2;
+    let total = sousTotal + tva;
+    return total;
+}`;
+
+// --- EXERCICE 2 ---
+// BUG : la division se fait avant l'addition (problème de priorité)
+function calculerMoyenne(nombres) {
+    let somme = 0;
+    for (let i = 0; i < nombres.length; i++) {
+        somme += nombres[i];
+    }
+    return somme / nombres.length + 1; // BUG ici : + 1 ne devrait pas être là
+}
+
+function lancerEx2() {
+    let notes = [10, 20, 30];
+    let resultat = calculerMoyenne(notes);
+    let affichage = 'Moyenne de [10, 20, 30] = ' + resultat + ' (attendu : 20)';
+    document.getElementById('ex2-result').textContent = affichage;
+}
+
+document.getElementById('ex2-code').textContent = `function calculerMoyenne(nombres) {
+    let somme = 0;
+    for (let i = 0; i < nombres.length; i++) {
+        somme += nombres[i];
+    }
+    return somme / nombres.length + 1; // quelque chose ne va pas ici...
+}`;
+
+// --- EXERCICE 3 ---
+let produits = [
+    { nom: 'Clavier', prix: 89, stock: 12 },
+    { nom: 'Souris', prix: 45, stock: 0 },
+    { nom: 'Écran', prix: 320, stock: 3 },
+];
+
+function lancerEx3() {
+    console.group('=== Débogage produits ===');
+
+    console.log('Liste brute :', produits);
+
+    console.table(produits); // affiche un beau tableau dans la console
+
+    produits.forEach(p => {
+        if (p.stock === 0) {
+            console.warn(`Produit "${p.nom}" en rupture de stock !`);
+        } else if (p.stock < 5) {
+            console.error(`Produit "${p.nom}" stock critique : ${p.stock} restants`);
+        }
+    });
+
+    console.groupEnd();
+    alert('Regarde la console DevTools (F12) pour voir les résultats !');
+}
+
+document.getElementById('ex3-code').textContent = `let produits = [
+    { nom: 'Clavier', prix: 89, stock: 12 },
+    { nom: 'Souris', prix: 45, stock: 0 },
+    { nom: 'Écran', prix: 320, stock: 3 },
+];
+
+// Utilise console.log, console.table, console.group, console.warn, console.error
+// pour déboguer ces données`;
+
+// --- BONUS 1 ---
+// BUG subtil : initialisation à 0 écrase les valeurs négatives
+function trouverMax(tableau) {
+    let max = 0; // BUG : devrait être tableau[0] ou -Infinity
+    for (let i = 0; i < tableau.length; i++) {
+        if (tableau[i] > max) {
+            max = tableau[i];
+        }
+    }
+    return max;
+}
+
+function lancerBonus1() {
+    let test1 = trouverMax([3, 7, 2, 9, 1]);
+    let test2 = trouverMax([-5, -2, -8, -1]); // BUG : retourne 0 au lieu de -1
+    document.getElementById('bonus1-result').textContent =
+        `Max de [3,7,2,9,1] = ${test1} (attendu: 9) | Max de [-5,-2,-8,-1] = ${test2} (attendu: -1)`;
+}
+
+document.getElementById('bonus1-code').textContent = `function trouverMax(tableau) {
+    let max = 0; // quelque chose ne va pas avec cette initialisation...
+    for (let i = 0; i < tableau.length; i++) {
+        if (tableau[i] > max) {
+            max = tableau[i];
+        }
+    }
+    return max;
+}
+// Test : trouverMax([-5, -2, -8, -1]) devrait retourner -1`;
+
+// --- BONUS 2 ---
+function triBubble(arr) {
+    let a = [...arr];
+    for (let i = 0; i < a.length; i++) {
+        for (let j = 0; j < a.length - i - 1; j++) {
+            if (a[j] > a[j + 1]) {
+                [a[j], a[j + 1]] = [a[j + 1], a[j]];
+            }
+        }
+    }
+    return a;
+}
+
+function triNatif(arr) {
+    return [...arr].sort((a, b) => a - b);
+}
+
+function lancerBonus2() {
+    let grandTableau = Array.from({ length: 5000 }, () => Math.random() * 10000);
+
+    console.time('Tri Bubble Sort');
+    triBubble(grandTableau);
+    console.timeEnd('Tri Bubble Sort');
+
+    console.time('Tri natif .sort()');
+    triNatif(grandTableau);
+    console.timeEnd('Tri natif .sort()');
+
+    alert('Regarde la console pour comparer les temps !');
+}
+
+document.getElementById('bonus2-code').textContent = `// Deux algorithmes de tri sur 5000 éléments
+// Utilise console.time('label') et console.timeEnd('label')
+// pour mesurer lequel est le plus rapide
+
+function triBubble(arr) { /* ... */ }
+function triNatif(arr) { return [...arr].sort((a, b) => a - b); }
+
+// Ta réponse : entoure chaque appel avec console.time/timeEnd`;
+
+// --- BONUS 3 ---
+function lancerBonus3() {
+    let resultat = 0;
+    for (let i = 0; i < 1000; i++) {
+        resultat += i;
+        // Place un breakpoint conditionnel (i === 500) sur la ligne ci-dessus
+        // dans DevTools → clic droit sur le numéro → "Add conditional breakpoint"
+    }
+    alert('Somme de 0 à 999 : ' + resultat);
+}
+
+document.getElementById('bonus3-code').textContent = `function lancerBonus3() {
+    let resultat = 0;
+    for (let i = 0; i < 1000; i++) {
+        resultat += i;
+        // Pose un breakpoint conditionnel : i === 500
+        // Clic droit sur le numéro de ligne → "Add conditional breakpoint"
+    }
+    alert('Somme : ' + resultat);
+}`;
+</script>
+
+</body>
+</html>

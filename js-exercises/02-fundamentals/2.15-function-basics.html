@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.15 - Fonctions - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+        .fundamental { background: #0a2e0a; border-left: 4px solid #00ff88; padding: 10px 15px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+    </style>
+</head>
+<body>
+
+<h1>2.15 - Fonctions</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Déclaration</strong> : <code>function nom(parametre1, parametre2) { ... }</code></li>
+        <li><strong>Paramètres vs arguments</strong> : paramètres = variables locales dans la fonction, arguments = valeurs passées à l'appel</li>
+        <li><strong>Valeur par défaut</strong> : <code>function nom(param = "défaut") { }</code> — utilisée si l'argument est <code>undefined</code></li>
+        <li><strong>return</strong> : arrête l'exécution de la fonction et retourne une valeur. Sans return → retourne <code>undefined</code></li>
+        <li><strong>Variables locales</strong> : déclarées dans une fonction, invisibles de l'extérieur</li>
+        <li><strong>Nommage</strong> : utiliser des verbes d'action (<code>getAge</code>, <code>calcSum</code>, <code>showMessage</code>). Une fonction = une action.</li>
+    </ul>
+    <div class="fundamental">
+        FONDAMENTAL : une fonction devrait soit retourner une valeur, soit produire un effet de bord (afficher, modifier) — pas les deux en même temps. Ça facilite les tests et la lisibilité.
+    </div>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Le "else" est-il nécessaire ?</h3>
+    <p>Ces deux fonctions font-elles exactement la même chose ?</p>
+    <pre><code>// Version A
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Version B
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    }
+    return false;
+}</code></pre>
+    <p>Oui ou non ? Explique pourquoi.</p>
+    <p class="hint">Quand <code>return</code> est atteint, la fonction s'arrête immédiatement. Le code après est-il jamais atteint ?</p>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — Réécrire avec '?' ou '||'</h3>
+    <p>Réécrire ces fonctions de manière plus concise :</p>
+    <pre><code>// À réécrire avec ?:
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// À réécrire avec ||
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    } else {
+        return confirm("Did parents allow you?");
+    }
+}</code></pre>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — Fonction min(a, b)</h3>
+    <p>Écrire une fonction <code>min(a, b)</code> qui retourne le minimum de deux nombres.</p>
+    <pre><code>min(2, 5)  // → 2
+min(3, -1) // → -1
+min(1, 1)  // → 1</code></pre>
+</div>
+
+<!-- EXERCICE 4 -->
+<div class="exercise">
+    <h3>Ex4 — Fonction pow(x, n)</h3>
+    <p>Écrire une fonction <code>pow(x, n)</code> qui retourne x élevé à la puissance n (x^n).</p>
+    <p>Contrainte : utiliser une boucle (pas <code>Math.pow</code> ni <code>**</code>).</p>
+    <pre><code>pow(3, 2)  // → 9
+pow(3, 3)  // → 27
+pow(1, 100) // → 1</code></pre>
+    <p class="hint">Multiplier x par lui-même n fois.</p>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — Conversions Celsius / Fahrenheit</h3>
+    <p>Écrire deux fonctions :</p>
+    <ul>
+        <li><code>celsiusToFahrenheit(c)</code> : formule = <code>(c × 9/5) + 32</code></li>
+        <li><code>fahrenheitToCelsius(f)</code> : formule = <code>(f - 32) × 5/9</code></li>
+    </ul>
+    <pre><code>celsiusToFahrenheit(0)    // → 32
+celsiusToFahrenheit(100)  // → 212
+fahrenheitToCelsius(32)   // → 0
+fahrenheitToCelsius(98.6) // → 37</code></pre>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Vérifier si un nombre est premier</h3>
+    <p>Écrire une fonction <code>isPrime(n)</code> qui retourne <code>true</code> si n est un nombre premier.</p>
+    <pre><code>isPrime(2)   // true
+isPrime(3)   // true
+isPrime(4)   // false (2 × 2)
+isPrime(17)  // true
+isPrime(1)   // false (convention : 1 n'est pas premier)</code></pre>
+    <p class="hint">Un nombre premier n'a aucun diviseur entre 2 et √n.</p>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Somme récursive de 1 à n</h3>
+    <p>Écrire une fonction <code>sumTo(n)</code> qui calcule 1 + 2 + ... + n.</p>
+    <p>Implémenter <strong>3 versions</strong> :</p>
+    <ul>
+        <li>Version avec boucle <code>for</code></li>
+        <li>Version <strong>récursive</strong> : <code>sumTo(n) = n + sumTo(n-1)</code></li>
+        <li>Version formule mathématique : <code>n * (n + 1) / 2</code></li>
+    </ul>
+    <pre><code>sumTo(1)  // → 1
+sumTo(5)  // → 15 (1+2+3+4+5)
+sumTo(100) // → 5050</code></pre>
+    <p class="hint">La récursion est un fondamental à comprendre. Pense à un "cas de base" pour arrêter la récursion (n === 1).</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Le else est-il nécessaire ?
+// ============================================================
+// Réponse : Non, les deux versions sont IDENTIQUES.
+// Quand "return true" est exécuté, la fonction s'arrête immédiatement.
+// Le code après un return n'est jamais atteint.
+// Le else est donc redondant — la Version B est plus lisible et préférable.
+console.log("Ex1 : Les deux versions sont identiques. Le else est redondant après un return.");
+
+
+// ============================================================
+// EX2 — Réécrire avec ? et ||
+// ============================================================
+
+// Version A avec ternaire :
+function checkAgeA(age) {
+    return age > 18 ? true : false;
+    // Encore plus court : return age > 18; (car la comparaison est déjà un booléen)
+}
+
+// Version B avec || :
+function checkAgeB(age) {
+    return age > 18 || confirm("Did parents allow you?");
+    // || retourne le premier truthy : si age>18 est true, confirm n'est pas exécuté (court-circuit)
+}
+
+console.log("Ex2 (ternaire) :", checkAgeA(20)); // true
+console.log("Ex2 (ternaire) :", checkAgeA(15)); // false
+
+
+// ============================================================
+// EX3 — min(a, b)
+// ============================================================
+function min(a, b) {
+    // Ta réponse ici :
+    // return a < b ? a : b;
+}
+
+// console.log("Ex3 :", min(2, 5));   // 2
+// console.log("Ex3 :", min(3, -1));  // -1
+// console.log("Ex3 :", min(1, 1));   // 1
+
+
+// ============================================================
+// EX4 — pow(x, n)
+// ============================================================
+function pow(x, n) {
+    // Ta réponse ici :
+    // let result = 1;
+    // for (let i = 0; i < n; i++) {
+    //     result *= x;
+    // }
+    // return result;
+}
+
+// console.log("Ex4 :", pow(3, 2));   // 9
+// console.log("Ex4 :", pow(3, 3));   // 27
+// console.log("Ex4 :", pow(1, 100)); // 1
+
+
+// ============================================================
+// BONUS 1 — Celsius / Fahrenheit
+// ============================================================
+function celsiusToFahrenheit(c) {
+    // Ta réponse ici :
+    // return (c * 9/5) + 32;
+}
+
+function fahrenheitToCelsius(f) {
+    // Ta réponse ici :
+    // return (f - 32) * 5/9;
+}
+
+// console.log("B1 :", celsiusToFahrenheit(0));    // 32
+// console.log("B1 :", celsiusToFahrenheit(100));  // 212
+// console.log("B1 :", fahrenheitToCelsius(32));   // 0
+// console.log("B1 :", fahrenheitToCelsius(98.6)); // 37
+
+
+// ============================================================
+// BONUS 2 — isPrime
+// ============================================================
+function isPrime(n) {
+    // Ta réponse ici :
+    // if (n < 2) return false;
+    // for (let i = 2; i <= Math.sqrt(n); i++) {
+    //     if (n % i === 0) return false;
+    // }
+    // return true;
+}
+
+// console.log("B2 :", isPrime(2));  // true
+// console.log("B2 :", isPrime(4));  // false
+// console.log("B2 :", isPrime(17)); // true
+// console.log("B2 :", isPrime(1));  // false
+
+
+// ============================================================
+// BONUS 3 — sumTo (3 versions)
+// ============================================================
+
+// Version boucle :
+function sumToLoop(n) {
+    // let sum = 0;
+    // for (let i = 1; i <= n; i++) { sum += i; }
+    // return sum;
+}
+
+// Version récursive :
+function sumToRecursive(n) {
+    // if (n === 1) return 1;    // cas de base : arrête la récursion
+    // return n + sumToRecursive(n - 1);  // appel récursif
+}
+
+// Version formule :
+function sumToFormula(n) {
+    // return n * (n + 1) / 2;
+}
+
+// console.log("B3 (boucle) :", sumToLoop(5));         // 15
+// console.log("B3 (récursif) :", sumToRecursive(5));  // 15
+// console.log("B3 (formule) :", sumToFormula(100));   // 5050
+</script>
+
+</body>
+</html>

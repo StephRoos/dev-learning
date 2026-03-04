@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>2.9 Comparaisons - javascript.info</title>
+  </head>
+  <body>
+    <h1>Chapitre 2.9 — Comparaisons</h1>
+
+    <script>
+      // =============================================
+      // EXERCICE : Quel est le résultat de chaque
+      // comparaison ? Écris true ou false à côté.
+      // Devine AVANT, puis vérifie avec console.log
+      // =============================================
+
+      // --- Comparaisons de strings ---
+      // "Z" > "A"          → true
+      // "Glow" > "Glee"    → true
+      // "Bee" > "Be"       → true
+
+      // --- Conversions de types ---
+      // "2" > 1             → true
+      // "01" == 1           → true
+
+      // --- Le piège null/undefined ---
+      // null == undefined   → true
+      // null === undefined  → false
+      // null > 0            → false
+      // null == 0           → false
+      // null >= 0           → true
+
+      // --- Undefined est incomparable ---
+      // undefined > 0       → false
+      // undefined < 0       → false
+      // undefined == 0      → false
+
+
+      // =============================================
+      // BONUS : Explique pourquoi ces 3 résultats
+      // semblent contradictoires :
+      //   null > 0   → false
+      //   null == 0  → false
+      //   null >= 0  → true
+      //
+      // Écris ton explication ici :
+      // les comparaisosn convertissent null en nombre donc le traite comme un 0
+      //
+      // =============================================
+
+    </script>
+  </body>
+</html>

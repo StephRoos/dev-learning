@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>2.8 Opérateurs de base, maths - javascript.info</title>
+  </head>
+  <body>
+    <h1>Chapitre 2.8 — Opérateurs de base, maths</h1>
+
+    <script>
+      // =============================================
+      // EXERCICE 1 : Postfixe et préfixe
+      // Quelle est la valeur de a et b après ce code ?
+      // =============================================
+
+      let a = 1, b = 1;
+      let c = ++a;  // 2
+      let d = b++;  // 1
+      // Écris tes réponses en commentaire, puis vérifie avec console.log
+
+
+
+      // =============================================
+      // EXERCICE 2 : Résultats d'affectation
+      // Quelles sont les valeurs de a et x après ce code ?
+      // =============================================
+
+      let a = 2;
+      let x = 1 + (a *= 2);
+      // Écris tes réponses en commentaire, puis vérifie avec console.log
+      // a = 4
+      // b = 5
+
+
+      // =============================================
+      // EXERCICE 3 : Conversions de types
+      // Quel est le résultat de chaque expression ?
+      // =============================================
+
+      // Devine AVANT d'exécuter, puis vérifie :
+      "" + 1 + 0 // "10"
+      "" - 1 + 0 // -1
+      true + false // 1
+      6 / "3" // 2
+      "2" * "3" // 6
+      4 + 5 + "px" // "9px"
+      "$" + 4 + 5 // "$45"
+      "4" - 2 // 2
+      "4px" - 2 // NaN
+      "  -9  " + 5 // " -9 5"
+      "  -9  " - 5 // -14
+      null + 1 // null
+      undefined + 1 // NaN
+
+
+
+      // =============================================
+      // EXERCICE 4 : Corriger l'addition
+      // Ce code demande 2 nombres et affiche leur somme.
+      // Mais il ne fonctionne pas correctement. Pourquoi ?
+      // Corrige-le !
+      // =============================================
+
+      let a = prompt("Premier nombre ?", 1);
+      let b = prompt("Deuxième nombre ?", 2);
+      alert(a + b);  // Affiche "12" au lieu de 3 — pourquoi ?
+
+      // Ta correction ici :
+      let a = Number(prompt("Premier nombre ?", 1));
+      let b = Number(prompt("Deuxième nombre ?", 2));
+      alert(a + b);
+
+    </script>
+  </body>
+</html>

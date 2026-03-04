@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.1 Méthodes des primitifs - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.1 — Méthodes des primitifs</h1>
+
+<div class="concept">
+    <h2>Concept clé : Wrapper objects et autoboxing</h2>
+    <p>Les primitifs (string, number, boolean) ne sont <strong>pas des objets</strong>. Pourtant on peut appeler des méthodes dessus.</p>
+    <p>Comment ? JavaScript crée temporairement un <strong>objet wrapper</strong> (String, Number, Boolean), appelle la méthode, puis <strong>détruit l'objet</strong>. Ce mécanisme s'appelle l'<strong>autoboxing</strong>.</p>
+    <pre><code>let str = "hello";
+// Quand tu écris str.toUpperCase(), JavaScript fait (en interne) :
+// 1. new String("hello")  → objet temporaire
+// 2. appelle .toUpperCase() sur cet objet
+// 3. détruit l'objet → retourne le primitif "HELLO"</code></pre>
+    <p class="hint">Fondamental : les primitifs restent légers, les objets wrappers sont temporaires.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Pourquoi str.toUpperCase() fonctionne-t-il ?</h3>
+    <p>Explique dans les commentaires ce qui se passe à chaque étape, puis vérifie avec console.log.</p>
+    <pre><code>// Quel est le type de str ?
+// Pourquoi peut-on appeler .toUpperCase() dessus ?
+// Quel est le type du résultat ?</code></pre>
+    <script>
+    // Exercice 1 — Autoboxing
+    // Ta réponse ici
+
+    let str = "bonjour";
+
+    // Étape 1 : quel est le type de str ?
+    // console.log(typeof str); // ?
+
+    // Étape 2 : appelle toUpperCase et affiche le résultat
+    // let upper = ...
+    // console.log(upper);
+
+    // Étape 3 : quel est le type du résultat ?
+    // console.log(typeof upper); // ?
+    </script>
+    <p class="hint">Utilise typeof pour observer les types avant et après la méthode.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Explorer les méthodes disponibles</h3>
+    <p>Teste ces méthodes sur un nombre et une chaîne, observe les résultats dans la console.</p>
+    <script>
+    // Exercice 2 — Méthodes sur primitifs
+    // Ta réponse ici
+
+    let num = 3.14159;
+    let texte = "  JavaScript est super !  ";
+
+    // Sur les nombres :
+    // console.log(num.toFixed(2));    // arrondir à 2 décimales
+    // console.log(num.toString());    // convertir en string
+    // console.log(Number.isFinite(num)); // vérifier si fini
+
+    // Sur les strings :
+    // console.log(texte.trim());      // supprimer les espaces
+    // console.log(texte.toUpperCase());
+    // console.log(texte.includes("super")); // vérifier la présence
+    </script>
+    <p class="hint">Les méthodes ne modifient pas le primitif original — elles retournent une nouvelle valeur.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Ajouter une propriété à un primitif</h3>
+    <p>Que se passe-t-il si on essaie d'ajouter une propriété à un primitif ? Teste et explique.</p>
+    <script>
+    // Exercice 3 — Propriétés sur primitifs
+    // Ta réponse ici
+
+    let str = "test";
+
+    // Essaie d'assigner une propriété :
+    // str.maProprietee = "valeur";
+
+    // Que vaut str.maProprietee maintenant ?
+    // console.log(str.maProprietee); // undefined ou erreur ?
+
+    // Pourquoi ? (commente ta réponse ici)
+    // Réponse : ...
+    </script>
+    <p class="hint">L'objet wrapper est créé, la propriété est ajoutée dessus, puis l'objet est détruit. La propriété disparaît avec lui.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — 5 méthodes String utiles</h3>
+    <p>Explore ces méthodes : <code>includes</code>, <code>startsWith</code>, <code>repeat</code>, <code>padStart</code>, <code>trim</code></p>
+    <script>
+    // Bonus 1 — Méthodes String avancées
+    // Ta réponse ici
+
+    let phrase = "Bonjour le monde";
+
+    // includes : est-ce que la string contient "monde" ?
+    // console.log(phrase.includes("monde")); // true
+
+    // startsWith : commence-t-elle par "Bon" ?
+    // console.log(phrase.startsWith("Bon")); // true
+
+    // repeat : répéter "Ha" 3 fois
+    // console.log("Ha".repeat(3)); // "HaHaHa"
+
+    // padStart : formater un nombre sur 5 chiffres (ex: "42" → "00042")
+    // console.log("42".padStart(5, "0")); // "00042"
+
+    // trim : supprimer les espaces autour
+    // console.log("  espaces  ".trim()); // "espaces"
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — 5 méthodes Number utiles</h3>
+    <p>Explore : <code>toFixed</code>, <code>parseInt</code>, <code>isNaN</code>, <code>isFinite</code>, <code>toString(base)</code></p>
+    <script>
+    // Bonus 2 — Méthodes Number avancées
+    // Ta réponse ici
+
+    let prix = 19.956;
+
+    // toFixed : arrondir à 2 décimales (retourne une STRING)
+    // console.log(prix.toFixed(2)); // "19.96"
+
+    // parseInt : extraire l'entier d'une string
+    // console.log(parseInt("42px")); // 42
+
+    // isNaN : est-ce "Not a Number" ?
+    // console.log(Number.isNaN(NaN));     // true
+    // console.log(Number.isNaN("hello")); // false (attention : isNaN global ≠ Number.isNaN)
+
+    // isFinite : est-ce un nombre fini ?
+    // console.log(Number.isFinite(Infinity)); // false
+    // console.log(Number.isFinite(42));       // true
+
+    // toString(base) : afficher en binaire ou hexadécimal
+    // console.log((255).toString(16)); // "ff"
+    // console.log((10).toString(2));   // "1010"
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — new Number(0) est truthy, mais 0 est falsy</h3>
+    <p>Explique et démontre cette différence importante.</p>
+    <script>
+    // Bonus 3 — Primitif vs objet wrapper
+    // Ta réponse ici
+
+    // Un primitif zéro est falsy :
+    // if (0) console.log("0 est truthy");
+    // else console.log("0 est falsy"); // ← ce message s'affiche
+
+    // Mais un objet Number(0) est truthy (c'est un objet, pas null) :
+    // if (new Number(0)) console.log("new Number(0) est truthy"); // ← ce message s'affiche
+    // else console.log("new Number(0) est falsy");
+
+    // Conclusion : n'utilise JAMAIS new String(), new Number(), new Boolean()
+    // Utilise simplement les primitifs : "", 0, false
+    </script>
+    <p class="hint">Fondamental : <code>new Number(0)</code> crée un objet. Tout objet non-null est truthy en JavaScript, même s'il représente zéro.</p>
+</div>
+
+</body>
+</html>

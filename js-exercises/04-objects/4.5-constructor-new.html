@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.5 Constructeur, new - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.5 — Constructeur et opérateur <code>new</code></h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Fonction constructeur</strong> : convention PascalCase, appelée avec <code>new</code></li>
+        <li><strong>Ce que fait new</strong> :
+            <ol>
+                <li>Crée un nouvel objet vide <code>{}</code></li>
+                <li>Assigne cet objet à <code>this</code></li>
+                <li>Exécute le corps de la fonction</li>
+                <li>Retourne <code>this</code> implicitement</li>
+            </ol>
+        </li>
+        <li><strong>return dans un constructeur</strong> : si on retourne un objet → cet objet est retourné. Si on retourne un primitif (ou rien) → this est retourné.</li>
+        <li><strong>Méthodes</strong> : on peut ajouter des méthodes dans le constructeur via <code>this.method = function() {}</code></li>
+    </ul>
+</div>
+
+<pre><code>// Constructeur — PascalCase par convention
+function User(name, age) {
+    // new fait : this = {}
+    this.name = name;
+    this.age = age;
+    this.isAdmin = false;
+
+    this.greet = function() {
+        return `Bonjour, je suis ${this.name}`;
+    };
+    // new retourne this implicitement
+}
+
+let alice = new User("Alice", 30);
+let bob = new User("Bob", 25);
+
+console.log(alice.name);    // "Alice"
+console.log(alice.greet()); // "Bonjour, je suis Alice"
+console.log(alice instanceof User); // true
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Two functions, one object</h3>
+    <p>
+        Est-il possible de créer une fonction <code>A</code> et une fonction <code>B</code> telles que <code>new A() == new B()</code> ?
+    </p>
+    <p class="hint">
+        Rappel : si un constructeur retourne un objet, c'est cet objet qui est retourné par <code>new</code>. Que se passe-t-il si les deux constructeurs retournent le même objet ?
+    </p>
+    <pre><code>// Ta réponse ici
+// L'objet partagé que les deux constructeurs vont retourner
+let sharedObj = {};
+
+function A() {
+    // Retourner sharedObj
+
+}
+
+function B() {
+    // Retourner sharedObj
+
+}
+
+// Vérification
+console.log(new A() == new B()); // doit être true
+// Explication de pourquoi c'est possible (en commentaire) :
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Create new Calculator</h3>
+    <p>
+        Crée un constructeur <code>Calculator</code> avec les méthodes <code>read()</code>, <code>sum()</code> et <code>mul()</code>. Chaque instance aura ses propres valeurs <code>a</code> et <code>b</code>.
+    </p>
+    <pre><code>// Ta réponse ici
+function Calculator() {
+    this.read = function() {
+        // Utiliser prompt (ou assigner des valeurs directement pour tester)
+        this.a = +prompt("a = ");
+        this.b = +prompt("b = ");
+    };
+
+    this.sum = function() {
+
+    };
+
+    this.mul = function() {
+
+    };
+}
+
+// Test sans prompt
+let calc = new Calculator();
+calc.a = 6;
+calc.b = 7;
+console.log(calc.sum()); // 13
+console.log(calc.mul()); // 42
+
+// Deux instances indépendantes
+let calc2 = new Calculator();
+calc2.a = 2;
+calc2.b = 3;
+console.log(calc2.sum()); // 5  (pas 13 !)
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Create new Accumulator</h3>
+    <p>
+        Crée un constructeur <code>Accumulator(startingValue)</code> avec une propriété <code>value</code> initialisée à <code>startingValue</code> et une méthode <code>read()</code> qui demande un nombre et l'additionne à <code>value</code>.
+    </p>
+    <pre><code>// Ta réponse ici
+function Accumulator(startingValue) {
+    this.value = startingValue;
+
+    this.read = function() {
+        // this.value += +prompt("Nombre à ajouter ?");
+        // Pour tester sans prompt :
+        this.value += arguments[0] || 0;
+    };
+}
+
+let accumulator = new Accumulator(1);
+accumulator.read(10);
+accumulator.read(20);
+console.log(accumulator.value); // 31 (1 + 10 + 20)
+</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Constructeur User avec validation</h3>
+    <p>
+        Crée un constructeur <code>User</code> qui valide les données en entrée. Si <code>name</code> est vide ou si <code>age</code> est négatif, lève une erreur avec <code>throw new Error(...)</code>.
+    </p>
+    <pre><code>// Ta réponse ici
+function User(name, age, email) {
+    // Validation
+    if (!name || name.trim() === "") {
+        throw new Error("Le nom est requis");
+    }
+    if (typeof age !== "number" || age < 0 || age > 150) {
+        throw new Error("L'âge doit être un nombre entre 0 et 150");
+    }
+    if (email && !email.includes("@")) {
+        throw new Error("Email invalide");
+    }
+
+    this.name = name.trim();
+    this.age = age;
+    this.email = email || null;
+
+    this.toString = function() {
+        return `User(${this.name}, ${this.age})`;
+    };
+}
+
+// Tests
+try {
+    let u1 = new User("Alice", 30, "alice@example.com");
+    console.log(u1.toString()); // "User(Alice, 30)"
+
+    let u2 = new User("", 25); // doit lever une erreur
+} catch (e) {
+    console.error("Erreur capturée :", e.message);
+}
+
+try {
+    let u3 = new User("Bob", -5); // doit lever une erreur
+} catch (e) {
+    console.error("Erreur capturée :", e.message);
+}
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Constructeur BankAccount</h3>
+    <p>
+        Crée un constructeur <code>BankAccount(owner, initialBalance)</code> avec les méthodes <code>deposit(amount)</code>, <code>withdraw(amount)</code> et <code>getBalance()</code>. Le solde ne peut pas passer en dessous de 0.
+    </p>
+    <pre><code>// Ta réponse ici
+function BankAccount(owner, initialBalance) {
+    this.owner = owner;
+    let _balance = initialBalance || 0; // variable privée via closure
+
+    this.deposit = function(amount) {
+        if (amount <= 0) throw new Error("Le montant doit être positif");
+        _balance += amount;
+        console.log(`Dépôt de ${amount}€. Solde : ${_balance}€`);
+        return this; // pour le chaînage
+    };
+
+    this.withdraw = function(amount) {
+        // Ta réponse ici
+
+    };
+
+    this.getBalance = function() {
+        return _balance;
+    };
+
+    this.toString = function() {
+        return `Compte de ${this.owner} : ${_balance}€`;
+    };
+}
+
+let account = new BankAccount("Alice", 1000);
+account.deposit(500).deposit(200);  // chaînable
+account.withdraw(300);
+account.withdraw(2000); // doit afficher un message d'erreur ou refuser
+console.log(account.getBalance());
+console.log(account.toString());
+</code></pre>
+    <p class="hint">
+        Note l'utilisation de <code>let _balance</code> — c'est une closure ! La variable est accessible aux méthodes mais pas directement depuis l'extérieur. C'est un pattern de "propriété privée" en ES5.
+    </p>
+</div>
+
+<div class="bonus">
+    <h3>B3 — Constructeur StringBuilder</h3>
+    <p>
+        Crée un constructeur <code>StringBuilder(initialStr)</code> avec les méthodes <code>append(str)</code>, <code>prepend(str)</code>, <code>insert(pos, str)</code>, <code>replace(search, replacement)</code> et <code>toString()</code>. Toutes les méthodes de modification retournent <code>this</code> pour le chaînage.
+    </p>
+    <pre><code>// Ta réponse ici
+function StringBuilder(initialStr) {
+    this._str = initialStr || "";
+
+    this.append = function(str) {
+        this._str += str;
+        return this;
+    };
+
+    this.prepend = function(str) {
+        this._str = str + this._str;
+        return this;
+    };
+
+    this.insert = function(pos, str) {
+        // Insère str à la position pos
+
+        return this;
+    };
+
+    this.replace = function(search, replacement) {
+        // Remplace la première occurrence
+
+        return this;
+    };
+
+    this.toString = function() {
+        return this._str;
+    };
+}
+
+let sb = new StringBuilder("monde");
+let result = sb
+    .prepend("Bonjour, ")
+    .append(" !")
+    .replace("monde", "JavaScript")
+    .toString();
+
+console.log(result); // "Bonjour, JavaScript !"
+</code></pre>
+</div>
+
+</body>
+</html>

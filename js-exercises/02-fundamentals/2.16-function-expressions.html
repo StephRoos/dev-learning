@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.16 - Expressions de fonctions - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+        .fundamental { background: #0a2e0a; border-left: 4px solid #00ff88; padding: 10px 15px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+        .comparison pre { margin: 0; }
+        @media (max-width: 600px) { .comparison { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<h1>2.16 - Expressions de fonctions</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <div class="comparison">
+        <div>
+            <strong style="color:#00d4ff">Function Declaration</strong>
+            <pre><code>function sayHi() {
+    alert("Hi");
+}</code></pre>
+        </div>
+        <div>
+            <strong style="color:#7b68ee">Function Expression</strong>
+            <pre><code>let sayHi = function() {
+    alert("Hi");
+};</code></pre>
+        </div>
+    </div>
+    <ul>
+        <li><strong>Hoisting</strong> : les déclarations sont "hissées" — utilisables avant leur définition dans le code. Les expressions ne le sont PAS.</li>
+        <li><strong>Scope de bloc</strong> : une Function Declaration dans un bloc <code>{ }</code> n'est visible QUE dans ce bloc (en mode strict)</li>
+        <li><strong>Callbacks</strong> : passer une fonction en argument à une autre fonction pour qu'elle soit appelée plus tard</li>
+        <li><strong>Fonctions anonymes</strong> : expressions sans nom, souvent utilisées comme callbacks</li>
+        <li>Les fonctions sont des valeurs — on peut les assigner, les passer, les retourner</li>
+    </ul>
+    <div class="fundamental">
+        FONDAMENTAL : les callbacks sont la base de la programmation asynchrone en JavaScript. Comprendre "passer une fonction en argument" est essentiel.
+    </div>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Quelle est la différence ?</h3>
+    <p>Observe ces deux codes. L'un fonctionne, l'autre génère une erreur. Lequel ? Pourquoi ?</p>
+    <pre><code>// Code A
+sayHi(); // Appelé AVANT la définition
+function sayHi() {
+    console.log("Hi from declaration!");
+}
+
+// Code B
+greet(); // Appelé AVANT la définition
+let greet = function() {
+    console.log("Hi from expression!");
+};</code></pre>
+    <p>Code A : <strong>fonctionne / erreur ?</strong></p>
+    <p>Code B : <strong>fonctionne / erreur ?</strong></p>
+    <p class="hint">Le "hoisting" (levée) est ce qui différencie les deux. Cherche ce terme si tu ne le connais pas encore.</p>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — Pourquoi ce code échoue-t-il ?</h3>
+    <p>Identifie pourquoi ce code ne fonctionne pas et propose une correction :</p>
+    <pre><code>let age = 20;
+
+if (age >= 18) {
+    function welcome() {
+        console.log("Bienvenue !");
+    }
+} else {
+    function welcome() {
+        console.log("Accès refusé.");
+    }
+}
+
+welcome(); // Erreur en mode strict !</code></pre>
+    <p class="hint">Les Function Declarations dans un bloc <code>{ }</code> sont limitées à ce bloc. Comment utiliser une Function Expression pour corriger ça ?</p>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — Passer une fonction en callback</h3>
+    <p>Écrire une fonction <code>doOperation(a, b, operation)</code> qui prend deux nombres et une fonction <code>operation</code>, et retourne le résultat de <code>operation(a, b)</code>.</p>
+    <pre><code>function add(x, y) { return x + y; }
+function multiply(x, y) { return x * y; }
+
+doOperation(3, 4, add);       // → 7
+doOperation(3, 4, multiply);  // → 12
+doOperation(10, 2, function(x, y) { return x - y; }); // → 8 (fonction anonyme inline)</code></pre>
+    <p class="hint">La fonction <code>operation</code> est un callback — on ne l'appelle pas quand on la passe, on la passe comme valeur. Note l'absence de () lors du passage.</p>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — ask(question, yes, no) avec callbacks</h3>
+    <p>Écrire une fonction <code>ask(question, yes, no)</code> qui :</p>
+    <ul>
+        <li>Pose une question avec <code>confirm()</code></li>
+        <li>Appelle <code>yes()</code> si l'utilisateur confirme</li>
+        <li>Appelle <code>no()</code> s'il refuse</li>
+    </ul>
+    <pre><code>ask(
+    "Acceptes-tu les conditions ?",
+    function() { console.log("Merci d'avoir accepté !"); },
+    function() { console.log("Dommage..."); }
+);</code></pre>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Tableau de fonctions</h3>
+    <p>Créer un tableau contenant plusieurs opérations mathématiques (addition, soustraction, carré, valeur absolue) et les exécuter en boucle avec les valeurs 4 et 2 :</p>
+    <pre><code>let operations = [
+    function(a, b) { ... },  // addition
+    function(a, b) { ... },  // soustraction
+    // ...
+];
+
+// Appeler chaque fonction avec a=4, b=2
+// Afficher : 6, 2, 16 (4²), 2 (|2|), ...</code></pre>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Mini-système d'événements</h3>
+    <p>Implémenter un système simple d'événements avec :</p>
+    <ul>
+        <li><code>on(eventName, callback)</code> — enregistre un callback pour un événement</li>
+        <li><code>emit(eventName, data)</code> — déclenche tous les callbacks de cet événement</li>
+    </ul>
+    <pre><code>on("login", function(user) { console.log("Bienvenue", user); });
+on("login", function(user) { console.log("Log: connexion de", user); });
+on("logout", function(user) { console.log("Au revoir", user); });
+
+emit("login", "Alice");
+// Bienvenue Alice
+// Log: connexion de Alice
+
+emit("logout", "Alice");
+// Au revoir Alice</code></pre>
+    <p class="hint">Utilise un objet <code>{}</code> comme "registre" d'événements. Chaque clé est un nom d'événement, sa valeur est un tableau de callbacks.</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Declaration vs Expression : hoisting
+// ============================================================
+console.log("EX1 :");
+
+// Code A fonctionne grâce au hoisting :
+sayHi(); // Fonctionne ! La déclaration est hissée au sommet du scope
+function sayHi() {
+    console.log("Ex1 - Hi from declaration! (hoisting fonctionne)");
+}
+
+// Code B échoue : ReferenceError (en mode strict) ou undefined (en mode non-strict)
+// car la variable 'greet' est déclarée avec let (temporal dead zone) avant l'assignation
+try {
+    greet(); // Erreur !
+} catch(e) {
+    console.log("Ex1 - Code B erreur :", e.message);
+}
+let greet = function() {
+    console.log("Ex1 - Hi from expression!");
+};
+
+// Après l'assignation, ça fonctionne :
+greet(); // Fonctionne maintenant
+
+
+// ============================================================
+// EX2 — Function Declaration dans un bloc
+// ============================================================
+console.log("\nEX2 :");
+
+let age = 20;
+
+// Problème : la déclaration dans un bloc est limitée à ce bloc
+// Solution : utiliser une variable + Function Expression en dehors du bloc
+let welcome;
+
+if (age >= 18) {
+    welcome = function() {   // Function Expression assignée à une variable externe
+        console.log("Ex2 - Bienvenue !");
+    };
+} else {
+    welcome = function() {
+        console.log("Ex2 - Accès refusé.");
+    };
+}
+
+welcome(); // Fonctionne car welcome est définie dans le scope externe
+
+
+// ============================================================
+// EX3 — doOperation avec callback
+// ============================================================
+console.log("\nEX3 :");
+
+function doOperation(a, b, operation) {
+    // Ta réponse ici :
+    return operation(a, b);
+}
+
+function add(x, y) { return x + y; }
+function multiply(x, y) { return x * y; }
+
+console.log("Ex3 :", doOperation(3, 4, add));                              // 7
+console.log("Ex3 :", doOperation(3, 4, multiply));                         // 12
+console.log("Ex3 :", doOperation(10, 2, function(x, y) { return x - y; })); // 8
+
+
+// ============================================================
+// BONUS 1 — ask avec callbacks
+// ============================================================
+function ask(question, yes, no) {
+    // Décommente pour tester (ouvre un popup) :
+    // if (confirm(question)) {
+    //     yes();
+    // } else {
+    //     no();
+    // }
+    console.log("B1 - ask() définie (décommente pour tester avec confirm)");
+}
+
+// ask(
+//     "Acceptes-tu les conditions ?",
+//     function() { console.log("Merci d'avoir accepté !"); },
+//     function() { console.log("Dommage..."); }
+// );
+
+
+// ============================================================
+// BONUS 2 — Tableau de fonctions
+// ============================================================
+console.log("\nBONUS 2 :");
+
+let operations = [
+    function(a, b) { return a + b; },         // addition
+    function(a, b) { return a - b; },         // soustraction
+    function(a, _b) { return a * a; },        // carré de a
+    function(_a, b) { return Math.abs(b); },  // valeur absolue de b
+];
+
+let names = ["addition", "soustraction", "carré", "abs"];
+
+// Ta réponse ici (boucle sur operations) :
+// for (let i = 0; i < operations.length; i++) {
+//     console.log(`B2 - ${names[i]}(4, 2) =`, operations[i](4, 2));
+// }
+
+
+// ============================================================
+// BONUS 3 — Mini-système d'événements
+// ============================================================
+console.log("\nBONUS 3 :");
+
+// Ta réponse ici :
+// let events = {};
+//
+// function on(eventName, callback) {
+//     if (!events[eventName]) {
+//         events[eventName] = [];
+//     }
+//     events[eventName].push(callback);
+// }
+//
+// function emit(eventName, data) {
+//     if (!events[eventName]) return;
+//     for (let callback of events[eventName]) {
+//         callback(data);
+//     }
+// }
+//
+// on("login", function(user) { console.log("B3 - Bienvenue", user); });
+// on("login", function(user) { console.log("B3 - Log: connexion de", user); });
+// on("logout", function(user) { console.log("B3 - Au revoir", user); });
+//
+// emit("login", "Alice");
+// emit("logout", "Alice");
+</script>
+
+</body>
+</html>

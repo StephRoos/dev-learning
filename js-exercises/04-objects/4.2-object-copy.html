@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.2 Copie d'objets, références - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.2 — Copie d'objets et références</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Primitifs copiés par valeur</strong> : <code>let b = a</code> crée une copie indépendante</li>
+        <li><strong>Objets copiés par référence</strong> : <code>let b = a</code> — b et a pointent vers le MÊME objet</li>
+        <li><strong>Object.assign(dest, src)</strong> : copie superficielle des propriétés dans dest</li>
+        <li><strong>Spread operator</strong> : <code>let copy = { ...original }</code> — copie superficielle aussi</li>
+        <li><strong>Copie superficielle</strong> : les propriétés de premier niveau sont copiées, mais les objets imbriqués restent partagés</li>
+        <li><strong>Copie profonde</strong> : <code>structuredClone(obj)</code> — copie récursive complète (ES2022)</li>
+    </ul>
+</div>
+
+<pre><code>// Référence partagée — DANGER
+let user = { name: "Alice" };
+let admin = user;     // même référence !
+admin.name = "Bob";
+console.log(user.name); // "Bob" — user est aussi modifié !
+
+// Copie superficielle — OK pour objets plats
+let copy = Object.assign({}, user);
+// ou : let copy = { ...user };
+
+// Copie profonde — pour objets imbriqués
+let deep = structuredClone(user);
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Prédire le résultat</h3>
+    <p>
+        Lis ce code attentivement. <strong>Avant d'exécuter</strong>, prédit ce que chaque <code>console.log</code> va afficher. Ensuite vérifie dans la console du navigateur.
+    </p>
+    <pre><code>let a = { value: 10 };
+let b = a;
+
+b.value = 99;
+console.log(a.value); // ??? Que vaut a.value ?
+
+let c = { value: 10 };
+let d = { value: 10 };
+console.log(c === d);  // ??? true ou false ?
+console.log(c === c);  // ??? true ou false ?
+
+// Ta prédiction ici (en commentaire) :
+// a.value vaut : ___
+// c === d vaut  : ___
+// c === c vaut  : ___
+</code></pre>
+    <p class="hint">
+        Souviens-toi : deux objets sont === seulement s'ils référencent exactement le même objet en mémoire, pas s'ils ont les mêmes valeurs.
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Copier avec Object.assign</h3>
+    <p>
+        Crée un objet <code>original</code> avec <code>name</code>, <code>age</code> et <code>city</code>. Fais une copie avec <code>Object.assign</code>, modifie la copie, et vérifie que l'original n'est pas affecté.
+    </p>
+    <pre><code>// Ta réponse ici
+let original = {
+    name: "Marie",
+    age: 28,
+    city: "Paris"
+};
+
+// Copier avec Object.assign
+
+
+// Modifier la copie (change name et city)
+
+
+// Vérifier
+console.log("Original :", original); // ne doit pas avoir changé
+console.log("Copie :", copy);        // doit avoir les nouvelles valeurs
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Le piège de la copie superficielle</h3>
+    <p>
+        Voici un objet avec un objet imbriqué. Fais une copie superficielle avec spread (<code>{ ...obj }</code>), modifie l'adresse dans la copie, et observe ce qui se passe dans l'original.
+    </p>
+    <pre><code>// Ta réponse ici
+let user = {
+    name: "Lucas",
+    address: {
+        city: "Lyon",
+        zip: "69000"
+    }
+};
+
+// Copie superficielle avec spread
+let userCopy = { ...user };
+
+// Modifie userCopy.address.city
+userCopy.address.city = "Bordeaux";
+
+// Que vaut user.address.city maintenant ?
+console.log(user.address.city);      // ???
+console.log(userCopy.address.city);  // ???
+
+// Explication : pourquoi est-ce que les deux changent ?
+// (réponds en commentaire)
+</code></pre>
+    <p class="hint">
+        La copie superficielle copie la référence vers address, pas l'objet address lui-même.
+    </p>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Implémenter deepClone</h3>
+    <p>
+        Implémente une fonction <code>deepClone(obj)</code> qui fait une copie profonde d'un objet contenant des objets et des tableaux imbriqués (sans utiliser <code>structuredClone</code>).
+    </p>
+    <p class="hint">
+        Utilise la récursivité. Pour chaque propriété : si c'est un objet, clone-le récursivement ; si c'est un tableau, map sur ses éléments ; sinon, copie la valeur telle quelle.
+    </p>
+    <pre><code>// Ta réponse ici
+function deepClone(obj) {
+    // Cas de base : primitif ou null
+
+    // Cas tableau
+
+    // Cas objet : parcourir les propriétés récursivement
+
+}
+
+// Test
+let original = {
+    name: "Test",
+    scores: [1, 2, 3],
+    address: {
+        city: "Paris",
+        coords: { lat: 48.8, lng: 2.3 }
+    }
+};
+
+let clone = deepClone(original);
+clone.address.city = "Lyon";
+clone.scores.push(4);
+
+console.log(original.address.city); // "Paris" — inchangé
+console.log(original.scores);       // [1, 2, 3] — inchangé
+console.log(clone.address.city);    // "Lyon"
+console.log(clone.scores);          // [1, 2, 3, 4]
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Le piège à 3 niveaux</h3>
+    <p>
+        Crée un objet imbriqué sur 3 niveaux, fais une copie superficielle et démontre que seul le premier niveau est vraiment copié. Ensuite utilise <code>structuredClone</code> pour résoudre le problème.
+    </p>
+    <pre><code>// Ta réponse ici
+let config = {
+    app: {
+        server: {
+            host: "localhost",
+            port: 3000
+        }
+    }
+};
+
+// 1. Copie superficielle et démonstration du problème
+
+
+// 2. Copie profonde avec structuredClone et vérification
+
+
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B3 — structuredClone et ses limitations</h3>
+    <p>
+        <code>structuredClone</code> ne peut pas cloner certaines choses. Teste ce qui fonctionne et ce qui provoque une erreur. Documente tes résultats en commentaires.
+    </p>
+    <pre><code>// structuredClone fonctionne avec :
+let obj1 = { date: new Date(), arr: [1, 2, 3], nested: { a: 1 } };
+let clone1 = structuredClone(obj1);
+console.log(clone1.date instanceof Date); // true — Date est clonée !
+
+// structuredClone échoue avec :
+// Teste chacun et note ce qui se passe
+
+// 1. Fonctions
+try {
+    let obj2 = { fn: () => "hello" };
+    let clone2 = structuredClone(obj2);
+    console.log(clone2.fn); // ???
+} catch (e) {
+    console.log("Erreur avec fonctions :", e.message);
+}
+
+// 2. Symboles comme valeurs
+try {
+    let sym = Symbol("test");
+    let obj3 = { sym: sym };
+    let clone3 = structuredClone(obj3);
+    console.log(clone3.sym); // ???
+} catch (e) {
+    console.log("Erreur avec Symbol :", e.message);
+}
+
+// 3. Ta conclusion en commentaire :
+// structuredClone peut cloner : ___
+// structuredClone NE PEUT PAS cloner : ___
+</code></pre>
+</div>
+
+</body>
+</html>

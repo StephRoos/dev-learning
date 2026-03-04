@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.4 Tableaux - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.4 — Tableaux</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <p><strong>Tableaux = objets spéciaux</strong> : les tableaux sont des objets avec des clés numériques ordonnées. Ils sont passés <strong>par référence</strong>.</p>
+    <pre><code>// Déclaration
+let arr = [1, 2, 3];
+let arr2 = new Array(3); // tableau de 3 cases vides — rarement utile
+
+// Modification (depuis la fin)
+arr.push(4);   // ajoute en fin → [1, 2, 3, 4]
+arr.pop();     // retire en fin → retourne 4
+
+// Modification (depuis le début) — LENT sur grands tableaux
+arr.unshift(0); // ajoute en début → [0, 1, 2, 3]
+arr.shift();    // retire en début → retourne 0
+
+// Itération
+for (let item of arr) { }     // recommandé pour les valeurs
+for (let i = 0; i &lt; arr.length; i++) { } // si tu as besoin des index</code></pre>
+    <p class="hint">Fondamental : ne jamais utiliser <code>for...in</code> sur un tableau — c'est fait pour les objets et peut parcourir des propriétés inattendues.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Copie par référence</h3>
+    <p>Explique ce que fait ce code. Est-ce que <code>arr</code> est copié ou partagé ?</p>
+    <script>
+    // Exercice 1 — Is array copied?
+    // Ta réponse ici
+
+    let fruits = ["Pomme", "Orange", "Poire"];
+
+    let autreFruits = fruits; // copie ou référence ?
+
+    autreFruits.push("Citron");
+
+    // Que vaut fruits maintenant ?
+    // console.log(fruits.length); // 3 ou 4 ?
+
+    // Explication (en commentaire) :
+    // Les tableaux sont des objets. L'affectation copie la RÉFÉRENCE,
+    // pas le tableau lui-même. Les deux variables pointent vers le même tableau.
+
+    // Pour faire une vraie copie :
+    // let copie = [...fruits];  // spread operator
+    // let copie = fruits.slice(); // ou .slice() sans arguments
+    </script>
+    <p class="hint">Fondamental : les objets (et tableaux) sont passés <strong>par référence</strong>. Les primitifs sont passés <strong>par valeur</strong>.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Opérations sur un tableau</h3>
+    <p>Réalise ces opérations dans l'ordre en utilisant les méthodes push, pop, shift, unshift.</p>
+    <script>
+    // Exercice 2 — Array operations
+    // Ta réponse ici
+
+    // 1. Crée un tableau vide styles
+    // let styles = [];
+
+    // 2. Ajoute "Jazz" et "Blues" (à la fin)
+    // styles.push(...);
+
+    // 3. Remplace la valeur en milieu de tableau (index 1) par "Classics"
+    // styles[1] = ...;
+
+    // 4. Ajoute "Rap" au début et "Reggae" à la fin
+    // styles.unshift(...);
+    // styles.push(...);
+
+    // 5. Supprime le premier élément et affiche-le
+    // let first = styles.shift();
+    // console.log(first);
+
+    // 6. Affiche le tableau final
+    // console.log(styles);
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Appel dans un contexte de tableau</h3>
+    <p>Que retourne ce code ? Explique pourquoi.</p>
+    <script>
+    // Exercice 3 — Calling in an array context
+    // Ta réponse ici
+
+    let arr = ["a", "b"];
+
+    arr.push(function() {
+        console.log(this);
+    });
+
+    // Que fait ceci ?
+    // arr[2]();
+
+    // Explications à écrire ici :
+    // arr[2] est la fonction qu'on vient d'ajouter
+    // En l'appelant avec arr[2](), le contexte (this) est... ?
+    // (this dans un appel de méthode d'objet est l'objet lui-même)
+    // Donc this = arr
+
+    // Vérifie : décommenter pour tester
+    // arr[2]();
+    </script>
+    <p class="hint">Quand une fonction est appelée comme <code>objet.methode()</code>, <code>this</code> est l'objet. Ici, l'objet c'est le tableau <code>arr</code>.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 4 — Saisir et sommer des nombres</h3>
+    <p>Demande des nombres à l'utilisateur via prompt jusqu'à ce qu'il entre une string vide. Stocke-les dans un tableau, puis affiche la somme.</p>
+    <script>
+    // Exercice 4 — Sum input numbers
+    // Ta réponse ici
+
+    function sumInputNumbers() {
+        let nombres = [];
+
+        // Boucler tant que l'utilisateur entre quelque chose
+        // while (true) {
+        //     let saisie = prompt("Entrez un nombre (vide pour arrêter):");
+        //     if (saisie === "" || saisie === null) break;
+        //     nombres.push(+saisie); // convertir en nombre avant de stocker
+        // }
+
+        // Calculer la somme
+        // let sum = 0;
+        // for (let n of nombres) {
+        //     sum += n;
+        // }
+
+        // alert("Somme : " + sum);
+        // return sum;
+    }
+
+    // sumInputNumbers(); // décommenter pour tester
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 5 — Sous-tableau de somme maximale (algorithme de Kadane)</h3>
+    <p>Trouve le sous-tableau contigu dont la somme est maximale.</p>
+    <pre><code>// Exemple : [-1, 2, 3, -9, 11]
+// Sous-tableau maximal : [11] → somme = 11
+
+// Exemple : [-1, 2, 3, -9, 2, 3, 7, -1, 4]
+// Sous-tableau maximal : [2, 3, 7, -1, 4] → somme = 15</code></pre>
+    <script>
+    // Exercice 5 — A maximal subarray (algorithme de Kadane)
+    // Ta réponse ici
+
+    function getMaxSubSum(arr) {
+        // L'algorithme de Kadane :
+        // On parcourt le tableau en maintenant deux variables :
+        // - currentSum : somme courante du sous-tableau en cours
+        // - maxSum : meilleure somme trouvée jusqu'ici
+
+        // Si currentSum devient négative, on repart de 0 (on abandonne le sous-tableau)
+
+        // Ta réponse ici
+    }
+
+    // Tests
+    // console.log(getMaxSubSum([-1, 2, 3, -9]));         // 5
+    // console.log(getMaxSubSum([2, -1, 2, 3, -9]));      // 6
+    // console.log(getMaxSubSum([-1, 2, 3, -9, 11]));     // 11
+    // console.log(getMaxSubSum([-2, -1, 1, 2]));         // 3
+    // console.log(getMaxSubSum([100, -9, 2, -3, 5]));    // 95
+    // console.log(getMaxSubSum([1, 2, 3]));              // 6
+    </script>
+    <p class="hint">L'algorithme de Kadane est un <strong>classique</strong> des entretiens techniques. Complexité O(n) — une seule boucle suffit.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Rotation d'un tableau</h3>
+    <p>Écris <code>rotate(arr, k)</code> qui décale tous les éléments de k positions vers la droite (de façon circulaire).</p>
+    <script>
+    // Bonus 1 — Rotation d'un tableau
+    // Ta réponse ici
+
+    function rotate(arr, k) {
+        // [1, 2, 3, 4, 5] avec k=2 → [4, 5, 1, 2, 3]
+        // Indice : utilise slice et le spread operator ou concat
+        // Attention aux cas où k > arr.length (utilise le modulo %)
+    }
+
+    // Tests
+    // console.log(rotate([1, 2, 3, 4, 5], 2));  // [4, 5, 1, 2, 3]
+    // console.log(rotate([1, 2, 3], 5));         // [2, 3, 1] (5 % 3 = 2)
+    // console.log(rotate([1, 2, 3], 3));         // [1, 2, 3] (rotation complète)
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Supprimer les doublons (sans Set)</h3>
+    <p>Écris <code>unique(arr)</code> qui retourne un tableau sans doublons, sans utiliser Set.</p>
+    <script>
+    // Bonus 2 — Supprimer les doublons sans Set
+    // Ta réponse ici
+
+    function unique(arr) {
+        // Méthode : construire un nouveau tableau en ajoutant
+        // uniquement les éléments pas encore présents (avec indexOf ou includes)
+    }
+
+    // Tests
+    // console.log(unique([1, 2, 2, 3, 1, 4]));   // [1, 2, 3, 4]
+    // console.log(unique(["a", "b", "a", "c"])); // ["a", "b", "c"]
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Aplatir un tableau imbriqué</h3>
+    <p>Implémente <code>flatten(arr)</code> qui aplatit un tableau de tableaux (un seul niveau de profondeur).</p>
+    <script>
+    // Bonus 3 — Flatten
+    // Ta réponse ici
+
+    function flatten(arr) {
+        // Version simple : concat avec spread
+        // [].concat(...arr)
+
+        // Ou avec reduce :
+        // arr.reduce((acc, val) => acc.concat(val), [])
+
+        // Note : arr.flat() existe nativement en ES2019 pour info
+    }
+
+    // Tests
+    // console.log(flatten([[1, 2], [3, 4], [5]]));  // [1, 2, 3, 4, 5]
+    // console.log(flatten([[1], [], [2, 3]]));       // [1, 2, 3]
+    </script>
+</div>
+
+</body>
+</html>

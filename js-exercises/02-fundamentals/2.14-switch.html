@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.14 - L'instruction switch - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+        .warning { background: #2e1a00; border-left: 4px solid #ffa500; padding: 10px 15px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+    </style>
+</head>
+<body>
+
+<h1>2.14 - L'instruction "switch"</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><code>switch (expression)</code> compare l'expression avec chaque <code>case</code> via <strong>égalité stricte</strong> (<code>===</code>)</li>
+        <li><code>break</code> est indispensable — sans lui, l'exécution "tombe" dans le case suivant (<em>fall-through</em>)</li>
+        <li><code>default</code> s'exécute si aucun case ne correspond (optionnel, mais bonne pratique)</li>
+        <li><strong>Groupement de cases</strong> : plusieurs cases sans break entre eux partagent le même code</li>
+        <li><strong>Comparaison stricte</strong> : <code>switch (x)</code> avec x = "3" ne match PAS <code>case 3:</code> (nombre)</li>
+    </ul>
+    <div class="warning">
+        Piège classique : oublier un <code>break</code> provoque un "fall-through" — l'exécution continue dans le case suivant même si la valeur ne correspond pas !
+    </div>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Réécrire "switch" en "if"</h3>
+    <p>Convertir ce switch en chaîne de if/else if/else :</p>
+    <pre><code>switch (browser) {
+    case "Edge":
+        alert("You've got the Edge!");
+        break;
+    case "Chrome":
+    case "Firefox":
+    case "Safari":
+    case "Opera":
+        alert("Okay we support these browsers too");
+        break;
+    default:
+        alert("We hope that this page looks ok!");
+}</code></pre>
+    <p class="hint">Plusieurs cases groupés correspondent à un <code>||</code> dans le if.</p>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — Réécrire "if" en "switch"</h3>
+    <p>Convertir ce code en switch :</p>
+    <pre><code>let a = +prompt("a?", "");
+
+if (a == 0) {
+    alert(0);
+}
+if (a == 1) {
+    alert(1);
+}
+if (a == 2 || a == 3) {
+    alert("2,3");
+}</code></pre>
+    <p class="hint">Attention : utilise <code>+prompt()</code> pour avoir un nombre. Le switch compare en strict, donc le type doit correspondre.</p>
+    <p class="hint">Les conditions <code>a == 2</code> et <code>a == 3</code> peuvent être groupées avec deux cases sans break.</p>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — Convertisseur jour (1-7) en nom français</h3>
+    <p>Écrire une fonction <code>getDayName(dayNumber)</code> qui retourne le nom du jour :</p>
+    <pre><code>getDayName(1) // "Lundi"
+getDayName(7) // "Dimanche"
+getDayName(0) // "Jour invalide"</code></pre>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Calculatrice simple avec switch</h3>
+    <p>Écrire une fonction <code>calculate(a, operator, b)</code> :</p>
+    <pre><code>calculate(10, "+", 5)  // 15
+calculate(10, "-", 5)  // 5
+calculate(10, "*", 5)  // 50
+calculate(10, "/", 5)  // 2
+calculate(10, "/", 0)  // "Division par zéro"
+calculate(10, "^", 5)  // "Opérateur inconnu"</code></pre>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Classifier un caractère</h3>
+    <p>Écrire une fonction <code>classifyChar(char)</code> qui détermine si un caractère est :</p>
+    <ul>
+        <li>Une voyelle (a, e, i, o, u, y — majuscules incluses)</li>
+        <li>Un chiffre (0-9)</li>
+        <li>Un caractère spécial (tout le reste)</li>
+    </ul>
+    <p class="hint">On peut utiliser switch avec des cases pour chaque voyelle/chiffre, ou combiner avec une logique hybride. Essaie les deux !</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Réécrire switch en if/else
+// ============================================================
+let browser = "Chrome"; // Teste avec "Edge", "Chrome", "IE"
+
+// Version switch originale :
+switch (browser) {
+    case "Edge":
+        console.log("Ex1 (switch) : You've got the Edge!");
+        break;
+    case "Chrome":
+    case "Firefox":
+    case "Safari":
+    case "Opera":
+        console.log("Ex1 (switch) : Okay we support these browsers too");
+        break;
+    default:
+        console.log("Ex1 (switch) : We hope that this page looks ok!");
+}
+
+// Ta version if/else :
+// if (browser === "Edge") {
+//     console.log("Ex1 (if) : You've got the Edge!");
+// } else if (browser === "Chrome" || browser === "Firefox" || browser === "Safari" || browser === "Opera") {
+//     console.log("Ex1 (if) : Okay we support these browsers too");
+// } else {
+//     console.log("Ex1 (if) : We hope that this page looks ok!");
+// }
+
+
+// ============================================================
+// EX2 — Réécrire if en switch
+// ============================================================
+// La version if originale utilisait prompt(), on simule avec une variable :
+let a = 2; // Teste avec 0, 1, 2, 3
+
+// Version if originale (adaptée sans prompt) :
+if (a == 0) {
+    console.log("Ex2 (if) :", 0);
+}
+if (a == 1) {
+    console.log("Ex2 (if) :", 1);
+}
+if (a == 2 || a == 3) {
+    console.log("Ex2 (if) : 2,3");
+}
+
+// Ta version switch :
+// switch (a) {
+//     case 0:
+//         console.log("Ex2 (switch) :", 0);
+//         break;
+//     case 1:
+//         console.log("Ex2 (switch) :", 1);
+//         break;
+//     case 2:
+//     case 3:
+//         console.log("Ex2 (switch) : 2,3");
+//         break;
+// }
+
+
+// ============================================================
+// BONUS 1 — getDayName
+// ============================================================
+function getDayName(dayNumber) {
+    // Ta réponse ici :
+    // switch (dayNumber) {
+    //     case 1: return "Lundi";
+    //     case 2: return "Mardi";
+    //     case 3: return "Mercredi";
+    //     case 4: return "Jeudi";
+    //     case 5: return "Vendredi";
+    //     case 6: return "Samedi";
+    //     case 7: return "Dimanche";
+    //     default: return "Jour invalide";
+    // }
+}
+
+// console.log("B1 :", getDayName(1)); // "Lundi"
+// console.log("B1 :", getDayName(7)); // "Dimanche"
+// console.log("B1 :", getDayName(0)); // "Jour invalide"
+
+
+// ============================================================
+// BONUS 2 — Calculatrice avec switch
+// ============================================================
+function calculate(a, operator, b) {
+    // Ta réponse ici :
+    // switch (operator) {
+    //     case "+": return a + b;
+    //     case "-": return a - b;
+    //     case "*": return a * b;
+    //     case "/":
+    //         if (b === 0) return "Division par zéro";
+    //         return a / b;
+    //     default: return "Opérateur inconnu";
+    // }
+}
+
+// console.log("B2 :", calculate(10, "+", 5));  // 15
+// console.log("B2 :", calculate(10, "-", 5));  // 5
+// console.log("B2 :", calculate(10, "*", 5));  // 50
+// console.log("B2 :", calculate(10, "/", 5));  // 2
+// console.log("B2 :", calculate(10, "/", 0));  // "Division par zéro"
+// console.log("B2 :", calculate(10, "^", 5));  // "Opérateur inconnu"
+
+
+// ============================================================
+// BONUS 3 — classifyChar
+// ============================================================
+function classifyChar(char) {
+    // Ta réponse ici avec switch :
+    // switch (char.toLowerCase()) {
+    //     case "a": case "e": case "i": case "o": case "u": case "y":
+    //         return "voyelle";
+    //     case "0": case "1": case "2": case "3": case "4":
+    //     case "5": case "6": case "7": case "8": case "9":
+    //         return "chiffre";
+    //     default:
+    //         return "caractère spécial";
+    // }
+}
+
+// console.log("B3 :", classifyChar("a")); // "voyelle"
+// console.log("B3 :", classifyChar("E")); // "voyelle"
+// console.log("B3 :", classifyChar("5")); // "chiffre"
+// console.log("B3 :", classifyChar("@")); // "caractère spécial"
+// console.log("B3 :", classifyChar("z")); // "caractère spécial" (consonne)
+</script>
+
+</body>
+</html>

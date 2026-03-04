@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>3.6 - Polyfills et Transpilers - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .es6 { color: #00d4ff; }
+        .es5 { color: #ffa500; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th { background: #0f3460; padding: 10px; text-align: left; color: #00d4ff; }
+        td { padding: 10px; border-bottom: 1px solid #2a2a4a; }
+        .polyfill-tag { background: #533483; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; }
+        .transpiler-tag { background: #1a472a; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; }
+        .both-tag { background: #4a2a00; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+
+<h1>3.6 — Polyfills et Transpilers</h1>
+
+<div class="concept">
+    <h2>Différence fondamentale</h2>
+    <table>
+        <tr>
+            <th></th>
+            <th>Transpiler (ex: Babel)</th>
+            <th>Polyfill (ex: core-js)</th>
+        </tr>
+        <tr>
+            <td><strong>Quoi</strong></td>
+            <td>Convertit la syntaxe ES6+ en ES5</td>
+            <td>Ajoute des fonctionnalités manquantes au runtime</td>
+        </tr>
+        <tr>
+            <td><strong>Exemple</strong></td>
+            <td>arrow function → function classique</td>
+            <td>Array.includes pour vieux navigateurs</td>
+        </tr>
+        <tr>
+            <td><strong>Quand</strong></td>
+            <td>À la compilation / build</td>
+            <td>Au chargement de la page</td>
+        </tr>
+        <tr>
+            <td><strong>Résoud</strong></td>
+            <td>Problèmes de <strong>syntaxe</strong></td>
+            <td>Problèmes de <strong>méthodes/API manquantes</strong></td>
+        </tr>
+    </table>
+</div>
+
+<div class="concept">
+    <h2>Règle simple : transpiler ou polyfill ?</h2>
+    <ul>
+        <li><span class="transpiler-tag">TRANSPILER</span> Si tu peux réécrire la syntaxe à la main : arrow, template literals, destructuring, let/const, classes...</li>
+        <li><span class="polyfill-tag">POLYFILL</span> Si c'est une méthode ou une API qui n'existait pas : Array.includes, Object.assign, Promise, fetch...</li>
+        <li><span class="both-tag">LES DEUX</span> Pour les classes ES6 : Babel transpile la syntaxe + polyfill pour les méthodes d'instance éventuelles</li>
+    </ul>
+</div>
+
+<h2>Exercice 1 — Transpiler ES6+ en ES5 manuellement</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Réécris chaque snippet ES6+ en ES5 équivalent. Pas de raccourcis — c'est ce que Babel ferait automatiquement.</p>
+
+    <h3>1a — Arrow functions</h3>
+    <pre><code class="es6">// ES6+ (à transpiler)
+const doubler = x => x * 2;
+const additionner = (a, b) => a + b;
+const saluer = nom => {
+    let message = 'Bonjour, ' + nom;
+    return message;
+};</code></pre>
+    <pre><code>
+// Ta réponse ici : version ES5
+var doubler = function(x) {
+    // Ta réponse ici
+};
+// ...
+    </code></pre>
+
+    <h3>1b — Template literals</h3>
+    <pre><code class="es6">// ES6+ (à transpiler)
+let prenom = 'Alice';
+let age = 30;
+let message = `Bonjour ${prenom}, tu as ${age} ans.`;
+let multiLigne = `Ligne 1
+Ligne 2
+Ligne 3`;</code></pre>
+    <pre><code>
+// Ta réponse ici : version ES5
+var prenom = 'Alice';
+var age = 30;
+var message = // Ta réponse ici
+var multiLigne = // Ta réponse ici (pense à \n)
+    </code></pre>
+
+    <h3>1c — let/const et destructuring</h3>
+    <pre><code class="es6">// ES6+ (à transpiler)
+const PI = 3.14159;
+let [premier, deuxieme, ...reste] = [1, 2, 3, 4, 5];
+let { nom, age: annees, ville = 'Paris' } = utilisateur;</code></pre>
+    <pre><code>
+// Ta réponse ici : version ES5
+var PI = 3.14159; // const → var (même comportement en pratique pour Babel)
+var premier = // Ta réponse ici
+var deuxieme = // Ta réponse ici
+var reste = // Ta réponse ici
+var nom = utilisateur.nom;
+// ...
+    </code></pre>
+    <p class="hint">Pour le destructuring, Babel l'exprime juste avec des assignations classiques.</p>
+</div>
+
+<h2>Exercice 2 — Transpiler ou Polyfiller ?</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Pour chaque feature, indique si on a besoin d'un <span class="transpiler-tag">TRANSPILER</span>, d'un <span class="polyfill-tag">POLYFILL</span>, ou <span class="both-tag">LES DEUX</span>.</p>
+    <pre><code>// 1. Arrow functions
+const fn = x => x * 2;
+
+// 2. Array.includes()
+[1, 2, 3].includes(2);
+
+// 3. Template literals
+`Bonjour ${nom}`;
+
+// 4. Promise
+new Promise((resolve, reject) => { ... });
+
+// 5. Destructuring assignment
+const { a, b } = obj;
+
+// 6. Array.from()
+Array.from(nodeList);
+
+// 7. Classes ES6
+class Animal { constructor(nom) { this.nom = nom; } }
+
+// 8. Object.assign()
+Object.assign({}, obj1, obj2);
+
+// 9. Spread operator
+const fusion = { ...obj1, ...obj2 };
+
+// 10. fetch() API
+fetch('/api/data').then(r => r.json());
+
+// 11. async/await
+async function charger() { const data = await fetch('/api'); }
+
+// 12. String.padStart()
+'5'.padStart(3, '0'); // '005'</code></pre>
+    <pre><code>
+// Ta réponse ici :
+// 1. Arrow functions       → TRANSPILER (syntaxe)
+// 2. Array.includes()      → ?
+// 3. Template literals     → ?
+// 4. Promise               → ?
+// 5. Destructuring         → ?
+// 6. Array.from()          → ?
+// 7. Classes ES6           → ?
+// 8. Object.assign()       → ?
+// 9. Spread operator       → ?
+// 10. fetch()              → ?
+// 11. async/await          → ?
+// 12. String.padStart()    → ?
+    </code></pre>
+</div>
+
+<h2>Exercice 3 — Écrire un polyfill pour Array.includes</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Un polyfill suit toujours ce pattern :</p>
+    <ol>
+        <li>Vérifier si la méthode existe déjà (pour ne pas écraser la version native)</li>
+        <li>Si non, l'ajouter sur le prototype</li>
+    </ol>
+    <pre><code>// Structure d'un polyfill :
+if (!Array.prototype.includes) {
+    Array.prototype.includes = function(valeurCherchee) {
+        // Implémentation ici
+    };
+}</code></pre>
+    <p><strong>Comportement attendu :</strong></p>
+    <ul>
+        <li><code>[1, 2, 3].includes(2)</code> → <code>true</code></li>
+        <li><code>[1, 2, 3].includes(5)</code> → <code>false</code></li>
+        <li><code>[1, NaN, 3].includes(NaN)</code> → <code>true</code> (cas spécial : NaN !== NaN en JS !)</li>
+    </ul>
+    <p class="hint">Piste pour NaN : utilise <code>Number.isNaN(valeur)</code> pour détecter NaN, car <code>NaN === NaN</code> est false en JavaScript.</p>
+    <pre><code id="ex3-polyfill-code"></code></pre>
+    <pre><code>
+// Ta réponse ici : écris le polyfill complet
+if (!Array.prototype.includes) {
+    Array.prototype.includes = function(valeurCherchee) {
+        // Ta réponse ici
+    };
+}
+
+// Tests (décommente pour vérifier) :
+// console.log([1, 2, 3].includes(2));    // true
+// console.log([1, 2, 3].includes(5));    // false
+// console.log([1, NaN, 3].includes(NaN)); // true
+    </code></pre>
+    <button onclick="testerPolyfills()">Tester les polyfills de la page</button>
+    <p id="polyfill-results"></p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Polyfill pour String.prototype.startsWith</h3>
+    <p><code>'hello'.startsWith('he')</code> → <code>true</code></p>
+    <p><code>'hello'.startsWith('lo')</code> → <code>false</code></p>
+    <p><code>'hello'.startsWith('ll', 2)</code> → <code>true</code> (à partir de l'index 2)</p>
+    <p class="hint">Note le deuxième paramètre optionnel : <code>position</code> (défaut : 0).</p>
+    <pre><code>
+// Ta réponse ici
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(recherche, position) {
+        // Ta réponse ici
+        // n'oublie pas le paramètre position optionnel !
+    };
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Polyfill pour Object.assign</h3>
+    <p><code>Object.assign(cible, source1, source2)</code> : copie les propriétés de source1 et source2 dans cible, et retourne cible.</p>
+    <p class="hint">Pense à vérifier que les paramètres ne sont pas null/undefined, et à utiliser <code>hasOwnProperty</code> pour ne pas copier les propriétés héritées.</p>
+    <pre><code>
+// Ta réponse ici
+if (!Object.assign) {
+    Object.assign = function(cible, ...sources) {
+        // Ta réponse ici
+    };
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Comparer ES6 original et sortie Babel</h3>
+    <p>Voici du code ES6+ réel. Essaie de prédire ce que Babel produirait, puis vérifie sur <a href="https://babeljs.io/repl" target="_blank" style="color: #00d4ff;">babeljs.io/repl</a>.</p>
+    <pre><code class="es6">// Code ES6+ original
+class Animal {
+    constructor(nom) {
+        this.nom = nom;
+    }
+
+    parler() {
+        return `${this.nom} fait un bruit.`;
+    }
+}
+
+class Chien extends Animal {
+    parler() {
+        return `${this.nom} aboie.`;
+    }
+}
+
+const rex = new Chien('Rex');
+console.log(rex.parler());</code></pre>
+    <pre><code>
+// Ta prédiction : comment Babel transformerait-il ce code en ES5 ?
+// (Clue : les classes deviennent des fonctions constructeur + prototype)
+
+// Ensuite, va sur https://babeljs.io/repl
+// Colle le code, active "Presets: es2015"
+// Compare ta prédiction avec le résultat réel
+
+// Ta réponse (prédiction) :
+function Animal(nom) {
+    // Ta réponse ici
+}
+
+Animal.prototype.parler = function() {
+    // Ta réponse ici
+};
+
+// Chien extends Animal...
+// Ta réponse ici
+    </code></pre>
+    <p class="hint">Babel utilise un helper <code>_createClass</code> et <code>_inherits</code> pour gérer l'héritage. Le résultat réel sera plus complexe que ce qu'on peut prévoir manuellement — c'est normal.</p>
+</div>
+
+<script>
+    // Démonstration : polyfill Array.includes déjà défini pour la vérification
+    function testerPolyfills() {
+        let resultats = [];
+
+        // Test Array.includes (natif ou polyfill)
+        try {
+            let r1 = [1, 2, 3].includes(2);
+            let r2 = [1, 2, 3].includes(5);
+            let r3 = [1, NaN, 3].includes(NaN);
+            resultats.push(`Array.includes : ${r1} / ${r2} / ${r3} (attendu: true/false/true)`);
+        } catch(e) {
+            resultats.push('Array.includes : ERREUR - ' + e.message);
+        }
+
+        // Test String.startsWith (natif ou polyfill du bonus 1)
+        try {
+            let r1 = 'hello'.startsWith('he');
+            let r2 = 'hello'.startsWith('lo');
+            let r3 = 'hello'.startsWith('ll', 2);
+            resultats.push(`String.startsWith : ${r1} / ${r2} / ${r3} (attendu: true/false/true)`);
+        } catch(e) {
+            resultats.push('String.startsWith : ERREUR - ' + e.message);
+        }
+
+        // Test Object.assign (natif ou polyfill du bonus 2)
+        try {
+            let cible = { a: 1 };
+            let resultat = Object.assign(cible, { b: 2 }, { c: 3 });
+            resultats.push(`Object.assign : ${JSON.stringify(resultat)} (attendu: {"a":1,"b":2,"c":3})`);
+        } catch(e) {
+            resultats.push('Object.assign : ERREUR - ' + e.message);
+        }
+
+        document.getElementById('polyfill-results').innerHTML =
+            resultats.map(r => '<div style="margin: 5px 0; padding: 8px; background: #0d1117; border-radius: 4px;">' + r + '</div>').join('');
+    }
+
+    // Affiche le code de l'exercice 3
+    document.getElementById('ex3-polyfill-code').textContent =
+`// Exemple d'utilisation native (ES2016+)
+[1, 2, 3].includes(2);       // true
+[1, 2, 3].includes(5);       // false
+[1, NaN, 3].includes(NaN);   // true  ← cas spécial !
+
+// Avant ES2016, on utilisait indexOf :
+[1, 2, 3].indexOf(2) !== -1; // true  (ne gère pas NaN)`;
+</script>
+
+</body>
+</html>

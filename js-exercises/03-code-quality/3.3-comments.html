@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>3.3 - Commentaires - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .bad { color: #ff6b6b; }
+        .good { color: #51cf66; }
+    </style>
+</head>
+<body>
+
+<h1>3.3 — Commentaires</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Commentaire inutile</strong> : décrit CE QUE fait le code (visible sans commentaire)</li>
+        <li><strong>Commentaire utile</strong> : explique POURQUOI le code fait ça, ou un algorithme non-évident</li>
+        <li><strong>Auto-documentation</strong> : code si clair qu'il n'a pas besoin de commentaires</li>
+        <li><strong>JSDoc</strong> : format standard pour documenter les fonctions : <code>@param</code>, <code>@returns</code>, <code>@throws</code></li>
+        <li><strong>TODO/FIXME</strong> : commentaires temporaires acceptables pendant le développement</li>
+    </ul>
+</div>
+
+<div class="concept">
+    <h2>Commentaire inutile vs utile — exemples</h2>
+    <pre><code class="bad">// INUTILE : décrit l'évidence
+let age = 25; // assigne 25 à age
+i++; // incrémente i
+return false; // retourne false
+
+// INUTILE : reformule le nom de la fonction
+// Calcule la moyenne
+function calculerMoyenne(notes) { ... }</code></pre>
+    <pre><code class="good">// UTILE : explique une décision non-évidente
+// On utilise Math.floor et non Math.round pour éviter les faux positifs
+// lors de la vérification des droits d'accès par tranche d'âge
+let tranche = Math.floor(age / 10) * 10;
+
+// UTILE : algorithme complexe
+// Algorithme de Luhn : valide un numéro de carte bancaire
+// en alternant doubles et simples selon la position du chiffre
+function validerCarte(numero) { ... }</code></pre>
+</div>
+
+<h2>Exercice 1 — Identifier et supprimer les commentaires inutiles</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Ce code est plein de commentaires qui n'apportent rien. Identifie lesquels sont <strong>inutiles</strong> et réécris le code sans eux.</p>
+    <p>Un commentaire est inutile si on comprend exactement la même chose en lisant le code seul.</p>
+    <pre><code>// Fonction qui dit bonjour
+function direBonjour(prenom) {
+    // On crée le message
+    let message = 'Bonjour, ' + prenom + ' !';
+    // On retourne le message
+    return message;
+}
+
+// Déclare une variable compteur à 0
+let compteur = 0;
+
+// Boucle de 0 à 9
+for (let i = 0; i < 10; i++) {
+    // Incrémente le compteur
+    compteur++;
+    // Si le compteur est pair
+    if (compteur % 2 === 0) {
+        // Affiche le compteur
+        console.log(compteur);
+    }
+}
+
+// Tableau de fruits
+let fruits = ['pomme', 'banane', 'cerise'];
+
+// Trie le tableau par ordre alphabétique
+fruits.sort();
+
+// Affiche le premier fruit
+console.log(fruits[0]);</code></pre>
+    <pre><code>
+// Ta réponse ici : réécris le code sans les commentaires inutiles
+// (garde uniquement ceux qui seraient vraiment utiles, s'il y en a)
+    </code></pre>
+    <p class="hint">Piste : si tu supprimes un commentaire et le code reste aussi clair, c'est qu'il était inutile.</p>
+</div>
+
+<h2>Exercice 2 — Ajouter des commentaires utiles à un algorithme complexe</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Ces fonctions sont complexes et bénéficieraient de commentaires. Ajoute des commentaires qui expliquent <strong>le pourquoi</strong> et les <strong>étapes de l'algorithme</strong>.</p>
+    <pre><code>function chiffrerCesar(texte, decalage) {
+    return texte
+        .split('')
+        .map(char => {
+            let code = char.charCodeAt(0);
+            if (code >= 65 && code <= 90) {
+                return String.fromCharCode(((code - 65 + decalage) % 26) + 65);
+            }
+            if (code >= 97 && code <= 122) {
+                return String.fromCharCode(((code - 97 + decalage) % 26) + 97);
+            }
+            return char;
+        })
+        .join('');
+}
+
+function trouverPremiers(limite) {
+    let candidats = Array.from({ length: limite - 1 }, (_, i) => i + 2);
+    for (let i = 2; i <= Math.sqrt(limite); i++) {
+        candidats = candidats.filter(n => n === i || n % i !== 0);
+    }
+    return candidats;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : colle les fonctions avec tes commentaires ajoutés
+
+function chiffrerCesar(texte, decalage) {
+    // Ta réponse ici
+}
+
+function trouverPremiers(limite) {
+    // Ta réponse ici
+}
+    </code></pre>
+    <p class="hint">Piste : pour chiffrerCesar, explique les valeurs 65/90 et 97/122 (codes ASCII). Pour trouverPremiers, c'est le crible d'Ératosthène.</p>
+</div>
+
+<h2>Exercice 3 — Rendre le code auto-documenté</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Ce code a beaucoup de commentaires parce que les noms sont mauvais. Réécris-le avec de meilleurs noms pour que les commentaires deviennent superflus.</p>
+    <pre><code>// Vérifie si p a le droit d'accéder à la ressource r
+function check(p, r) {
+    // Si p n'est pas connecté, refus
+    if (!p.auth) return false;
+    // Récupère les droits de p
+    let d = p.perms;
+    // Vérifie si r est dans les droits
+    if (d.includes(r)) {
+        // Met à jour la date de dernier accès
+        p.la = new Date();
+        return true;
+    }
+    return false;
+}
+
+// Calcule le prix final après réduction et taxes
+function calc(p, r, t) {
+    // Applique la réduction
+    let pr = p * (1 - r);
+    // Ajoute les taxes
+    let pf = pr * (1 + t);
+    // Arrondit à 2 décimales
+    return Math.round(pf * 100) / 100;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : réécris sans commentaires, avec de bons noms
+function verifierAcces(utilisateur, ressource) {
+    // Ta réponse ici
+}
+
+function calculerPrixFinal(prixBase, tauxReduction, tauxTaxes) {
+    // Ta réponse ici
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Écrire de la documentation JSDoc</h3>
+    <p>Écris la documentation JSDoc complète pour ces 3 fonctions. Format JSDoc :</p>
+    <pre><code>/**
+ * Description de la fonction.
+ *
+ * @param {type} nom - Description du paramètre
+ * @param {type} [optionnel=defaut] - Paramètre optionnel avec valeur par défaut
+ * @returns {type} Description de ce qui est retourné
+ * @throws {Error} Quand est-ce que ça lève une erreur
+ */</code></pre>
+    <pre><code>// Fonction 1 : diviser deux nombres
+function diviser(a, b) {
+    if (b === 0) throw new Error('Division par zéro');
+    return a / b;
+}
+
+// Fonction 2 : filtrer un tableau d'utilisateurs
+function filtrerUtilisateurs(utilisateurs, age, actifSeulement = true) {
+    return utilisateurs.filter(u => {
+        return u.age >= age && (!actifSeulement || u.actif);
+    });
+}
+
+// Fonction 3 : formater une date
+function formaterDate(date, format = 'DD/MM/YYYY') {
+    let j = String(date.getDate()).padStart(2, '0');
+    let m = String(date.getMonth() + 1).padStart(2, '0');
+    let a = date.getFullYear();
+    return format.replace('DD', j).replace('MM', m).replace('YYYY', a);
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : ajoute la JSDoc au-dessus de chaque fonction
+
+/**
+ * ...
+ */
+function diviser(a, b) { ... }
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Transformer des commentaires en fonctions</h3>
+    <p>Quand un commentaire explique ce QUE fait un bloc de code, souvent c'est signe qu'on devrait extraire ce bloc en fonction. Applique ça ici :</p>
+    <pre><code>function traiterInscription(utilisateur) {
+    // Vérifier que l'email est valide
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(utilisateur.email)) {
+        return { succes: false, erreur: 'Email invalide' };
+    }
+
+    // Vérifier que le mot de passe est assez fort
+    if (utilisateur.motDePasse.length < 8 ||
+        !/[A-Z]/.test(utilisateur.motDePasse) ||
+        !/[0-9]/.test(utilisateur.motDePasse)) {
+        return { succes: false, erreur: 'Mot de passe trop faible' };
+    }
+
+    // Générer un token de vérification
+    let token = Math.random().toString(36).substring(2) +
+                Date.now().toString(36);
+
+    // Sauvegarder l'utilisateur
+    utilisateur.actif = false;
+    utilisateur.tokenVerification = token;
+    utilisateur.dateInscription = new Date();
+
+    return { succes: true, token };
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : extrais chaque bloc commenté en fonction séparée
+function emailEstValide(email) {
+    // Ta réponse ici
+}
+
+function motDePasseEstFort(motDePasse) {
+    // Ta réponse ici
+}
+
+function genererToken() {
+    // Ta réponse ici
+}
+
+function traiterInscription(utilisateur) {
+    // Ta réponse ici — maintenant sans commentaires !
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Documenter une recette algorithmique</h3>
+    <p>Cet algorithme de recherche binaire est un classique. Documente-le avec des commentaires de <strong>haut niveau</strong> qui expliquent la stratégie, pas les lignes individuelles.</p>
+    <p class="hint">Piste : explique la stratégie "diviser pour régner", pourquoi on calcule mid ainsi, et les 3 cas possibles.</p>
+    <pre><code>function rechercheBinaire(tableau, cible) {
+    let gauche = 0;
+    let droite = tableau.length - 1;
+
+    while (gauche <= droite) {
+        let milieu = Math.floor((gauche + droite) / 2);
+
+        if (tableau[milieu] === cible) {
+            return milieu;
+        }
+
+        if (tableau[milieu] < cible) {
+            gauche = milieu + 1;
+        } else {
+            droite = milieu - 1;
+        }
+    }
+
+    return -1;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : ajoute des commentaires de haut niveau qui expliquent
+// la stratégie de l'algorithme (pas chaque ligne)
+
+/**
+ * ...
+ */
+function rechercheBinaire(tableau, cible) {
+    // Ta réponse ici
+}
+    </code></pre>
+</div>
+
+</body>
+</html>

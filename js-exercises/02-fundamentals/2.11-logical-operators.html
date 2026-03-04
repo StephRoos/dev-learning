@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.11 - Opérateurs logiques - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1>2.11 - Opérateurs logiques</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><code>||</code> (OR) — retourne la <strong>première valeur truthy</strong>, ou la dernière valeur si toutes sont falsy</li>
+        <li><code>&&</code> (AND) — retourne la <strong>première valeur falsy</strong>, ou la dernière valeur si toutes sont truthy</li>
+        <li><code>!</code> (NOT) — inverse un booléen. <code>!!</code> convertit en booléen</li>
+        <li><strong>Court-circuit</strong> : <code>||</code> s'arrête au premier truthy, <code>&&</code> s'arrête au premier falsy</li>
+        <li><strong>Valeurs falsy</strong> : <code>false, 0, "", null, undefined, NaN</code></li>
+        <li>Priorité : <code>!</code> > <code>&&</code> > <code>||</code></li>
+    </ul>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Résultats de OR</h3>
+    <p>Prédis le résultat de chaque expression (sans l'exécuter d'abord) :</p>
+    <pre><code>null || 2
+null || 0 || "user"
+null || 0 || undefined
+null || 2 || "user"</code></pre>
+    <p class="hint">|| retourne la première valeur truthy, sinon la dernière valeur.</p>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — OR avec des alerts (court-circuit)</h3>
+    <p>Quel(s) alert(s) s'affichent ? Quelle valeur retourne l'expression ?</p>
+    <pre><code>alert( alert(1) || 2 || alert(3) );</code></pre>
+    <p class="hint"><code>alert()</code> retourne <code>undefined</code>. Le court-circuit s'arrête au premier truthy.</p>
+    <p>Prédiction : alerts affichés = <strong>????</strong>, résultat final = <strong>????</strong></p>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — Résultats de AND</h3>
+    <p>Prédis le résultat de chaque expression :</p>
+    <pre><code>1 && 0
+1 && 5
+null && 5
+0 && "no matter what"</code></pre>
+    <p class="hint">&& retourne la première valeur falsy, sinon la dernière valeur.</p>
+</div>
+
+<!-- EXERCICE 4 -->
+<div class="exercise">
+    <h3>Ex4 — AND avec des alerts</h3>
+    <p>Quel(s) alert(s) s'affichent ?</p>
+    <pre><code>alert( 1 && null && 2 );</code></pre>
+    <p class="hint">1 est truthy → on continue. null est falsy → court-circuit, on retourne null.</p>
+</div>
+
+<!-- EXERCICE 5 -->
+<div class="exercise">
+    <h3>Ex5 — Résultat de OR AND OR</h3>
+    <p>Quel est le résultat ? (attention à la priorité : && avant ||)</p>
+    <pre><code>null || (2 && 3) || 4</code></pre>
+    <p class="hint">Évalue d'abord le groupe entre parenthèses, puis les ||.</p>
+</div>
+
+<!-- EXERCICE 6 -->
+<div class="exercise">
+    <h3>Ex6 — Vérifier une tranche d'âge</h3>
+    <p>Écrire une condition <code>if</code> qui vérifie si <code>age</code> est entre 14 et 90 (inclus).</p>
+    <p class="hint">Utilise <code>&&</code> pour combiner deux comparaisons.</p>
+</div>
+
+<!-- EXERCICE 7 -->
+<div class="exercise">
+    <h3>Ex7 — Vérifier hors d'une tranche</h3>
+    <p>Écrire une condition qui vérifie si <code>age</code> est <strong>en dehors</strong> de la tranche 14-90.</p>
+    <p>Écris deux versions :</p>
+    <ul>
+        <li>Version avec <code>||</code></li>
+        <li>Version avec <code>!</code> (en niant la condition de l'Ex6)</li>
+    </ul>
+</div>
+
+<!-- EXERCICE 8 -->
+<div class="exercise">
+    <h3>Ex8 — Quel alert s'affiche ?</h3>
+    <p>Prédis quels alerts s'affichent pour <code>login = "Admin"</code> :</p>
+    <pre><code>let login = "Admin";
+
+if (login == "Employee" || login == "Director" || login == "Admin" || login == "Marketing") {
+    alert("Authorized");
+} else if (login == "") {
+    alert("Empty login");
+} else {
+    alert("Unknown user");
+}</code></pre>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — Fonction canVote(age, nationality)</h3>
+    <p>Écrire une fonction qui retourne <code>true</code> si une personne peut voter :</p>
+    <ul>
+        <li>Doit avoir 18 ans ou plus</li>
+        <li>Doit être de nationalité "FR" ou "EU"</li>
+        <li>Ne doit pas être sous tutelle (<code>underTutelage = false</code>)</li>
+    </ul>
+    <p>Teste avec plusieurs cas.</p>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Valider un mot de passe</h3>
+    <p>Écrire une fonction <code>validatePassword(password)</code> qui vérifie :</p>
+    <ul>
+        <li>Au moins 8 caractères (<code>password.length >= 8</code>)</li>
+        <li>Contient au moins un chiffre (<code>/\d/.test(password)</code>)</li>
+        <li>Contient au moins une majuscule (<code>/[A-Z]/.test(password)</code>)</li>
+    </ul>
+    <p>Retourner un message précis indiquant quelle règle est violée.</p>
+    <p class="hint">Utilise des <code>&&</code> et <code>||</code> pour combiner les règles.</p>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Simplifier des conditions imbriquées</h3>
+    <p>Réécrire ce code en une seule expression logique :</p>
+    <pre><code>function isEligible(user) {
+    if (user.age >= 18) {
+        if (user.hasAccount) {
+            if (!user.isBanned) {
+                return true;
+            }
+        }
+    }
+    return false;
+}</code></pre>
+    <p class="hint">Un <code>if</code> imbriqué est souvent un <code>&&</code>.</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Résultats de OR
+// ============================================================
+// Prédis d'abord, puis vérifie :
+console.log("Ex1 :");
+console.log(null || 2);               // Prédit : ??? — Résultat attendu : 2
+console.log(null || 0 || "user");     // Prédit : ??? — Résultat attendu : "user"
+console.log(null || 0 || undefined);  // Prédit : ??? — Résultat attendu : undefined
+console.log(null || 2 || "user");     // Prédit : ??? — Résultat attendu : 2
+
+
+// ============================================================
+// EX2 — OR avec alerts
+// ============================================================
+// Ne pas décommenter sans comprendre — ça ouvre des popups !
+// alert( alert(1) || 2 || alert(3) );
+// Explication :
+// 1. alert(1) s'exécute → affiche 1, retourne undefined (falsy)
+// 2. undefined || 2 → 2 est truthy, court-circuit, alert(3) ne s'exécute PAS
+// 3. alert(2) → affiche 2
+// Alerts affichés : 1, puis 2. L'alert(3) ne s'exécute jamais.
+
+
+// ============================================================
+// EX3 — Résultats de AND
+// ============================================================
+console.log("\nEx3 :");
+console.log(1 && 0);               // Prédit : ??? — Résultat attendu : 0
+console.log(1 && 5);               // Prédit : ??? — Résultat attendu : 5
+console.log(null && 5);            // Prédit : ??? — Résultat attendu : null
+console.log(0 && "no matter what"); // Prédit : ??? — Résultat attendu : 0
+
+
+// ============================================================
+// EX4 — AND avec alerts
+// ============================================================
+// alert( 1 && null && 2 );
+// 1 est truthy → continue. null est falsy → retourne null. alert(null) affiche "null".
+// alert(2) n'est JAMAIS exécuté.
+
+
+// ============================================================
+// EX5 — OR AND OR
+// ============================================================
+console.log("\nEx5 :");
+console.log(null || (2 && 3) || 4);
+// Étapes : (2 && 3) → 3 (truthy)
+// null || 3 → 3 (truthy, court-circuit)
+// Résultat : 3
+
+
+// ============================================================
+// EX6 — Tranche d'âge 14-90
+// ============================================================
+let age = 25; // Teste avec 13, 14, 45, 90, 91
+
+// Ta réponse ici :
+// if (age >= 14 && age <= 90) {
+//     console.log("Ex6 : dans la tranche");
+// }
+
+
+// ============================================================
+// EX7 — Hors de la tranche
+// ============================================================
+// Version avec || :
+// if (age < 14 || age > 90) { console.log("Ex7 (||): hors de la tranche"); }
+
+// Version avec ! :
+// if (!(age >= 14 && age <= 90)) { console.log("Ex7 (!): hors de la tranche"); }
+
+
+// ============================================================
+// EX8 — Quel alert s'affiche pour login = "Admin" ?
+// ============================================================
+// Prédiction : "Authorized" (car "Admin" est dans la liste des || )
+// Décommente pour vérifier :
+/*
+let login = "Admin";
+if (login == "Employee" || login == "Director" || login == "Admin" || login == "Marketing") {
+    alert("Authorized"); // Celui-ci s'affiche
+} else if (login == "") {
+    alert("Empty login");
+} else {
+    alert("Unknown user");
+}
+*/
+
+
+// ============================================================
+// BONUS 1 — canVote
+// ============================================================
+function canVote(age, nationality, underTutelage) {
+    // Ta réponse ici :
+    // return ...
+}
+
+// Tests :
+// console.log("B1 :", canVote(20, "FR", false)); // true
+// console.log("B1 :", canVote(17, "FR", false)); // false (trop jeune)
+// console.log("B1 :", canVote(20, "US", false)); // false (mauvaise nationalité)
+// console.log("B1 :", canVote(20, "FR", true));  // false (sous tutelle)
+
+
+// ============================================================
+// BONUS 2 — validatePassword
+// ============================================================
+function validatePassword(password) {
+    // Ta réponse ici :
+    // if (password.length < 8) return "Trop court (min 8 caractères)";
+    // if (!/\d/.test(password)) return "Doit contenir un chiffre";
+    // if (!/[A-Z]/.test(password)) return "Doit contenir une majuscule";
+    // return "Mot de passe valide";
+}
+
+// Tests :
+// console.log("B2 :", validatePassword("abc"));         // trop court
+// console.log("B2 :", validatePassword("abcdefgh"));    // pas de chiffre
+// console.log("B2 :", validatePassword("abcdefg1"));    // pas de majuscule
+// console.log("B2 :", validatePassword("Abcdefg1"));    // valide
+
+
+// ============================================================
+// BONUS 3 — Simplifier isEligible
+// ============================================================
+function isEligible(user) {
+    // Ta version simplifiée :
+    // return user.age >= 18 && user.hasAccount && !user.isBanned;
+}
+
+// Test :
+// console.log("B3 :", isEligible({ age: 20, hasAccount: true, isBanned: false })); // true
+// console.log("B3 :", isEligible({ age: 20, hasAccount: true, isBanned: true }));  // false
+</script>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>3.4 - Code Ninja (anti-patterns) - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .bad { color: #ff6b6b; }
+        .good { color: #51cf66; }
+        .anti-pattern { background: #2d0a0a; border-left: 4px solid #ff6b6b; padding: 10px 15px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+    </style>
+</head>
+<body>
+
+<h1>3.4 — Code Ninja (anti-patterns)</h1>
+
+<div class="concept">
+    <h2>Qu'est-ce que le "code ninja" ?</h2>
+    <p>Le "code ninja" est du code volontairement (ou involontairement) difficile à lire, à maintenir ou à comprendre. Il impressionne parfois à première vue, mais c'est un piège.</p>
+    <p><strong>Règle d'or :</strong> Code is read far more often than it is written. Écris pour le prochain développeur (qui sera souvent toi-même dans 6 mois).</p>
+</div>
+
+<div class="concept">
+    <h2>Les anti-patterns classiques</h2>
+
+    <div class="anti-pattern">
+        <strong>1. Noms d'une lettre :</strong> <code class="bad">let a, b, c, d, i, j, x, y</code><br>
+        Exception tolérée : variables de boucle simples (<code>i</code>, <code>j</code>) et coordonnées mathématiques (<code>x</code>, <code>y</code>).
+    </div>
+
+    <div class="anti-pattern">
+        <strong>2. Abréviations cryptiques :</strong> <code class="bad">let usr, nbr, str, tmp, chk, rslts</code><br>
+        Écris : <code class="good">let utilisateur, nombre, texte, temporaire, verifier, resultats</code>
+    </div>
+
+    <div class="anti-pattern">
+        <strong>3. Réutilisation de variables :</strong> utiliser <code>data</code> pour stocker 3 choses différentes dans la même fonction.
+    </div>
+
+    <div class="anti-pattern">
+        <strong>4. Underscore préfixe mal utilisé :</strong> <code class="bad">_nom</code> implique "privé" — utilise-le seulement pour signaler qu'une propriété est interne.
+    </div>
+
+    <div class="anti-pattern">
+        <strong>5. Effets de bord cachés :</strong> une fonction nommée <code>estValide()</code> qui modifie aussi des données — surprise !
+    </div>
+
+    <div class="anti-pattern">
+        <strong>6. Opérateurs ternaires imbriqués :</strong> <code class="bad">x ? y ? a : b : z ? c : d</code> — illisible au-delà d'un niveau.
+    </div>
+
+    <div class="anti-pattern">
+        <strong>7. Typage implicite abusé :</strong> <code class="bad">if (obj)</code> pour tester 4 cas différents en même temps (null, undefined, 0, '').
+    </div>
+</div>
+
+<h2>Exercice 1 — Décrypter du code ninja</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Lis attentivement ce code et explique en français ce qu'il fait, étape par étape. Ne modifie rien — juste comprendre.</p>
+    <pre><code>function f(a, b, c) {
+    let r = [];
+    let t = 0;
+    for (let i = 0; i < a.length; i++) {
+        let x = a[i];
+        if (x > b && x < c) {
+            r.push(x);
+            t += x;
+        }
+    }
+    return { r, t, n: r.length, avg: r.length ? t / r.length : 0 };
+}
+
+let d = [12, 5, 38, 22, 9, 45, 17, 3, 31];
+let res = f(d, 10, 35);
+console.log(res);</code></pre>
+    <pre><code>
+// Ta réponse ici : explique ce que fait cette fonction
+// La fonction f prend en paramètres :
+//   a = ...
+//   b = ...
+//   c = ...
+// Elle retourne un objet avec :
+//   r = ...
+//   t = ...
+//   n = ...
+//   avg = ...
+// En résumé, la fonction ...
+    </code></pre>
+    <p class="hint">Piste : trace l'exécution avec les données d = [12, 5, 38, 22, 9, 45, 17, 3, 31] et les bornes 10 et 35.</p>
+</div>
+
+<h2>Exercice 2 — Réécrire du code ninja en code lisible</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Réécris ces fonctions de façon lisible : noms explicites, structure claire, pas de trucs malins inutiles.</p>
+    <pre><code>// Version ninja 1
+function p(u) {
+    return !!(u && u.a && u.r && u.r.includes('adm'));
+}
+
+// Version ninja 2
+const calc = (p, q, op) => op === '+' ? p + q : op === '-' ? p - q : op === '*' ? p * q : op === '/' ? (q ? p / q : NaN) : NaN;
+
+// Version ninja 3
+function upd(obj, k, v) {
+    let _o = { ...obj };
+    _o[k] = v;
+    let _t = new Date().getTime();
+    _o['_upd'] = _t;
+    return _o;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : version lisible de chaque fonction
+
+// Réécriture 1
+function estAdministrateur(utilisateur) {
+    // Ta réponse ici
+}
+
+// Réécriture 2
+function calculer(a, b, operateur) {
+    // Ta réponse ici
+}
+
+// Réécriture 3
+function mettreAJourPropriete(objet, cle, valeur) {
+    // Ta réponse ici
+}
+    </code></pre>
+    <p class="hint">Pour la version 2 : un ternaire imbriqué à 4 niveaux mérite clairement un if/else ou un switch.</p>
+</div>
+
+<h2>Exercice 3 — Chasse aux anti-patterns</h2>
+<div class="exercise">
+    <h3>Instructions</h3>
+    <p>Cette fonction contient plusieurs anti-patterns. Identifie-les TOUS et indique pour chacun pourquoi c'est problématique.</p>
+    <pre><code>let data = null;
+
+function process(d, f) {
+    data = d;  // (1)
+    let tmp = [];
+    for (let i = 0; i < data.length; i++) {
+        let tmp2 = data[i];       // (2)
+        let tmp = tmp2 * f;       // (3)
+        if (tmp) tmp.push(tmp);   // (4) — indice : regarde bien
+    }
+    data = tmp;   // (5)
+    return data;  // (6)
+}
+
+function _validate(x) {         // (7)
+    let ok = x > 0 && x < 1000;
+    if (!ok) data = [];          // (8) — effet de bord caché !
+    return ok;
+}
+
+let r = process([10, 0, 25, -5, 100], 2);
+console.log(r);</code></pre>
+    <pre><code>
+// Ta réponse ici : liste chaque anti-pattern avec son explication
+// (1) ...
+// (2) ...
+// (3) ...
+// (4) ...
+// (5) ...
+// (6) ...
+// (7) ...
+// (8) ...
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Écrire intentionnellement du code cryptique, puis le nettoyer</h3>
+    <p>Écris une fonction qui calcule le nombre de voyelles dans une chaîne, d'abord en "style ninja", puis en version propre. L'objectif est de comprendre par contraste.</p>
+    <pre><code>
+// Version ninja (écris d'abord ça) :
+const f = s => s.split('').filter(c => 'aeiouAEIOUéèêëàâùûîïôœæ'.includes(c)).length;
+
+// Maintenant écris la version lisible :
+// Ta réponse ici
+function compterVoyelles(texte) {
+    // Ta réponse ici
+}
+    </code></pre>
+    <p class="hint">La version propre peut utiliser plusieurs lignes, des variables bien nommées, et éventuellement un commentaire sur la liste des voyelles si elle est non-évidente.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Identifier tous les anti-patterns dans une fonction complexe</h3>
+    <p>Cette fonction gère une file d'attente. Elle est fonctionnelle mais pleine d'anti-patterns. Trouve-les tous, puis réécris-la proprement.</p>
+    <pre><code>let q = [], mx = 5, cnt = 0;
+
+function doQ(itm, pr) {
+    if (!itm) return false;
+    if (q.length >= mx) {
+        q = q.filter(x => x.p > 1);  // retire les basses priorités
+        if (q.length >= mx) return false;
+    }
+    let o = { d: itm, p: pr || 1, t: Date.now(), id: ++cnt };
+    let ins = false;
+    for (let i = 0; i < q.length; i++) {
+        if (q[i].p < o.p) { q.splice(i, 0, o); ins = true; break; }
+    }
+    if (!ins) q.push(o);
+    return o.id;
+}</code></pre>
+    <pre><code>
+// Ta réponse ici : liste les anti-patterns, puis réécris proprement
+
+// Anti-patterns trouvés :
+// 1. ...
+
+// Version propre :
+const FILE_TAILLE_MAX = 5;
+let fileAttente = [];
+let prochainId = 0;
+
+function ajouterEnFile(element, priorite) {
+    // Ta réponse ici
+}
+    </code></pre>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Transformer une one-liner illisible en code clair</h3>
+    <p>Ces one-liners sont fonctionnels mais impossibles à déboguer ou maintenir. Réécris chacun en code lisible.</p>
+    <pre><code>// One-liner 1 : groupe un tableau d'objets par propriété
+const groupBy = (arr, key) => arr.reduce((acc, item) => ({ ...acc, [item[key]]: [...(acc[item[key]] || []), item] }), {});
+
+// One-liner 2 : aplatit un tableau imbriqué et supprime les doublons
+const unique = arr => [...new Set(arr.reduce((a, b) => a.concat(Array.isArray(b) ? unique(b) : b), []))];
+
+// One-liner 3 : deep clone d'un objet (méthode courante mais avec des limites)
+const clone = obj => JSON.parse(JSON.stringify(obj));</code></pre>
+    <pre><code>
+// Ta réponse ici : version lisible de chaque one-liner
+
+// Réécriture 1 : grouper par propriété
+function grouperPar(tableau, propriete) {
+    // Ta réponse ici
+}
+
+// Réécriture 2 : aplatir et dédoublonner
+function aplatirEtDedoublonner(tableau) {
+    // Ta réponse ici
+}
+
+// Réécriture 3 : clone profond
+// Note : cette méthode a des limites — lesquelles ?
+function cloneProfond(objet) {
+    // Ta réponse ici
+}
+    </code></pre>
+    <p class="hint">Pour le clone, réfléchis : que se passe-t-il avec des fonctions, des dates, des valeurs undefined, ou des références circulaires ?</p>
+</div>
+
+</body>
+</html>

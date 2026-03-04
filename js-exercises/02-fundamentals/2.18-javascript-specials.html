@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.18 - Récapitulatif JavaScript - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+        .quiz-item { background: #0a1628; padding: 12px 15px; margin: 8px 0; border-radius: 6px; border-left: 3px solid #533483; }
+        .spoiler { color: #1a1a2e; background: #1a1a2e; cursor: pointer; padding: 2px 8px; border-radius: 4px; transition: color 0.3s; }
+        .spoiler:hover { color: #00ff88; }
+        .chapter-ref { font-size: 0.8em; color: #7b68ee; }
+    </style>
+</head>
+<body>
+
+<h1>2.18 - Récapitulatif : Fondamentaux JavaScript</h1>
+
+<div class="concept">
+    <h2>Chapitres couverts (2.1 à 2.17)</h2>
+    <ul>
+        <li><span class="chapter-ref">2.2-2.5</span> — Variables (<code>let</code>, <code>const</code>), types de données, interactions (<code>alert</code>, <code>prompt</code>, <code>confirm</code>)</li>
+        <li><span class="chapter-ref">2.6-2.9</span> — Conversions de types, opérateurs, comparaisons</li>
+        <li><span class="chapter-ref">2.10-2.12</span> — Conditions (<code>if</code>, ternaire, <code>??</code>, opérateurs logiques)</li>
+        <li><span class="chapter-ref">2.13-2.14</span> — Boucles (<code>while</code>, <code>for</code>), <code>switch</code></li>
+        <li><span class="chapter-ref">2.15-2.17</span> — Fonctions (déclaration, expression, arrow)</li>
+    </ul>
+</div>
+
+<h2>Exercices de révision</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Quiz : prédis le résultat</h3>
+    <p>Pour chaque expression, prédis le résultat <em>sans l'exécuter</em>. Ensuite vérifie dans la console.</p>
+
+    <div class="quiz-item">
+        <code>typeof null</code> → Prédit : ???
+        <span class="spoiler" title="survole pour voir">"object" (bug historique de JS !)</span>
+    </div>
+    <div class="quiz-item">
+        <code>"5" + 3</code> → Prédit : ???
+        <span class="spoiler">"53" (+ avec string = concaténation)</span>
+    </div>
+    <div class="quiz-item">
+        <code>"5" - 3</code> → Prédit : ???
+        <span class="spoiler">2 (- convertit en nombre)</span>
+    </div>
+    <div class="quiz-item">
+        <code>null + 1</code> → Prédit : ???
+        <span class="spoiler">1 (null → 0)</span>
+    </div>
+    <div class="quiz-item">
+        <code>undefined + 1</code> → Prédit : ???
+        <span class="spoiler">NaN (undefined → NaN)</span>
+    </div>
+    <div class="quiz-item">
+        <code>true + false</code> → Prédit : ???
+        <span class="spoiler">1 (true→1, false→0)</span>
+    </div>
+    <div class="quiz-item">
+        <code>0 == false</code> → Prédit : ???
+        <span class="spoiler">true (== fait la conversion)</span>
+    </div>
+    <div class="quiz-item">
+        <code>0 === false</code> → Prédit : ???
+        <span class="spoiler">false (=== vérifie le type)</span>
+    </div>
+    <div class="quiz-item">
+        <code>null == undefined</code> → Prédit : ???
+        <span class="spoiler">true (règle spéciale JS)</span>
+    </div>
+    <div class="quiz-item">
+        <code>null === undefined</code> → Prédit : ???
+        <span class="spoiler">false (types différents)</span>
+    </div>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — Trouver et corriger les erreurs</h3>
+    <p>Ce code contient 5 erreurs. Trouve-les et corrige-les.</p>
+    <pre><code>// Code bugué :
+function calculateDiscount(price, discount) {
+    let finalPrice;
+
+    if price > 0 {                          // Bug 1
+        finalPrice = price - (price * discount / 100);
+    }
+
+    if (finalPrice = 0) {                   // Bug 2
+        return "Gratuit !";
+    }
+
+    return "Prix : " + finalPrice + "€";
+}
+
+let result = calculateDiscount(100, 20)
+console.log(result)
+
+// Test :
+let x = "10"
+if (x == 10) {                             // Bug 3
+    console.log("x est dix");
+}
+
+// Boucle :
+for (let i = 0; i <= 5; i++) {
+    if (i = 3) break;                      // Bug 4
+    console.log(i);
+}
+
+// Fonction :
+const multiply = (a, b) => {
+    a * b;                                 // Bug 5
+};
+console.log(multiply(3, 4)); // Affiche undefined ?!</code></pre>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — Réécrire avec les bonnes pratiques</h3>
+    <p>Ce code fonctionne mais est mal écrit. Améliore-le en appliquant les bonnes pratiques vues dans les chapitres 2.1-2.17.</p>
+    <pre><code>// Code à améliorer :
+var x = prompt("enter age");
+var y;
+if (x >= 18) {
+    y = true;
+} else {
+    y = false;
+}
+
+var msg;
+if (y == true) {
+    msg = "adult";
+} else if (y == false) {
+    msg = "minor";
+}
+
+for (var i = 0; i < 3; i = i + 1) {
+    if (i == 0) {
+        console.log("zero");
+    } else if (i == 1) {
+        console.log("one");
+    } else if (i == 2) {
+        console.log("two");
+    }
+}
+
+alert(msg);</code></pre>
+    <p>Points à améliorer :</p>
+    <ul>
+        <li>Utiliser <code>let</code>/<code>const</code> au lieu de <code>var</code></li>
+        <li>Nommer les variables avec des noms significatifs</li>
+        <li>Simplifier les conditions (<code>if (y == true)</code> est redondant)</li>
+        <li>Utiliser un ternaire pour les assignations simples</li>
+        <li>Remplacer le if/else if répétitif par un switch</li>
+        <li>Utiliser <code>+= 1</code> → <code>++</code></li>
+    </ul>
+</div>
+
+<h2>Bonus — Mini-projets</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — Calculatrice en console</h3>
+    <p>Créer une calculatrice complète qui combine toutes les notions vues :</p>
+    <ul>
+        <li>Demander le premier nombre, l'opérateur (+, -, *, /), le deuxième nombre via <code>prompt</code></li>
+        <li>Valider les entrées (nombres valides, pas de division par zéro)</li>
+        <li>Calculer avec <code>switch</code></li>
+        <li>Afficher le résultat proprement avec des template literals</li>
+        <li>Proposer de recommencer (boucle + confirm)</li>
+    </ul>
+    <p class="hint">Structure : boucle do..while + fonctions séparées pour la validation et le calcul.</p>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Jeu de devinette de nombre</h3>
+    <p>Créer un jeu complet :</p>
+    <ul>
+        <li>Le programme choisit un nombre entre 1 et 100 (<code>Math.floor(Math.random() * 100) + 1</code>)</li>
+        <li>L'utilisateur a 7 essais maximum</li>
+        <li>Après chaque essai : indiquer "Trop petit", "Trop grand" ou "Bravo !"</li>
+        <li>À la fin : afficher le nombre d'essais utilisés</li>
+        <li>Proposer de rejouer</li>
+    </ul>
+    <p class="hint">Utilise une boucle for (nombre d'essais), if/else pour les indices, et une fonction séparée pour le jeu principal.</p>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Générateur de mot de passe</h3>
+    <p>Créer une fonction <code>generatePassword(length, options)</code> :</p>
+    <pre><code>generatePassword(12, { uppercase: true, numbers: true, symbols: false })
+// → "aBcDeFgH1234" (exemple)</code></pre>
+    <ul>
+        <li>Construire le "pool" de caractères selon les options activées</li>
+        <li>Choisir des caractères aléatoires avec <code>Math.random()</code></li>
+        <li>Calculer la force du mot de passe (faible / moyen / fort)</li>
+        <li>Vérifier que tous les types demandés sont présents</li>
+    </ul>
+    <p class="hint">Caractères : minuscules = "abcdefghijklmnopqrstuvwxyz", majuscules = idem en uppercase, chiffres = "0123456789", symboles = "!@#$%^&*".</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Quiz : vérifications
+// ============================================================
+console.log("=== EX1 — Quiz ===");
+console.log("typeof null :", typeof null);         // "object"
+console.log('"5" + 3 :', "5" + 3);               // "53"
+console.log('"5" - 3 :', "5" - 3);               // 2
+console.log("null + 1 :", null + 1);              // 1
+console.log("undefined + 1 :", undefined + 1);    // NaN
+console.log("true + false :", true + false);      // 1
+console.log("0 == false :", 0 == false);          // true
+console.log("0 === false :", 0 === false);        // false
+console.log("null == undefined :", null == undefined);   // true
+console.log("null === undefined :", null === undefined); // false
+
+
+// ============================================================
+// EX2 — Trouver et corriger les erreurs
+// ============================================================
+console.log("\n=== EX2 — Bugs identifiés ===");
+// Bug 1 : if price > 0 → manque les parenthèses : if (price > 0)
+// Bug 2 : if (finalPrice = 0) → = est une assignation, pas une comparaison. Doit être ===
+// Bug 3 : if (x == 10) → "10" == 10 est true (coercition), mais devrait être === pour la rigueur
+// Bug 4 : if (i = 3) → assigne 3 à i, ne compare pas. Doit être if (i === 3)
+// Bug 5 : a * b sans return → retourne undefined. Doit être return a * b; ou a * b; sans accolades
+
+// Version corrigée :
+function calculateDiscount(price, discount) {
+    let finalPrice;
+    if (price > 0) {                              // Bug 1 corrigé
+        finalPrice = price - (price * discount / 100);
+    }
+    if (finalPrice === 0) {                       // Bug 2 corrigé
+        return "Gratuit !";
+    }
+    return "Prix : " + finalPrice + "€";
+}
+
+console.log("Ex2 corrigé :", calculateDiscount(100, 20)); // "Prix : 80€"
+
+// Bug 3 corrigé :
+let x = "10";
+if (x === "10") {  // Comparer avec le bon type
+    console.log("Ex2 - x est bien la chaîne '10'");
+}
+
+// Bug 4 corrigé :
+for (let i = 0; i <= 5; i++) {
+    if (i === 3) break;  // Comparaison, pas assignation
+    console.log("Ex2 - i =", i); // 0, 1, 2
+}
+
+// Bug 5 corrigé :
+const multiply = (a, b) => a * b;  // Raccourci : retourne automatiquement
+console.log("Ex2 - multiply(3, 4) :", multiply(3, 4)); // 12
+
+
+// ============================================================
+// EX3 — Réécrire avec les bonnes pratiques
+// ============================================================
+console.log("\n=== EX3 — Version améliorée ===");
+
+// Version originale (commentée) vs version améliorée :
+
+// let age = prompt("Entrez votre âge");  // décommente pour tester
+let age = 20; // simulé pour la démo
+
+// const isAdult = Number(age) >= 18;     // const car la valeur ne change pas
+// const statusMsg = isAdult ? "adult" : "minor";   // ternaire au lieu de double if
+
+// Dictionnaire pour le switch :
+const wordMap = { 0: "zéro", 1: "un", 2: "deux" };
+for (let i = 0; i < 3; i++) {
+    console.log("Ex3 :", wordMap[i]); // zéro, un, deux
+}
+
+// Alternative avec switch (plus explicite) :
+for (let i = 0; i < 3; i++) {
+    switch (i) {
+        case 0: console.log("Ex3 (switch) : zéro"); break;
+        case 1: console.log("Ex3 (switch) : un"); break;
+        case 2: console.log("Ex3 (switch) : deux"); break;
+    }
+}
+
+
+// ============================================================
+// BONUS 1 — Calculatrice en console
+// ============================================================
+function parseNumber(input) {
+    const n = Number(input);
+    return isNaN(n) ? null : n;
+}
+
+function compute(a, op, b) {
+    switch (op) {
+        case "+": return a + b;
+        case "-": return a - b;
+        case "*": return a * b;
+        case "/":
+            if (b === 0) return null; // division par zéro
+            return a / b;
+        default: return null; // opérateur inconnu
+    }
+}
+
+// Décommente pour tester :
+/*
+let continuer = true;
+while (continuer) {
+    let a = parseNumber(prompt("Premier nombre :"));
+    let op = prompt("Opérateur (+, -, *, /) :");
+    let b = parseNumber(prompt("Deuxième nombre :"));
+
+    if (a === null || b === null) {
+        alert("Entrées invalides.");
+    } else {
+        let result = compute(a, op, b);
+        if (result === null) {
+            alert(`Impossible : ${a} ${op} ${b}`);
+        } else {
+            alert(`${a} ${op} ${b} = ${result}`);
+        }
+    }
+
+    continuer = confirm("Nouveau calcul ?");
+}
+*/
+
+
+// ============================================================
+// BONUS 2 — Jeu de devinette
+// ============================================================
+function playGuessing() {
+    const secret = Math.floor(Math.random() * 100) + 1;
+    const maxAttempts = 7;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        // let guess = Number(prompt(`Tentative ${attempt}/${maxAttempts} — Devine (1-100) :`));
+        let guess = attempt <= 3 ? 50 : attempt <= 5 ? 75 : secret; // simulation
+
+        if (guess === secret) {
+            console.log(`B2 - Bravo ! Trouvé en ${attempt} essai(s) ! (secret = ${secret})`);
+            return;
+        } else if (guess < secret) {
+            console.log(`B2 - Tentative ${attempt} : ${guess} → Trop petit !`);
+        } else {
+            console.log(`B2 - Tentative ${attempt} : ${guess} → Trop grand !`);
+        }
+    }
+    console.log(`B2 - Perdu ! Le nombre était ${secret}.`);
+}
+
+playGuessing();
+
+
+// ============================================================
+// BONUS 3 — Générateur de mot de passe
+// ============================================================
+function generatePassword(length, options = {}) {
+    const { uppercase = true, numbers = true, symbols = false } = options;
+
+    let pool = "abcdefghijklmnopqrstuvwxyz";
+    if (uppercase) pool += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (numbers)   pool += "0123456789";
+    if (symbols)   pool += "!@#$%^&*";
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        password += pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    // Calcul de la force :
+    let strength;
+    const score = pool.length;
+    if (score < 36) strength = "faible";
+    else if (score < 62) strength = "moyen";
+    else strength = "fort";
+
+    return { password, strength, length: password.length };
+}
+
+let pwd = generatePassword(12, { uppercase: true, numbers: true, symbols: false });
+console.log("B3 - Mot de passe :", pwd.password, `(${pwd.strength})`);
+
+let pwdStrong = generatePassword(16, { uppercase: true, numbers: true, symbols: true });
+console.log("B3 - Mot de passe fort :", pwdStrong.password, `(${pwdStrong.strength})`);
+</script>
+
+</body>
+</html>

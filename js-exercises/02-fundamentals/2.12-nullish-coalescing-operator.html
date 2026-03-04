@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.12 - Opérateur ?? (nullish coalescing) - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .comparison-table th, .comparison-table td { border: 1px solid #533483; padding: 10px; text-align: center; }
+        .comparison-table th { background: #16213e; color: #00d4ff; }
+        .truthy { color: #00ff88; }
+        .falsy { color: #ff6b6b; }
+    </style>
+</head>
+<body>
+
+<h1>2.12 - Opérateur de coalescence des nuls ??</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><code>a ?? b</code> retourne <code>a</code> si <code>a</code> n'est <strong>ni null ni undefined</strong>, sinon retourne <code>b</code></li>
+        <li><strong>Différence avec ||</strong> : <code>||</code> ignore toute valeur falsy (0, "", false), <code>??</code> n'ignore que null/undefined</li>
+        <li><strong>Cas d'usage principal</strong> : fournir une valeur par défaut quand une valeur peut ne pas être définie</li>
+        <li><strong>Priorité basse</strong> : s'évalue après la plupart des opérateurs, utilise des parenthèses si besoin</li>
+        <li><code>??=</code> : assignation par coalescence — assigne seulement si la valeur actuelle est null/undefined</li>
+    </ul>
+    <table class="comparison-table">
+        <tr>
+            <th>Valeur</th>
+            <th><code>valeur || "défaut"</code></th>
+            <th><code>valeur ?? "défaut"</code></th>
+        </tr>
+        <tr>
+            <td><code>null</code></td>
+            <td class="falsy">"défaut"</td>
+            <td class="falsy">"défaut"</td>
+        </tr>
+        <tr>
+            <td><code>undefined</code></td>
+            <td class="falsy">"défaut"</td>
+            <td class="falsy">"défaut"</td>
+        </tr>
+        <tr>
+            <td><code>0</code></td>
+            <td class="falsy">"défaut"</td>
+            <td class="truthy">0</td>
+        </tr>
+        <tr>
+            <td><code>""</code></td>
+            <td class="falsy">"défaut"</td>
+            <td class="truthy">""</td>
+        </tr>
+        <tr>
+            <td><code>false</code></td>
+            <td class="falsy">"défaut"</td>
+            <td class="truthy">false</td>
+        </tr>
+        <tr>
+            <td><code>"hello"</code></td>
+            <td class="truthy">"hello"</td>
+            <td class="truthy">"hello"</td>
+        </tr>
+    </table>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — null ?? "default"</h3>
+    <p>Que retourne chaque expression ? Prédis avant d'exécuter.</p>
+    <pre><code>null ?? "default"
+undefined ?? "default"
+"hello" ?? "default"
+0 ?? "default"</code></pre>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — Chaînage de ??</h3>
+    <p>Que retourne cette expression ?</p>
+    <pre><code>undefined ?? null ?? "hello"</code></pre>
+    <p>Et celle-ci ?</p>
+    <pre><code>null ?? undefined ?? 0 ?? "fallback"</code></pre>
+    <p class="hint"><code>??</code> évalue de gauche à droite et retourne le premier non-null/non-undefined.</p>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — Différence || vs ?? avec 0, "" et false</h3>
+    <p>C'est l'exercice le plus important ! Prédis le résultat :</p>
+    <pre><code>// Avec une variable valant 0 :
+let userScore = 0;
+
+console.log(userScore || "Score inconnu");  // ???
+console.log(userScore ?? "Score inconnu");  // ???
+
+// Avec une chaîne vide :
+let userName = "";
+
+console.log(userName || "Anonyme");  // ???
+console.log(userName ?? "Anonyme");  // ???
+
+// Avec false :
+let darkMode = false;
+
+console.log(darkMode || true);  // ???
+console.log(darkMode ?? true);  // ???</code></pre>
+    <p class="hint">Voilà pourquoi <code>??</code> existe : un score de 0, un nom vide ou false sont des valeurs <em>intentionnelles</em> qui ne doivent pas être remplacées par un défaut.</p>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — userConfig avec valeurs par défaut via ??</h3>
+    <p>Créer un objet <code>userConfig</code> qui peut avoir des propriétés manquantes (null/undefined), et construire une configuration finale avec des valeurs par défaut :</p>
+    <pre><code>const userConfig = {
+    theme: null,       // l'utilisateur n'a pas choisi
+    fontSize: 0,       // l'utilisateur veut 0 (taille minimale !)
+    language: undefined,
+    notifications: false  // l'utilisateur a désactivé
+};</code></pre>
+    <p>Construire <code>finalConfig</code> avec ces défauts : theme="light", fontSize=16, language="fr", notifications=true.</p>
+    <p class="hint">Attention : fontSize=0 et notifications=false sont intentionnels, utilise <code>??</code> et non <code>||</code>.</p>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Utiliser ??= pour initialiser</h3>
+    <p><code>??=</code> est un raccourci : <code>a ??= b</code> équivaut à <code>a = a ?? b</code></p>
+    <p>Utiliser <code>??=</code> pour initialiser les propriétés manquantes d'un objet utilisateur :</p>
+    <pre><code>let user = {
+    name: "Alice",
+    age: null,
+    // role manquant (undefined)
+};</code></pre>
+    <p>Initialiser <code>user.age</code> à 0, <code>user.role</code> à "visitor", sans écraser <code>user.name</code>.</p>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — Système de fallback en cascade</h3>
+    <p>Simuler un système de configuration en cascade : valeur utilisateur → valeur de config → valeur par défaut.</p>
+    <p>Écrire une fonction <code>getSetting(userValue, configValue, defaultValue)</code> qui retourne la première valeur non-null/non-undefined.</p>
+    <pre><code>getSetting(null, null, "dark")      // "dark"
+getSetting(null, "light", "dark")   // "light"
+getSetting("custom", "light", "dark") // "custom"
+getSetting(0, null, 16)             // 0 (pas 16 !)
+getSetting(false, null, true)       // false (pas true !)</code></pre>
+</div>
+
+<script>
+// ============================================================
+// EX1 — null ?? "default"
+// ============================================================
+console.log("Ex1 :");
+console.log(null ?? "default");      // Prédit : ??? — Attendu : "default"
+console.log(undefined ?? "default"); // Prédit : ??? — Attendu : "default"
+console.log("hello" ?? "default");   // Prédit : ??? — Attendu : "hello"
+console.log(0 ?? "default");         // Prédit : ??? — Attendu : 0
+
+
+// ============================================================
+// EX2 — Chaînage de ??
+// ============================================================
+console.log("\nEx2 :");
+console.log(undefined ?? null ?? "hello");      // Attendu : "hello"
+console.log(null ?? undefined ?? 0 ?? "fallback"); // Attendu : 0 (0 n'est pas null/undefined !)
+
+
+// ============================================================
+// EX3 — || vs ?? avec 0, "" et false
+// ============================================================
+console.log("\nEx3 — || vs ?? :");
+
+let userScore = 0;
+console.log("score || :", userScore || "Score inconnu");  // "Score inconnu" (mauvais comportement souvent)
+console.log("score ?? :", userScore ?? "Score inconnu");  // 0 (correct !)
+
+let userName = "";
+console.log("name || :", userName || "Anonyme");  // "Anonyme"
+console.log("name ?? :", userName ?? "Anonyme");  // "" (la chaîne vide est conservée)
+
+let darkMode = false;
+console.log("darkMode || :", darkMode || true);   // true (écrase false !)
+console.log("darkMode ?? :", darkMode ?? true);   // false (conserve le choix utilisateur)
+
+
+// ============================================================
+// BONUS 1 — userConfig avec ??
+// ============================================================
+const userConfig = {
+    theme: null,
+    fontSize: 0,       // intentionnel
+    language: undefined,
+    notifications: false  // intentionnel
+};
+
+// Ta réponse ici :
+// const finalConfig = {
+//     theme: userConfig.theme ?? "light",
+//     fontSize: userConfig.fontSize ?? 16,    // 0 sera conservé !
+//     language: userConfig.language ?? "fr",
+//     notifications: userConfig.notifications ?? true,  // false sera conservé !
+// };
+// console.log("B1 :", finalConfig);
+// Résultat attendu : { theme: "light", fontSize: 0, language: "fr", notifications: false }
+
+
+// ============================================================
+// BONUS 2 — ??= pour initialiser
+// ============================================================
+let user = {
+    name: "Alice",
+    age: null,
+    // role est undefined (propriété absente)
+};
+
+// Ta réponse ici :
+// user.age ??= 0;
+// user.role ??= "visitor";
+// user.name ??= "Inconnu"; // ne changera PAS car "Alice" n'est pas null/undefined
+
+// console.log("B2 :", user);
+// Résultat attendu : { name: "Alice", age: 0, role: "visitor" }
+
+
+// ============================================================
+// BONUS 3 — getSetting
+// ============================================================
+function getSetting(userValue, configValue, defaultValue) {
+    // Ta réponse ici :
+    // return userValue ?? configValue ?? defaultValue;
+}
+
+// Tests :
+// console.log("B3 :", getSetting(null, null, "dark"));           // "dark"
+// console.log("B3 :", getSetting(null, "light", "dark"));        // "light"
+// console.log("B3 :", getSetting("custom", "light", "dark"));    // "custom"
+// console.log("B3 :", getSetting(0, null, 16));                  // 0
+// console.log("B3 :", getSetting(false, null, true));            // false
+</script>
+
+</body>
+</html>

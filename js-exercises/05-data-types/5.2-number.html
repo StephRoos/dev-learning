@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.2 Nombres - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.2 — Nombres</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <p><strong>Notations</strong> : <code>1e9</code> = 1 milliard, <code>1e-6</code> = 0.000001</p>
+    <p><strong>Bases</strong> : <code>0xff</code> (hex), <code>0b1010</code> (binaire), <code>0o17</code> (octal)</p>
+    <p><strong>Arrondis</strong> : <code>Math.floor</code> (bas), <code>Math.ceil</code> (haut), <code>Math.round</code> (proche), <code>Math.trunc</code> (entier)</p>
+    <p><strong>Imprécision flottante</strong> : Les nombres sont stockés en IEEE 754 (64 bits). <code>0.1 + 0.2 !== 0.3</code></p>
+    <p><strong>Tests</strong> : <code>isNaN()</code>, <code>isFinite()</code>, <code>Number.isNaN()</code> (plus strict)</p>
+    <p><strong>Parsing</strong> : <code>parseInt("12px")</code> → 12, <code>parseFloat("1.5em")</code> → 1.5</p>
+    <pre><code>// Attention à NaN :
+NaN === NaN // false ! NaN n'est égal à rien, même pas lui-même
+isNaN("hello") // true (convertit d'abord en nombre)
+Number.isNaN("hello") // false (vérifie que c'est NaN sans conversion)</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — Additionner des nombres saisis</h3>
+    <p>Demande deux nombres à l'utilisateur avec <code>prompt</code>, convertis-les en nombres, additionne-les. Gère le cas où l'utilisateur entre une valeur non numérique.</p>
+    <script>
+    // Exercice 1 — Sum numbers from the visitor
+    // Ta réponse ici
+
+    function sumFromVisitor() {
+        // Demander deux nombres avec prompt
+        // let a = prompt("Premier nombre :");
+        // let b = prompt("Deuxième nombre :");
+
+        // Convertir en nombres
+        // a = +a; // ou Number(a)
+        // b = ...
+
+        // Vérifier que ce sont bien des nombres
+        // if (isNaN(a) || isNaN(b)) { ... }
+
+        // Afficher la somme
+        // alert(a + b);
+    }
+
+    // sumFromVisitor(); // décommenter pour tester
+    </script>
+    <p class="hint">Le <code>+</code> unaire devant une variable (<code>+str</code>) est un raccourci pour convertir en nombre.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Pourquoi 6.35.toFixed(1) == 6.3 ?</h3>
+    <p>Ce résultat semble bizarre. Explique en commentaire et trouve comment arrondir correctement.</p>
+    <script>
+    // Exercice 2 — Imprécision flottante
+    // Ta réponse ici
+
+    console.log(6.35.toFixed(1)); // Affiche "6.3" au lieu de "6.4" ?!
+
+    // Pourquoi ?
+    // Indice : regarde la vraie valeur interne de 6.35
+    // console.log(6.35.toFixed(20)); // affiche toutes les décimales
+
+    // En réalité, 6.35 est stocké comme 6.349999... en IEEE 754
+    // Donc toFixed arrondit 6.349... vers le bas → 6.3
+
+    // Solution : multiplier avant d'arrondir
+    // console.log(Math.round(6.35 * 10) / 10); // 6.4
+    </script>
+    <p class="hint">Fondamental : les nombres flottants ne peuvent pas représenter exactement toutes les valeurs décimales. Toujours tester avant de faire confiance à un arrondi.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Boucler jusqu'à saisie valide</h3>
+    <p>Crée une fonction qui redemande un nombre tant que la saisie n'est pas un nombre fini valide.</p>
+    <script>
+    // Exercice 3 — Repeat until the input is a number
+    // Ta réponse ici
+
+    function demanderNombre() {
+        // Boucle tant que la valeur n'est pas un nombre fini
+        // while (true) {
+        //     let saisie = prompt("Entrez un nombre :");
+        //
+        //     // Si l'utilisateur annule (null), stopper
+        //     if (saisie === null) return null;
+        //
+        //     // Convertir en nombre
+        //     let num = +saisie;
+        //
+        //     // isFinite retourne true si c'est un nombre fini valide
+        //     if (isFinite(num)) return num;
+        //
+        //     alert("Ce n'est pas un nombre valide, réessayez.");
+        // }
+    }
+
+    // let resultat = demanderNombre();
+    // console.log("Nombre saisi :", resultat);
+    </script>
+    <p class="hint"><code>isFinite(num)</code> retourne false pour NaN, Infinity et -Infinity. C'est le meilleur test pour valider un nombre réel.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 4 — La boucle infinie occasionnelle</h3>
+    <p>Cette boucle peut devenir infinie. Explique pourquoi et corrige-la.</p>
+    <script>
+    // Exercice 4 — An occasional infinite loop
+    // Ta réponse ici
+
+    // Cette boucle est censée s'arrêter, mais peut boucler indéfiniment.
+    // Pourquoi ?
+    // let i = 0;
+    // while (i != 10) {
+    //     i += 0.2;
+    // }
+
+    // Problème : à cause de l'imprécision flottante, i peut "sauter" au-dessus de 10
+    // sans jamais valoir exactement 10.
+
+    // Solution 1 : utiliser < au lieu de !=
+    // let i = 0;
+    // while (i < 10) {
+    //     i += 0.2;
+    // }
+    // console.log(i); // proche de 10 mais peut-être pas exactement 10
+
+    // Solution 2 : travailler avec des entiers
+    // for (let i = 0; i <= 50; i++) {  // 50 * 0.2 = 10
+    //     let val = Math.round(i * 0.2 * 10) / 10;
+    //     console.log(val);
+    // }
+    </script>
+    <p class="hint">Règle d'or : ne jamais comparer des flottants avec <code>==</code> ou <code>!=</code> dans une boucle.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 5 — Nombre aléatoire entre min et max</h3>
+    <p>Écris une fonction <code>random(min, max)</code> qui retourne un nombre flottant aléatoire entre min (inclus) et max (exclus).</p>
+    <script>
+    // Exercice 5 — A random number from min to max
+    // Ta réponse ici
+
+    function random(min, max) {
+        // Math.random() retourne un nombre entre 0 (inclus) et 1 (exclus)
+        // Comment transformer ce 0..1 en min..max ?
+        // Ta réponse ici
+    }
+
+    // Tests
+    // console.log(random(1, 5));   // entre 1 et 5
+    // console.log(random(0, 1));   // entre 0 et 1 (comme Math.random)
+    // console.log(random(-1, 1));  // entre -1 et 1
+    </script>
+    <p class="hint">Formule : <code>min + Math.random() * (max - min)</code></p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 6 — Entier aléatoire entre min et max (inclus)</h3>
+    <p>Écris une fonction <code>randomInt(min, max)</code> où min ET max sont inclus dans les valeurs possibles.</p>
+    <script>
+    // Exercice 6 — A random integer from min to max (inclusive)
+    // Ta réponse ici
+
+    function randomInt(min, max) {
+        // Ta réponse ici
+        // Attention : chaque entier doit avoir la même probabilité d'apparaître
+    }
+
+    // Test : vérifier que min et max apparaissent bien
+    // let counts = {};
+    // for (let i = 0; i < 10000; i++) {
+    //     let n = randomInt(1, 3);
+    //     counts[n] = (counts[n] || 0) + 1;
+    // }
+    // console.log(counts); // Chaque valeur devrait avoir ~3333 occurrences
+    </script>
+    <p class="hint">Utilise <code>Math.floor(Math.random() * (max - min + 1)) + min</code>. Le <code>+1</code> est crucial pour inclure max.</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Formater un nombre en devise</h3>
+    <p>Transforme <code>1234567</code> en <code>"1 234 567 €"</code> (avec espaces comme séparateurs de milliers).</p>
+    <script>
+    // Bonus 1 — Formatage devise
+    // Ta réponse ici
+
+    function formaterDevise(montant, devise = "€") {
+        // Option 1 : Intl.NumberFormat (la bonne façon moderne)
+        // return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(montant);
+
+        // Option 2 : manipulation manuelle de string
+        // Convertir en string, puis insérer des espaces tous les 3 chiffres depuis la droite
+    }
+
+    // console.log(formaterDevise(1234567));    // "1 234 567 €"
+    // console.log(formaterDevise(999));        // "999 €"
+    // console.log(formaterDevise(1000000));    // "1 000 000 €"
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Convertisseur de bases</h3>
+    <p>Crée des fonctions pour convertir entre décimal, binaire et hexadécimal.</p>
+    <script>
+    // Bonus 2 — Convertisseur de bases
+    // Ta réponse ici
+
+    // Décimal → Binaire
+    function toBinary(n) {
+        // return (n).toString(2);
+    }
+
+    // Décimal → Hexadécimal
+    function toHex(n) {
+        // return (n).toString(16).toUpperCase();
+    }
+
+    // Binaire → Décimal
+    function fromBinary(binStr) {
+        // return parseInt(binStr, 2);
+    }
+
+    // Hexadécimal → Décimal
+    function fromHex(hexStr) {
+        // return parseInt(hexStr, 16);
+    }
+
+    // Tests
+    // console.log(toBinary(10));    // "1010"
+    // console.log(toHex(255));      // "FF"
+    // console.log(fromBinary("1010")); // 10
+    // console.log(fromHex("FF"));   // 255
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — Comparer des flottants avec epsilon</h3>
+    <p>Implémente une fonction <code>areEqual(a, b)</code> qui compare deux flottants correctement.</p>
+    <script>
+    // Bonus 3 — Comparaison flottante avec epsilon
+    // Ta réponse ici
+
+    function areEqual(a, b, epsilon = Number.EPSILON) {
+        // Deux nombres sont "égaux" si leur différence est inférieure à epsilon
+        // Number.EPSILON est la plus petite différence représentable (~2.22e-16)
+        // Ta réponse ici
+    }
+
+    // Tests
+    // console.log(0.1 + 0.2 === 0.3);          // false (comparaison directe)
+    // console.log(areEqual(0.1 + 0.2, 0.3));   // true (avec epsilon)
+    // console.log(areEqual(1.0, 1.0000001));    // false (différence trop grande)
+
+    // Note : pour des calculs monétaires, utiliser des centimes (entiers) à la place
+    </script>
+    <p class="hint"><code>Number.EPSILON</code> est un <strong>fondamental</strong> à connaître. Pour les calculs financiers, préférer toujours travailler en centimes (entiers).</p>
+</div>
+
+</body>
+</html>

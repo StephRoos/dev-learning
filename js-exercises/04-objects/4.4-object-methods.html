@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>4.4 Méthodes d'objet, this - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>4.4 — Méthodes d'objet et <code>this</code></h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><strong>Méthode</strong> : une fonction stockée comme propriété d'un objet</li>
+        <li><strong>this</strong> : dans une méthode, <code>this</code> référence l'objet qui a appelé la méthode</li>
+        <li><strong>this est dynamique</strong> : sa valeur dépend de <em>comment</em> la fonction est appelée, pas où elle est définie</li>
+        <li><strong>Arrow functions</strong> : n'ont PAS leur propre <code>this</code> — elles héritent du <code>this</code> du scope parent</li>
+        <li><strong>Perte de this</strong> : <code>let fn = obj.method; fn()</code> — this devient undefined (strict) ou global</li>
+    </ul>
+</div>
+
+<pre><code>// Syntaxe courte pour les méthodes (ES6)
+let user = {
+    name: "Alice",
+    greet() {                        // équivalent à greet: function() {}
+        return "Bonjour, " + this.name;
+    }
+};
+
+// this dépend de l'appelant
+let admin = { name: "Admin" };
+admin.greet = user.greet;
+admin.greet(); // "Bonjour, Admin" — this est admin
+
+// Arrow function : this hérité, PAS redéfini
+let timer = {
+    name: "Timer",
+    start() {
+        setTimeout(() => {
+            console.log(this.name); // "Timer" — this hérité de start()
+        }, 100);
+    }
+};
+</code></pre>
+
+<h2>Exercices</h2>
+
+<div class="exercise">
+    <h3>Exercice 1 — Prédire le résultat avec this</h3>
+    <p>
+        Pour chaque appel, <strong>prédit la valeur de <code>this.name</code></strong> avant d'exécuter. Note ta réponse en commentaire.
+    </p>
+    <pre><code>function sayHi() {
+    return this.name;
+}
+
+let user = { name: "Alice", sayHi };
+let admin = { name: "Admin", sayHi };
+
+// Que retourne chaque appel ?
+console.log(user.sayHi());   // ???
+console.log(admin.sayHi());  // ???
+
+// Cas avec méthode extraite
+let fn = user.sayHi;
+// console.log(fn()); // ???  (décommente pour tester — peut lever une erreur en strict mode)
+
+// Tes prédictions :
+// user.sayHi()  → ___
+// admin.sayHi() → ___
+// fn()          → ___ (en mode non-strict : "window.name", en strict : TypeError)
+</code></pre>
+    <p class="hint">
+        this est déterminé au moment de l'appel. <code>user.sayHi()</code> → this = user. <code>fn()</code> sans objet → this = undefined ou window.
+    </p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Create a Calculator</h3>
+    <p>
+        Crée un objet <code>calculator</code> avec trois méthodes :
+        <ul>
+            <li><code>read()</code> : demande deux nombres avec <code>prompt</code> et les stocke dans <code>this.a</code> et <code>this.b</code></li>
+            <li><code>sum()</code> : retourne la somme de a et b</li>
+            <li><code>mul()</code> : retourne le produit de a et b</li>
+        </ul>
+    </p>
+    <p class="hint">
+        <code>prompt()</code> retourne une string — utilise <code>+</code> ou <code>Number()</code> pour convertir.
+    </p>
+    <pre><code>// Ta réponse ici
+let calculator = {
+
+    read() {
+        // this.a = ...
+        // this.b = ...
+    },
+
+    sum() {
+
+    },
+
+    mul() {
+
+    }
+};
+
+// Test (décommente pour tester interactivement)
+// calculator.read();
+// console.log(calculator.sum());
+// console.log(calculator.mul());
+
+// Test sans prompt :
+calculator.a = 5;
+calculator.b = 3;
+console.log(calculator.sum()); // 8
+console.log(calculator.mul()); // 15
+</code></pre>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Chaining (ladder)</h3>
+    <p>
+        Crée un objet <code>ladder</code> avec les méthodes <code>up()</code>, <code>down()</code> et <code>showStep()</code>.
+        Chaque méthode doit retourner <code>this</code> pour permettre le chaînage.
+    </p>
+    <pre><code>// Ta réponse ici
+let ladder = {
+    step: 0,
+
+    up() {
+        // Incrémente step, retourne this
+
+    },
+
+    down() {
+        // Décrémente step, retourne this
+
+    },
+
+    showStep() {
+        // Affiche step, retourne this
+
+    }
+};
+
+// Test — doit pouvoir s'écrire en une chaîne
+ladder.up().up().up().down().showStep(); // step: 2
+ladder.up().up().showStep().down().showStep();
+// step: 4
+// step: 3
+</code></pre>
+    <p class="hint">
+        Le chaînage (method chaining) est un pattern très courant en JS (jQuery, Lodash, Promises...). La clé : chaque méthode retourne <code>this</code>.
+    </p>
+</div>
+
+<h2>Bonus</h2>
+
+<div class="bonus">
+    <h3>B1 — Objet compteur</h3>
+    <p>
+        Crée un objet <code>counter</code> avec les méthodes <code>increment()</code>, <code>decrement()</code>, <code>reset()</code> et <code>getValue()</code>. Assure-toi que la valeur ne peut pas passer en dessous de 0.
+    </p>
+    <pre><code>// Ta réponse ici
+let counter = {
+    _value: 0,  // convention _ pour "pseudo-privé"
+
+    increment() { },
+    decrement() { },  // ne pas aller en dessous de 0
+    reset() { },
+    getValue() { }
+};
+
+counter.increment();
+counter.increment();
+counter.increment();
+console.log(counter.getValue()); // 3
+
+counter.decrement();
+console.log(counter.getValue()); // 2
+
+counter.decrement();
+counter.decrement();
+counter.decrement(); // ne doit pas aller en dessous de 0
+console.log(counter.getValue()); // 0
+
+counter.reset();
+console.log(counter.getValue()); // 0
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B2 — Chaîne de texte chaînable</h3>
+    <p>
+        Crée un objet <code>text</code> avec <code>append(str)</code>, <code>prepend(str)</code>, <code>toUpperCase()</code>, <code>trim()</code> et <code>toString()</code>. Toutes les méthodes de transformation retournent <code>this</code> pour le chaînage.
+    </p>
+    <pre><code>// Ta réponse ici
+let text = {
+    _content: "",
+
+    append(str) { },
+    prepend(str) { },
+    toUpperCase() { },
+    trim() { },
+    toString() { return this._content; }
+};
+
+let result = text
+    .append("  monde")
+    .prepend("Bonjour ")
+    .trim()
+    .toUpperCase()
+    .toString();
+
+console.log(result); // "BONJOUR MONDE"
+</code></pre>
+</div>
+
+<div class="bonus">
+    <h3>B3 — Perte de this avec setTimeout</h3>
+    <p>
+        Ce code ne fonctionne pas comme attendu. Explique pourquoi, puis propose <strong>deux solutions</strong> : l'une avec <code>.bind()</code>, l'autre avec une arrow function.
+    </p>
+    <pre><code>// Code problématique — à corriger
+let user = {
+    name: "Alice",
+    greetLater() {
+        setTimeout(function() {
+            console.log("Bonjour, " + this.name); // this n'est pas user ici !
+        }, 1000);
+    }
+};
+
+user.greetLater(); // "Bonjour, undefined" ou erreur
+
+// Explication du problème (en commentaire) :
+// Pourquoi this.name est-il undefined ici ?
+
+// SOLUTION 1 — avec .bind()
+let user2 = {
+    name: "Bob",
+    greetLater() {
+        // Ta correction ici
+    }
+};
+user2.greetLater(); // doit afficher "Bonjour, Bob"
+
+// SOLUTION 2 — avec arrow function
+let user3 = {
+    name: "Charlie",
+    greetLater() {
+        // Ta correction ici
+    }
+};
+user3.greetLater(); // doit afficher "Bonjour, Charlie"
+</code></pre>
+    <p class="hint">
+        Arrow functions n'ont pas de <code>this</code> propre — elles capturent le <code>this</code> du scope où elles sont définies. C'est pourquoi elles sont souvent préférées pour les callbacks.
+    </p>
+</div>
+
+</body>
+</html>

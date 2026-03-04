@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>5.5 Méthodes de tableaux - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<h1>5.5 — Méthodes de tableaux</h1>
+
+<div class="concept">
+    <h2>La boîte à outils des tableaux</h2>
+    <pre><code>// MUTATION (modifient le tableau original)
+arr.splice(index, deleteCount, ...items) // couper/insérer
+arr.sort((a, b) => a - b)               // trier en place
+arr.reverse()                            // inverser en place
+
+// COPIE (retournent un nouveau tableau)
+arr.slice(start, end)   // extraire une portion
+arr.concat(other)       // fusionner deux tableaux
+arr.map(fn)             // transformer chaque élément
+arr.filter(fn)          // garder les éléments qui passent le test
+arr.flat(depth)         // aplatir
+
+// RECHERCHE
+arr.find(fn)            // premier élément qui correspond
+arr.findIndex(fn)       // son index
+arr.indexOf(value)      // index d'une valeur exacte
+arr.includes(value)     // boolean : est-ce présent ?
+
+// ITÉRATION
+arr.forEach(fn)         // exécuter une fonction sur chaque élément (retourne undefined)
+
+// RÉDUCTION
+arr.reduce((acc, curr) => ..., initialValue) // réduire à une seule valeur
+
+// DIVERS
+arr.join(separator)     // joindre en string
+Array.isArray(value)    // vérifier si c'est un tableau</code></pre>
+    <p class="hint">Fondamental : <code>map</code>, <code>filter</code>, <code>reduce</code> sont les trois piliers de la programmation fonctionnelle en JS.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 1 — camelCase avec map</h3>
+    <p>Écris <code>camelize("background-color")</code> → <code>"backgroundColor"</code>. Utilise <code>split</code>, <code>map</code> et <code>join</code>.</p>
+    <script>
+    // Exercice 1 — Translate border-left-width to borderLeftWidth
+    // Ta réponse ici
+
+    function camelize(str) {
+        // 1. split("-") pour découper
+        // 2. map pour mettre en majuscule la première lettre de chaque mot (sauf le premier)
+        // 3. join("") pour recombiner
+    }
+
+    // console.log(camelize("background-color"));  // "backgroundColor"
+    // console.log(camelize("list-style-image"));  // "listStyleImage"
+    // console.log(camelize("-webkit-transition")); // "WebkitTransition"
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 2 — Filtrer une plage</h3>
+    <p>Écris <code>filterRange(arr, a, b)</code> qui retourne un nouveau tableau avec les éléments entre a et b (inclus). Utilise <code>filter</code>.</p>
+    <script>
+    // Exercice 2 — Filter range
+    // Ta réponse ici
+
+    function filterRange(arr, a, b) {
+        // Utilise filter avec une arrow function
+    }
+
+    // let arr = [5, 3, 8, 1];
+    // let filtered = filterRange(arr, 1, 4);
+    // console.log(filtered); // [3, 1]
+    // console.log(arr);      // [5, 3, 8, 1] — inchangé
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 3 — Filtrer en place</h3>
+    <p>Écris <code>filterRangeInPlace(arr, a, b)</code> qui supprime du tableau original les éléments hors de [a, b]. Utilise <code>splice</code>.</p>
+    <script>
+    // Exercice 3 — Filter range "in place"
+    // Ta réponse ici
+
+    function filterRangeInPlace(arr, a, b) {
+        // Itérer à rebours (depuis la fin) pour éviter les problèmes d'index lors du splice
+        // for (let i = arr.length - 1; i >= 0; i--) {
+        //     if (arr[i] < a || arr[i] > b) {
+        //         arr.splice(i, 1);
+        //     }
+        // }
+    }
+
+    // let arr = [5, 3, 8, 1];
+    // filterRangeInPlace(arr, 1, 4);
+    // console.log(arr); // [3, 1] — tableau original modifié
+    </script>
+    <p class="hint">Parcourir un tableau à l'envers lors de suppressions avec splice est un pattern classique — cela évite de sauter des éléments.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 4 — Trier en ordre décroissant</h3>
+    <script>
+    // Exercice 4 — Sort in decreasing order
+    // Ta réponse ici
+
+    let arr = [5, 2, 1, -10, 8];
+
+    // Trier en ordre décroissant
+    // arr.sort(...);
+
+    // console.log(arr); // [8, 5, 2, 1, -10]
+    </script>
+    <p class="hint">La fonction de comparaison <code>(a, b) => a - b</code> trie en croissant. Inverse pour décroissant.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 5 — Copier et trier</h3>
+    <p>Copie le tableau puis trie la copie. L'original doit rester intact.</p>
+    <script>
+    // Exercice 5 — Copy and sort array
+    // Ta réponse ici
+
+    function copySorted(arr) {
+        // sort() modifie le tableau en place
+        // Il faut d'abord copier, puis trier la copie
+    }
+
+    // let arr = ["HTML", "JavaScript", "CSS"];
+    // let sorted = copySorted(arr);
+    // console.log(sorted); // ["CSS", "HTML", "JavaScript"]
+    // console.log(arr);    // ["HTML", "JavaScript", "CSS"] — inchangé
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 6 — Calculatrice extensible</h3>
+    <p>Crée une classe <code>Calculator</code> avec une méthode <code>addMethod(name, func)</code> pour ajouter des opérations, et <code>calculate("2 + 3")</code> pour les exécuter.</p>
+    <script>
+    // Exercice 6 — Create an extendable calculator
+    // Ta réponse ici
+
+    class Calculator {
+        constructor() {
+            // Stocker les méthodes dans un objet
+            // this.methods = {};
+        }
+
+        addMethod(name, func) {
+            // Enregistrer la fonction sous le nom donné
+            // this.methods[name] = func;
+        }
+
+        calculate(str) {
+            // Découper la string "2 + 3" en [valeur1, operateur, valeur2]
+            // let parts = str.split(" ");
+            // let a = +parts[0];
+            // let op = parts[1];
+            // let b = +parts[2];
+            // Appeler this.methods[op](a, b)
+        }
+    }
+
+    // let calc = new Calculator;
+    // calc.addMethod("+", (a, b) => a + b);
+    // calc.addMethod("-", (a, b) => a - b);
+    // calc.addMethod("*", (a, b) => a * b);
+    // console.log(calc.calculate("3 + 7"));  // 10
+    // console.log(calc.calculate("10 - 4")); // 6
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 7 — Map vers les noms</h3>
+    <p>Extrais un tableau des noms à partir d'un tableau d'objets utilisateurs.</p>
+    <script>
+    // Exercice 7 — Map to names
+    // Ta réponse ici
+
+    let users = [
+        { id: 1, name: "Jean", age: 25 },
+        { id: 2, name: "Marie", age: 30 },
+        { id: 3, name: "Pierre", age: 22 }
+    ];
+
+    // Utilise .map() pour extraire uniquement les noms
+    // let names = users.map(user => user.name);
+    // console.log(names); // ["Jean", "Marie", "Pierre"]
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 8 — Map vers de nouveaux objets</h3>
+    <p>Transforme le tableau en gardant seulement <code>id</code> et <code>fullName</code> (prénom + nom).</p>
+    <script>
+    // Exercice 8 — Map to objects
+    // Ta réponse ici
+
+    let users = [
+        { name: "Jean", surname: "Dupont", id: 1 },
+        { name: "Marie", surname: "Martin", id: 2 }
+    ];
+
+    // Créer un nouveau tableau d'objets { id, fullName }
+    // let usersMapped = users.map(user => ({
+    //     id: user.id,
+    //     fullName: user.name + " " + user.surname
+    // }));
+    // console.log(usersMapped);
+    // Note : les parenthèses autour de {} sont nécessaires en arrow function
+    // pour distinguer un bloc de code d'un objet littéral
+    </script>
+    <p class="hint">Attention : <code>user => {}</code> est une arrow function avec un bloc vide. Pour retourner un objet, écrire <code>user => ({})</code>.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 9 — Trier les utilisateurs par âge</h3>
+    <script>
+    // Exercice 9 — Sort users by age
+    // Ta réponse ici
+
+    let users = [
+        { name: "Jean", age: 25 },
+        { name: "Pierre", age: 18 },
+        { name: "Marie", age: 30 }
+    ];
+
+    function sortByAge(arr) {
+        // Trier en place par âge croissant
+    }
+
+    // sortByAge(users);
+    // console.log(users.map(u => u.name)); // ["Pierre", "Jean", "Marie"]
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 10 — Mélanger un tableau (Fisher-Yates)</h3>
+    <p>Implémente un mélange aléatoire correct de tableau.</p>
+    <script>
+    // Exercice 10 — Shuffle an array (Fisher-Yates)
+    // Ta réponse ici
+
+    function shuffle(arr) {
+        // Algorithme de Fisher-Yates :
+        // Parcourir de la fin vers le début, échanger chaque élément
+        // avec un élément aléatoire parmi ceux qui restent (y compris lui-même)
+
+        // for (let i = arr.length - 1; i > 0; i--) {
+        //     let j = Math.floor(Math.random() * (i + 1));
+        //     [arr[i], arr[j]] = [arr[j], arr[i]]; // échange par décomposition
+        // }
+    }
+
+    // let arr = [1, 2, 3];
+    // shuffle(arr);
+    // console.log(arr); // ex: [2, 1, 3]
+    </script>
+    <p class="hint">Fisher-Yates est l'algorithme standard pour mélanger un tableau de façon <strong>non biaisée</strong>. Mémoriser ce pattern.</p>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 11 — Âge moyen</h3>
+    <script>
+    // Exercice 11 — Get average age
+    // Ta réponse ici
+
+    let users = [
+        { name: "Jean", age: 25 },
+        { name: "Marie", age: 30 },
+        { name: "Pierre", age: 29 }
+    ];
+
+    function getAverageAge(users) {
+        // Utilise reduce pour sommer les âges, puis divise par le nombre
+        // return users.reduce(...) / users.length;
+    }
+
+    // console.log(getAverageAge(users)); // 28
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 12 — Membres uniques</h3>
+    <p>Filtre un tableau pour ne garder que les valeurs uniques (la première occurrence).</p>
+    <script>
+    // Exercice 12 — Filter unique array members
+    // Ta réponse ici
+
+    function unique(arr) {
+        // Utilise filter + indexOf :
+        // Un élément est unique (première occurrence) si son indexOf correspond à l'index actuel
+        // return arr.filter((item, index) => arr.indexOf(item) === index);
+    }
+
+    // let strings = ["Hare", "Krishna", "Hare", "Krishna", "Krishna", "Krishna", "Hare", "Hare", ":-O"];
+    // console.log(unique(strings)); // ["Hare", "Krishna", ":-O"]
+    </script>
+</div>
+
+<div class="exercise">
+    <h3>Exercice 13 — Grouper par ID</h3>
+    <p>Écris <code>groupById(arr)</code> qui transforme un tableau d'objets en un objet indexé par leur <code>id</code>.</p>
+    <script>
+    // Exercice 13 — Create keyed object from array (groupById)
+    // Ta réponse ici
+
+    function groupById(arr) {
+        // Utilise reduce pour construire un objet
+        // return arr.reduce((acc, item) => {
+        //     acc[item.id] = item;
+        //     return acc;
+        // }, {});
+    }
+
+    // let users = [
+    //     { id: "jean", name: "Jean" },
+    //     { id: "marie", name: "Marie" },
+    //     { id: "pierre", name: "Pierre" }
+    // ];
+    // console.log(groupById(users));
+    // { jean: { id: "jean", name: "Jean" }, marie: {...}, pierre: {...} }
+    </script>
+    <p class="hint">Ce pattern <code>reduce</code> pour construire un objet depuis un tableau est très courant — souvent appelé "indexation" ou "groupement".</p>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 1 — Implémenter .reduce() simplifié</h3>
+    <script>
+    // Bonus 1 — myReduce
+    // Ta réponse ici
+
+    function myReduce(arr, fn, initialValue) {
+        // Reproduire le comportement de Array.prototype.reduce
+        // Si initialValue est fourni, l'accumulateur commence à initialValue
+        // Sinon, commence au premier élément, l'itération commence au second
+        let acc;
+        let startIndex;
+
+        if (initialValue !== undefined) {
+            acc = initialValue;
+            startIndex = 0;
+        } else {
+            acc = arr[0];
+            startIndex = 1;
+        }
+
+        // Compléter la boucle ici
+    }
+
+    // Tests
+    // console.log(myReduce([1, 2, 3, 4], (acc, val) => acc + val, 0)); // 10
+    // console.log(myReduce([1, 2, 3], (acc, val) => acc * val));       // 6
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 2 — Transformer avec map/filter/reduce en chaîne</h3>
+    <p>À partir d'une liste de transactions, calcule la somme des montants positifs supérieurs à 100, en doublant leur valeur.</p>
+    <script>
+    // Bonus 2 — Chaîne map/filter/reduce
+    // Ta réponse ici
+
+    let transactions = [50, 200, -30, 150, 80, -100, 300];
+
+    // Étapes :
+    // 1. filter : garder uniquement les valeurs > 100
+    // 2. map : doubler chaque valeur
+    // 3. reduce : additionner le tout
+
+    // let result = transactions
+    //     .filter(n => n > 100)
+    //     .map(n => n * 2)
+    //     .reduce((sum, n) => sum + n, 0);
+
+    // console.log(result); // (200 + 150 + 300) * 2 = 1300
+    </script>
+</div>
+
+<div class="bonus">
+    <h3>Bonus 3 — pipe/compose avec reduce</h3>
+    <p>Implémente <code>pipe(...fns)</code> qui compose des fonctions de gauche à droite.</p>
+    <script>
+    // Bonus 3 — pipe avec reduce
+    // Ta réponse ici
+
+    function pipe(...fns) {
+        // Retourner une fonction qui applique chaque fn en séquence
+        // La sortie de l'une devient l'entrée de la suivante
+        // return (value) => fns.reduce((acc, fn) => fn(acc), value);
+    }
+
+    // const double = x => x * 2;
+    // const addOne = x => x + 1;
+    // const square = x => x * x;
+
+    // const transform = pipe(double, addOne, square);
+    // console.log(transform(3)); // ((3*2)+1)^2 = 7^2 = 49
+    </script>
+    <p class="hint">pipe et compose sont des concepts de programmation fonctionnelle. pipe = gauche à droite. compose = droite à gauche.</p>
+</div>
+
+</body>
+</html>

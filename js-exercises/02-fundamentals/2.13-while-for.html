@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2.13 - Boucles while et for - Exercices</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        h2 { color: #7b68ee; margin-top: 30px; }
+        h3 { color: #ffa500; }
+        .concept { background: #16213e; padding: 15px; border-left: 4px solid #00d4ff; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .exercise { background: #0f3460; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #533483; }
+        .bonus { background: #1a0a2e; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ffa500; }
+        .bonus h3::before { content: "⭐ "; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        code { color: #00ff88; }
+        .hint { color: #888; font-style: italic; font-size: 0.9em; }
+        .result { border: 2px dashed #533483; padding: 10px; margin-top: 10px; min-height: 40px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1>2.13 - Boucles : while et for</h1>
+
+<div class="concept">
+    <h2>Concepts clés</h2>
+    <ul>
+        <li><code>while (condition) { ... }</code> — vérifie la condition AVANT chaque itération</li>
+        <li><code>do { ... } while (condition)</code> — exécute le bloc AU MOINS UNE FOIS, vérifie après</li>
+        <li><code>for (init; condition; step) { ... }</code> — la boucle la plus courante</li>
+        <li><code>break</code> — sort immédiatement de la boucle</li>
+        <li><code>continue</code> — passe à l'itération suivante (saute le reste du bloc)</li>
+        <li><strong>Labels</strong> : <code>outer: for (...)</code> permet de <code>break outer</code> depuis une boucle imbriquée</li>
+        <li><strong>Attention</strong> : <code>++i</code> incrémente PUIS retourne la valeur. <code>i++</code> retourne la valeur PUIS incrémente.</li>
+    </ul>
+</div>
+
+<h2>Exercices</h2>
+
+<!-- EXERCICE 1 -->
+<div class="exercise">
+    <h3>Ex1 — Dernière valeur de la boucle</h3>
+    <p>Quelle valeur a <code>i</code> après cette boucle ?</p>
+    <pre><code>let i = 3;
+while (i) {
+    i--;
+}
+// i vaut ???</code></pre>
+    <p class="hint">Trace les itérations : i=3 (truthy → continue), i=2, i=1, i=0 (falsy → stop).</p>
+</div>
+
+<!-- EXERCICE 2 -->
+<div class="exercise">
+    <h3>Ex2 — while avec ++i vs i++</h3>
+    <p>Quelles valeurs la boucle affiche-t-elle dans chaque cas ?</p>
+    <pre><code>// Cas A : ++i (pré-incrément)
+let i = 0;
+while (i < 5) {
+    alert(++i);
+}
+
+// Cas B : i++ (post-incrément)
+let i = 0;
+while (i < 5) {
+    alert(i++);
+}</code></pre>
+    <p>Cas A affiche : <strong>????</strong></p>
+    <p>Cas B affiche : <strong>????</strong></p>
+</div>
+
+<!-- EXERCICE 3 -->
+<div class="exercise">
+    <h3>Ex3 — for avec ++i vs i++</h3>
+    <p>Quelles valeurs la boucle for affiche-t-elle ?</p>
+    <pre><code>// Cas A
+for (let i = 0; i < 5; ++i) {
+    alert(i);
+}
+
+// Cas B
+for (let i = 0; i < 5; i++) {
+    alert(i);
+}</code></pre>
+    <p class="hint">Dans le <code>step</code> d'un for, ++i et i++ produisent le même résultat visible — pourquoi ?</p>
+</div>
+
+<!-- EXERCICE 4 -->
+<div class="exercise">
+    <h3>Ex4 — Afficher les nombres pairs de 2 à 10</h3>
+    <p>Utiliser une boucle <code>for</code> pour afficher : 2, 4, 6, 8, 10</p>
+    <p>Deux approches :</p>
+    <ul>
+        <li>Incrémenter de 2 en 2</li>
+        <li>Incrémenter de 1 et utiliser <code>continue</code> pour sauter les impairs</li>
+    </ul>
+</div>
+
+<!-- EXERCICE 5 -->
+<div class="exercise">
+    <h3>Ex5 — Remplacer "for" par "while"</h3>
+    <p>Réécrire cette boucle <code>for</code> en <code>while</code> :</p>
+    <pre><code>for (let i = 0; i < 3; i++) {
+    alert("number " + i);
+}</code></pre>
+</div>
+
+<!-- EXERCICE 6 -->
+<div class="exercise">
+    <h3>Ex6 — Répéter jusqu'à la bonne saisie</h3>
+    <p>Demander un nombre avec <code>prompt</code>. Répéter jusqu'à ce que l'utilisateur saisisse un nombre supérieur à 100 (ou annule).</p>
+    <p>Utiliser <code>do..while</code> — parfait ici car on veut poser la question au moins une fois.</p>
+    <p class="hint"><code>do { ... } while (condition)</code> — la condition est vérifiée APRÈS le premier passage.</p>
+</div>
+
+<!-- EXERCICE 7 -->
+<div class="exercise">
+    <h3>Ex7 — Afficher les nombres premiers jusqu'à n</h3>
+    <p>Afficher tous les nombres premiers de 2 à <code>n</code> (utilise <code>n = 20</code>).</p>
+    <p>Un nombre premier n'est divisible que par 1 et par lui-même.</p>
+    <p class="hint">Algorithme : pour chaque nombre, essaie de le diviser par tous les entiers de 2 à √nombre. Si aucun ne divise, c'est un premier. Utilise <code>break</code> et un label pour sortir proprement.</p>
+</div>
+
+<h2>Bonus</h2>
+
+<!-- BONUS 1 -->
+<div class="bonus">
+    <h3>B1 — Triangle d'étoiles</h3>
+    <p>Afficher un triangle d'étoiles avec des boucles imbriquées :</p>
+    <pre><code>*
+**
+***
+****
+*****</code></pre>
+    <p class="hint">Boucle externe pour les lignes, boucle interne pour les étoiles. Concatène dans une chaîne puis <code>console.log</code>.</p>
+</div>
+
+<!-- BONUS 2 -->
+<div class="bonus">
+    <h3>B2 — Factorielle avec while</h3>
+    <p>Calculer n! (factorielle) avec une boucle <code>while</code>.</p>
+    <p>Rappel : <code>5! = 5 × 4 × 3 × 2 × 1 = 120</code></p>
+    <p>Teste avec 0! (= 1), 1! (= 1), 5! (= 120), 10! (= 3628800).</p>
+</div>
+
+<!-- BONUS 3 -->
+<div class="bonus">
+    <h3>B3 — PGCD avec while (algorithme d'Euclide)</h3>
+    <p>Calculer le Plus Grand Commun Diviseur (PGCD) de deux nombres.</p>
+    <p>Algorithme d'Euclide : tant que b != 0, faire <code>a, b = b, a % b</code>.</p>
+    <pre><code>pgcd(48, 18) // → 6
+pgcd(100, 75) // → 25
+pgcd(7, 13)  // → 1 (nombres premiers entre eux)</code></pre>
+    <p class="hint">En JS : <code>let temp = b; b = a % b; a = temp;</code> ou avec déstructuration <code>[a, b] = [b, a % b]</code>.</p>
+</div>
+
+<script>
+// ============================================================
+// EX1 — Dernière valeur de la boucle while
+// ============================================================
+let i1 = 3;
+while (i1) {
+    i1--;
+}
+console.log("Ex1 — i vaut :", i1);
+// Trace : i=3 (truthy), i-- → i=2 ; i=2 (truthy), i-- → i=1 ; i=1 (truthy), i-- → i=0 ; i=0 (falsy) → stop
+// Résultat : 0
+
+
+// ============================================================
+// EX2 — while avec ++i vs i++
+// ============================================================
+// Ne pas décommenter (ouvre des popups) — analyse mentalement :
+// Cas A (++i) : ++i incrémente PUIS retourne. Donc : alert(1), alert(2), alert(3), alert(4), alert(5)
+// Cas B (i++) : retourne PUIS incrémente. Donc : alert(0), alert(1), alert(2), alert(3), alert(4)
+// (quand i=4 et qu'on fait i++, alert voit 4, puis i devient 5, condition 5<5 est false → stop)
+console.log("Ex2 — Cas A ++i : 1, 2, 3, 4, 5");
+console.log("Ex2 — Cas B i++ : 0, 1, 2, 3, 4");
+
+
+// ============================================================
+// EX3 — for avec ++i vs i++
+// ============================================================
+// Les deux affichent la MÊME chose : 0, 1, 2, 3, 4
+// Pourquoi ? Car dans le step d'un for, la valeur retournée est ignorée —
+// seul l'effet (l'incrémentation) compte. Le résultat affiché c'est i APRÈS l'incrément
+// (et i est lu dans le corps de la boucle, pas dans le step).
+console.log("Ex3 — Les deux boucles affichent : 0, 1, 2, 3, 4");
+
+
+// ============================================================
+// EX4 — Nombres pairs de 2 à 10
+// ============================================================
+console.log("\nEx4 — Nombres pairs :");
+
+// Approche 1 : incrémenter de 2
+let resultat4a = [];
+for (let i = 2; i <= 10; i += 2) {
+    resultat4a.push(i);
+}
+console.log("Approche 1 (i+=2):", resultat4a.join(", "));
+
+// Approche 2 : continue pour sauter les impairs
+// Ta réponse ici :
+// let resultat4b = [];
+// for (let i = 1; i <= 10; i++) {
+//     if (i % 2 !== 0) continue;
+//     resultat4b.push(i);
+// }
+// console.log("Approche 2 (continue):", resultat4b.join(", "));
+
+
+// ============================================================
+// EX5 — Réécrire for en while
+// ============================================================
+// Original : for (let i = 0; i < 3; i++) { alert("number " + i); }
+
+// Ta version while :
+// let i = 0;              // init
+// while (i < 3) {         // condition
+//     console.log("number " + i);
+//     i++;                // step
+// }
+
+
+// ============================================================
+// EX6 — do..while avec prompt
+// ============================================================
+// Décommente pour tester :
+/*
+let num;
+do {
+    num = prompt("Entre un nombre supérieur à 100 (ou annule)");
+} while (num !== null && num <= 100);
+
+if (num === null) {
+    console.log("Ex6 : Annulé par l'utilisateur");
+} else {
+    console.log("Ex6 : Nombre saisi :", num);
+}
+*/
+
+
+// ============================================================
+// EX7 — Nombres premiers jusqu'à n
+// ============================================================
+console.log("\nEx7 — Nombres premiers jusqu'à 20 :");
+
+let n = 20;
+let primes = [];
+
+nextPrime: for (let i = 2; i <= n; i++) {
+    for (let j = 2; j <= Math.sqrt(i); j++) {
+        if (i % j === 0) continue nextPrime; // i n'est pas premier
+    }
+    primes.push(i); // aucun diviseur trouvé → premier
+}
+
+console.log(primes.join(", ")); // 2, 3, 5, 7, 11, 13, 17, 19
+
+
+// ============================================================
+// BONUS 1 — Triangle d'étoiles
+// ============================================================
+console.log("\nB1 — Triangle d'étoiles :");
+
+// Ta réponse ici :
+// for (let ligne = 1; ligne <= 5; ligne++) {
+//     let etoiles = "";
+//     for (let col = 1; col <= ligne; col++) {
+//         etoiles += "*";
+//     }
+//     console.log(etoiles);
+// }
+
+
+// ============================================================
+// BONUS 2 — Factorielle
+// ============================================================
+function factorielle(n) {
+    // Ta réponse ici :
+    // let result = 1;
+    // let i = n;
+    // while (i > 1) {
+    //     result *= i;
+    //     i--;
+    // }
+    // return result;
+}
+
+// console.log("B2 — 0! =", factorielle(0));   // 1
+// console.log("B2 — 5! =", factorielle(5));   // 120
+// console.log("B2 — 10! =", factorielle(10)); // 3628800
+
+
+// ============================================================
+// BONUS 3 — PGCD (algorithme d'Euclide)
+// ============================================================
+function pgcd(a, b) {
+    // Ta réponse ici :
+    // while (b !== 0) {
+    //     [a, b] = [b, a % b]; // déstructuration ES6 pour swap propre
+    // }
+    // return a;
+}
+
+// console.log("B3 — pgcd(48, 18) =", pgcd(48, 18));   // 6
+// console.log("B3 — pgcd(100, 75) =", pgcd(100, 75)); // 25
+// console.log("B3 — pgcd(7, 13) =", pgcd(7, 13));     // 1
+</script>
+
+</body>
+</html>
